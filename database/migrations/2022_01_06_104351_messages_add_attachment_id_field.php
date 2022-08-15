@@ -3,12 +3,9 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use RonasIT\Support\Traits\MigrationTrait;
 
 class MessagesAddAttachmentIdField extends Migration
 {
-    use MigrationTrait;
-
     public function up()
     {
         Schema::table('messages', function (Blueprint $table) {

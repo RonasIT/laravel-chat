@@ -26,11 +26,11 @@ class Conversation extends Model
 
     public function sender()
     {
-        return $this->belongsTo(UserContract::class);
+        return $this->belongsTo(config('chat.classes.user_model'));
     }
 
     public function recipient()
     {
-        return $this->belongsTo(UserContract::class);
+        return $this->belongsTo(config('chat.classes.user_model'));
     }
 }

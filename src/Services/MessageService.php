@@ -2,6 +2,7 @@
 
 namespace RonasIT\Chat\Services;
 
+use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
 use RonasIT\Chat\Models\Message;
 use RonasIT\Chat\Notifications\NewMessageNotification;
@@ -26,7 +27,7 @@ class MessageService extends EntityService implements MessageServiceContract
     {
         $this->setRepository(MessageRepository::class);
 
-        $this->conversationService = app(ConversationService::class);
+        $this->conversationService = app(ConversationServiceContract::class);
     }
 
     public function create(array $data): Message
@@ -56,7 +57,7 @@ class MessageService extends EntityService implements MessageServiceContract
             $filters['owner_id'] = Auth::user()->id;
         }
 
-        return $this->repository
+        return $this
             ->with(Arr::get($filters, 'with', []))
             ->searchQuery($filters)
             ->filterBy('conversation_id')
@@ -71,6 +72,7 @@ class MessageService extends EntityService implements MessageServiceContract
     public function notifyUser(Model $message, Collection $recipients): void
     {
         $newMessageNotification = new NewMessageNotification($message, Auth::user());
+
         Notification::send($recipients, $newMessageNotification);
     }
 

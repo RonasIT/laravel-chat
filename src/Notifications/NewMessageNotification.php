@@ -6,18 +6,15 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Notifications\Channels\BroadcastChannel;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use NotificationChannels\ExpoPushNotifications\ExpoChannel;
 use NotificationChannels\ExpoPushNotifications\ExpoMessage;
 use RonasIT\Chat\Models\Message;
-use RonasIT\Chat\Contracts\Models\UserContract;
 
 class NewMessageNotification extends Notification implements ShouldBroadcast, ShouldQueue
 {
     use Queueable;
 
-    protected UserContract $sender;
+    protected $sender;
     protected Message $message;
 
     public function __construct(Message $message, $sender)
@@ -28,10 +25,7 @@ class NewMessageNotification extends Notification implements ShouldBroadcast, Sh
 
     public function via($notifiable): array
     {
-        return [
-            BroadcastChannel::class,
-            ExpoChannel::class
-        ];
+        return config('chat.notification_channels');
     }
 
     public function toBroadcast(): BroadcastMessage

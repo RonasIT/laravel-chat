@@ -3,14 +3,9 @@
 namespace RonasIT\Chat\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use RonasIT\Chat\Contracts\Models\UserContract;
-use RonasIT\Chat\Contracts\Models\UserMediaContract;
 
 class Message extends Model
 {
-    const TYPE_USUAL = 'usual';
-    const TYPE_ORDER = 'order';
-
     protected $fillable = [
         'conversation_id',
         'sender_id',
@@ -18,8 +13,6 @@ class Message extends Model
         'is_read',
         'text',
         'attachment_id',
-        'type',
-        'order',
     ];
 
     protected $hidden = ['pivot'];
@@ -31,16 +24,16 @@ class Message extends Model
 
     public function sender()
     {
-        return $this->belongsTo(UserContract::class);
+        return $this->belongsTo(config('chat.classes.user_model'));
     }
 
     public function recipient()
     {
-        return $this->belongsTo(UserContract::class);
+        return $this->belongsTo(config('chat.classes.user_model'));
     }
 
     public function attachment()
     {
-        return $this->belongsTo(UserMediaContract::class, 'attachment_id');
+        return $this->belongsTo(config('chat.classes.user_model'), 'attachment_id');
     }
 }

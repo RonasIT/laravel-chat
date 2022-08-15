@@ -2,7 +2,6 @@
 
 namespace RonasIT\Chat\Http\Requests\Messages;
 
-use RonasIT\Chat\Contracts\Models\UserContract;
 use RonasIT\Chat\Contracts\Services\UserServiceContract;
 use RonasIT\Support\BaseRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -11,7 +10,7 @@ use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
 
 class CreateMessageRequest extends BaseRequest implements CreateMessageRequestContract
 {
-    protected ?UserContract $targetUser;
+    protected  $targetUser;
 
     public function rules(): array
     {

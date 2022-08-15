@@ -2,9 +2,9 @@
 
 namespace RonasIT\Chat\Http\Requests\Messages;
 
+use RonasIT\Chat\Contracts\Services\MessageServiceContract;
 use RonasIT\Support\BaseRequest;
 use RonasIT\Chat\Models\Message;
-use RonasIT\Chat\Services\MessageService;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -25,7 +25,7 @@ class ReadMessageRequest extends BaseRequest
 
     protected function init()
     {
-        $this->message = app(MessageService::class)->find($this->route('id'));
+        $this->message = app(MessageServiceContract::class)->find($this->route('id'));
     }
 
     protected function checkMessageExists()

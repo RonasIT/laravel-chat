@@ -19,7 +19,6 @@ class CreateMessagesTable extends Migration
             $table->foreignId('recipient_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->text('text');
-            $table->enum('type', ['order', 'usual'])->default('usual');
             $table->boolean('is_read')->default(false);
             $table->timestamps();
         });
