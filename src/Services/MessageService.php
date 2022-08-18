@@ -2,10 +2,10 @@
 
 namespace RonasIT\Chat\Services;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+use RonasIT\Chat\Contracts\Notifications\NewMessageNotificationContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
-use RonasIT\Chat\Models\Message;
-use RonasIT\Chat\Notifications\NewMessageNotification;
 use RonasIT\Chat\Repositories\MessageRepository;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -30,15 +30,15 @@ class MessageService extends EntityService implements MessageServiceContract
         $this->conversationService = app(ConversationServiceContract::class);
     }
 
-    public function create(array $data): Message
+    public function create(array $data): Model
     {
-        $conversation = $this->conversationService->getOrCreateConversationBetweenUsers(Auth::user()->id, $data['recipient_id']);
+        $conversation = $this->conversationService->getOrCreateConversationBetweenUsers(Auth::id(), $data['recipient_id']);
 
-        $message = $this->repository
+        $message = $this
             ->with(['recipient', 'sender'])
             ->create([
                 'conversation_id' => $conversation->id,
-                'sender_id' => Auth::user()->id,
+                'sender_id' => Auth::id(),
                 'recipient_id' => $data['recipient_id'],
                 'text' => $data['text'],
                 'attachment_id' => Arr::get($data, 'attachment_id'),
@@ -51,10 +51,10 @@ class MessageService extends EntityService implements MessageServiceContract
         return $message;
     }
 
-    public function search($filters)
+    public function search(array $filters = []): LengthAwarePaginator
     {
-        if (!empty(Auth::user())) {
-            $filters['owner_id'] = Auth::user()->id;
+        if (Auth::id()) {
+            $filters['owner_id'] = Auth::id();
         }
 
         return $this
@@ -71,13 +71,18 @@ class MessageService extends EntityService implements MessageServiceContract
 
     public function notifyUser(Model $message, Collection $recipients): void
     {
-        $newMessageNotification = new NewMessageNotification($message, Auth::user());
+        $newMessageNotification = app(NewMessageNotificationContract::class)->setMessage($message);
 
         Notification::send($recipients, $newMessageNotification);
     }
 
-    public function markAsReadMessages($id)
+    public function markAsReadMessages($id): int
     {
-        return $this->repository->markAsReadMessages(Auth::user()->id, $id);
+        return $this->repository->markAsReadMessages(Auth::id(), $id);
+    }
+
+    function find(int $id): ?Model
+    {
+        return $this->repository->find($id);
     }
 }

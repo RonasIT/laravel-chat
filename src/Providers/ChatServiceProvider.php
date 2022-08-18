@@ -3,7 +3,7 @@
 namespace RonasIT\Chat\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use RonasIT\Chat\Contracts\Models\UserContract;
+use RonasIT\Chat\Contracts\Notifications\NewMessageNotificationContract;
 use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
 use RonasIT\Chat\Contracts\Requests\GetConversationRequestContract;
 use RonasIT\Chat\Contracts\Requests\ReadMessageRequestContract;
@@ -16,6 +16,7 @@ use RonasIT\Chat\Http\Requests\Conversations\SearchConversationsRequest;
 use RonasIT\Chat\Http\Requests\Messages\CreateMessageRequest;
 use RonasIT\Chat\Http\Requests\Messages\ReadMessageRequest;
 use RonasIT\Chat\Http\Requests\Messages\SearchMessagesRequest;
+use RonasIT\Chat\Notifications\NewMessageNotification;
 use RonasIT\Chat\Services\ConversationService;
 use RonasIT\Chat\Services\MessageService;
 
@@ -40,5 +41,7 @@ class ChatServiceProvider extends ServiceProvider
 
         $this->app->bind(ConversationServiceContract::class, ConversationService::class);
         $this->app->bind(MessageServiceContract::class, MessageService::class);
+
+        $this->app->bind(NewMessageNotificationContract::class, NewMessageNotification::class);
     }
 }

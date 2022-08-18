@@ -17,8 +17,18 @@ class GetConversationRequest extends BaseRequest implements GetConversationReque
     {
         return [
             'with' => 'array',
-            'with.*' => "string|required",
+            'with.*' => 'string|required|in:' . $this->getAvailableRelations(),
         ];
+    }
+
+    protected function getAvailableRelations(): string
+    {
+        return join(',', [
+            'messages',
+            'sender',
+            'recipient',
+            'last_message',
+        ]);
     }
 
     public function validateResolved()
@@ -40,7 +50,7 @@ class GetConversationRequest extends BaseRequest implements GetConversationReque
     protected function checkConversationExists()
     {
         if (empty($this->conversation)) {
-            throw new NotFoundHttpException(__('validation.exceptions.not_found', ['entity' => 'Conversation']));
+            throw new NotFoundHttpException(__('chat::validation.exceptions.not_found', ['entity' => 'Conversation']));
         }
     }
 
@@ -49,7 +59,7 @@ class GetConversationRequest extends BaseRequest implements GetConversationReque
         $conversationOwnersIdsCollection = collect([$this->conversation['sender_id'], $this->conversation['recipient_id']]);
 
         if (!$conversationOwnersIdsCollection->contains($this->user()->id)) {
-            throw new AccessDeniedHttpException(__('validation.exceptions.not_owner', ['entity' => 'Conversation']));
+            throw new AccessDeniedHttpException(__('chat::validation.exceptions.not_owner', ['entity' => 'Conversation']));
         }
     }
 }

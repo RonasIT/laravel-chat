@@ -18,7 +18,17 @@ class SearchConversationsRequest extends BaseRequest implements SearchConversati
             'desc' => 'boolean',
             'with_unread_messages_count' => 'boolean',
             'with' => 'array',
-            'with.*' => 'string|required',
+            'with.*' => 'string|required|in:' . $this->getAvailableRelations(),
         ];
+    }
+
+    protected function getAvailableRelations(): string
+    {
+        return join(',', [
+            'messages',
+            'sender',
+            'recipient',
+            'last_message',
+        ]);
     }
 }

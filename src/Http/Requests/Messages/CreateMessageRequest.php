@@ -10,14 +10,16 @@ use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
 
 class CreateMessageRequest extends BaseRequest implements CreateMessageRequestContract
 {
-    protected  $targetUser;
+    protected $targetUser;
 
     public function rules(): array
     {
+        $mediaTableName = config('chat.database.tables.media');
+
         return [
             'recipient_id' => 'required|integer|filled',
             'text' => 'string|required',
-            'attachment_id' => 'integer|exists:media,id',
+            'attachment_id' => "integer|exists:{$mediaTableName},id",
         ];
     }
 

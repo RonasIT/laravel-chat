@@ -2,6 +2,8 @@
 
 namespace RonasIT\Chat\Services;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
@@ -19,7 +21,7 @@ class ConversationService extends EntityService implements ConversationServiceCo
         $this->setRepository(ConversationRepository::class);
     }
 
-    public function getOrCreateConversationBetweenUsers($senderId, $recipientId)
+    public function getOrCreateConversationBetweenUsers(int $senderId, int $recipientId): Model
     {
         $conversation = $this->getConversationBetweenUsers($senderId, $recipientId);
 
@@ -33,14 +35,13 @@ class ConversationService extends EntityService implements ConversationServiceCo
         return $conversation;
     }
 
-    public function search($filters)
+    public function search(array $filters = []): LengthAwarePaginator
     {
-        if (!empty(Auth::user())) {
-            $filters['owner_id'] = Auth::user()->id;
+        if (Auth::id()) {
+            $filters['owner_id'] = Auth::id();
         }
 
         return $this
-            ->repository
             ->with(Arr::get($filters, 'with', []))
             ->searchQuery($filters)
             ->filterByOwner()
@@ -48,12 +49,8 @@ class ConversationService extends EntityService implements ConversationServiceCo
             ->getSearchResults();
     }
 
-    public function get($id, $data)
+    public function find(int $id, array $data): ?Model
     {
-        $with = Arr::get($data, 'with', []);
-
-        return $this->repository
-            ->with($with)
-            ->find($id);
+        return $this->repository->with(Arr::get($data, 'with', []))->find($id);
     }
 }

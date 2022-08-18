@@ -34,6 +34,6 @@ class Message extends Model
 
     public function attachment()
     {
-        return $this->belongsTo(config('chat.classes.user_model'), 'attachment_id');
+        return $this->belongsTo(config('chat.classes.media_model'), 'attachment_id');
     }
 }

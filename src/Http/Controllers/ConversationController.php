@@ -12,14 +12,14 @@ class ConversationController extends Controller
 {
     public function get(GetConversationRequestContract $request, ConversationServiceContract $service, $id): JsonResponse
     {
-        $result = $service->get($id, $request->onlyValidated());
+        $result = $service->find($id, $request->validated());
 
         return response()->json($result);
     }
 
     public function search(SearchConversationsRequestContract $request, ConversationServiceContract $service): JsonResponse
     {
-        $result = $service->search($request->onlyValidated());
+        $result = $service->search($request->validated());
 
         return response()->json($result);
     }

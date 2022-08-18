@@ -3,7 +3,6 @@
 namespace RonasIT\Chat\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use RonasIT\Chat\Contracts\Models\UserContract;
 
 class Conversation extends Model
 {

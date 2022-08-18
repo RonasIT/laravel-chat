@@ -2,9 +2,12 @@
 
 namespace RonasIT\Chat\Contracts\Services;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 interface ConversationServiceContract
 {
-    public function search($data);
+    public function search(array $filters = []): LengthAwarePaginator;
 
-    public function get($id, $data);
+    public function find(int $id, array $data): ?Model;
 }

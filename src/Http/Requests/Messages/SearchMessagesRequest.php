@@ -18,8 +18,17 @@ class SearchMessagesRequest extends BaseRequest implements SearchMessagesRequest
             'desc' => 'boolean',
             'conversation_id' => 'integer',
             'with' => 'array',
-            'with.*' => "string|required",
+            'with.*' => 'string|required|in:' . $this->getAvailableRelations(),
         ];
     }
 
+    protected function getAvailableRelations(): string
+    {
+        return join(',', [
+            'conversation',
+            'sender',
+            'recipient',
+            'attachment',
+        ]);
+    }
 }

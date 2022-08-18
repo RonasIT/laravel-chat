@@ -15,7 +15,7 @@ class ConversationRepository extends BaseRepository
         $this->setModel(Conversation::class);
     }
 
-    public function getConversationBetweenUsers($senderId, $recipientId): Conversation
+    public function getConversationBetweenUsers(int $senderId, int $recipientId): Conversation
     {
         return $this
             ->getQuery([

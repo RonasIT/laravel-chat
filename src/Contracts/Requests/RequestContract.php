@@ -5,12 +5,11 @@ namespace RonasIT\Chat\Contracts\Requests;
 interface RequestContract
 {
     /**
-     * @param array|string $keys
-     * @param mixed $default
+     * Get the validated data from the request.
      *
-     * @return array;
+     * @return array
      */
-    function onlyValidated($keys = null, $default = null);
+    function validated();
 
     function rules(): array;
 

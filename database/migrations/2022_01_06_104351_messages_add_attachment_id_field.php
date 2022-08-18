@@ -10,7 +10,9 @@ class MessagesAddAttachmentIdField extends Migration
     {
         Schema::table('messages', function (Blueprint $table) {
             $table->integer('attachment_id')->nullable();
-            $table->foreign('attachment_id')->references('id')->on('media')->onDelete('set null');
+
+            $mediaTableName = config('chat.database.tables.media');
+            $table->foreign('attachment_id')->references('id')->on($mediaTableName)->onDelete('set null');
         });
     }
 

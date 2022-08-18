@@ -3,29 +3,35 @@
 namespace RonasIT\Chat\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Support\Facades\Auth;
 use NotificationChannels\ExpoPushNotifications\ExpoMessage;
-use RonasIT\Chat\Models\Message;
+use RonasIT\Chat\Contracts\Notifications\NewMessageNotificationContract;
 
-class NewMessageNotification extends Notification implements ShouldBroadcast, ShouldQueue
+class NewMessageNotification extends Notification implements ShouldBroadcast, ShouldQueue, NewMessageNotificationContract
 {
     use Queueable;
 
-    protected $sender;
-    protected Message $message;
+    protected ?Model $sender;
+    protected Model $message;
 
-    public function __construct(Message $message, $sender)
+    public function __construct()
+    {
+        $this->sender = Auth::user();
+    }
+
+    public function setMessage(Model $message)
     {
         $this->message = $message;
-        $this->sender = $sender;
     }
 
     public function via($notifiable): array
     {
-        return config('chat.notification_channels');
+        return config('chat.default_notification_channels');
     }
 
     public function toBroadcast(): BroadcastMessage
