@@ -10,12 +10,6 @@ return [
         'user_model' => User::class,
         'media_model' => Media::class,
     ],
-    'database' => [
-        'tables' => [
-            'users' => 'users',
-            'media' => 'media',
-        ],
-    ],
     'default_notification_channels' => [
         ExpoChannel::class,
         BroadcastChannel::class,

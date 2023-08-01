@@ -3,6 +3,7 @@
 namespace RonasIT\Chat\Services;
 
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 use RonasIT\Chat\Contracts\Notifications\NewMessageNotificationContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
@@ -32,19 +33,23 @@ class MessageService extends EntityService implements MessageServiceContract
 
     public function create(array $data): Model
     {
-        $conversation = $this->conversationService->getOrCreateConversationBetweenUsers(Auth::id(), $data['recipient_id']);
+        $message = DB::transaction(function () use ($data) {
+            $conversation = $this->conversationService->getOrCreateConversationBetweenUsers(Auth::id(), $data['recipient_id']);
 
-        $message = $this
-            ->with(['recipient', 'sender'])
-            ->create([
-                'conversation_id' => $conversation->id,
-                'sender_id' => Auth::id(),
-                'recipient_id' => $data['recipient_id'],
-                'text' => $data['text'],
-                'attachment_id' => Arr::get($data, 'attachment_id'),
-            ]);
+            $message = $this
+                ->with(['recipient', 'sender'])
+                ->create([
+                    'conversation_id' => $conversation->id,
+                    'sender_id' => Auth::id(),
+                    'recipient_id' => $data['recipient_id'],
+                    'text' => $data['text'],
+                    'attachment_id' => Arr::get($data, 'attachment_id'),
+                ]);
 
-        $this->conversationService->update($conversation->id, ['last_updated_at' => Carbon::now()]);
+            $this->conversationService->update($conversation->id, ['last_updated_at' => Carbon::now()]);
+
+            return $message;
+        });
 
         $this->notifyUser($message, collect([$message->recipient]));
 
@@ -53,19 +58,13 @@ class MessageService extends EntityService implements MessageServiceContract
 
     public function search(array $filters = []): LengthAwarePaginator
     {
-        if (Auth::id()) {
+        if (Auth::check()) {
             $filters['owner_id'] = Auth::id();
         }
 
         return $this
-            ->with(Arr::get($filters, 'with', []))
             ->searchQuery($filters)
-            ->filterBy('conversation_id')
             ->filterByOwner()
-            ->filterFrom('id', false, 'id_from')
-            ->filterTo('id', false, 'id_to')
-            ->filterFrom('created_at', false, 'created_at_from')
-            ->filterTo('created_at', false, 'created_at_to')
             ->getSearchResults();
     }
 
@@ -76,13 +75,8 @@ class MessageService extends EntityService implements MessageServiceContract
         Notification::send($recipients, $newMessageNotification);
     }
 
-    public function markAsReadMessages($id): int
+    public function markAsReadMessages($fromMessageId): int
     {
-        return $this->repository->markAsReadMessages(Auth::id(), $id);
-    }
-
-    function find(int $id): ?Model
-    {
-        return $this->repository->find($id);
+        return $this->repository->markAsReadMessages(Auth::id(), $fromMessageId);
     }
 }

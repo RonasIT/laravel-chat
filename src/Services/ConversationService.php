@@ -37,20 +37,14 @@ class ConversationService extends EntityService implements ConversationServiceCo
 
     public function search(array $filters = []): LengthAwarePaginator
     {
-        if (Auth::id()) {
+        if (Auth::check()) {
             $filters['owner_id'] = Auth::id();
         }
 
         return $this
-            ->with(Arr::get($filters, 'with', []))
             ->searchQuery($filters)
             ->filterByOwner()
             ->withUnreadMessagesCount()
             ->getSearchResults();
-    }
-
-    public function find(int $id, array $data): ?Model
-    {
-        return $this->repository->with(Arr::get($data, 'with', []))->find($id);
     }
 }

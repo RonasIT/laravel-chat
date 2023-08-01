@@ -16,7 +16,7 @@ class NewMessageNotification extends Notification implements ShouldBroadcast, Sh
 {
     use Queueable;
 
-    protected ?Model $sender;
+    protected Model $sender;
     protected Model $message;
 
     public function __construct()

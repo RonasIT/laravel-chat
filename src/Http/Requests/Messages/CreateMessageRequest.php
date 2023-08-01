@@ -2,7 +2,6 @@
 
 namespace RonasIT\Chat\Http\Requests\Messages;
 
-use RonasIT\Chat\Contracts\Services\UserServiceContract;
 use RonasIT\Support\BaseRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -10,14 +9,13 @@ use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
 
 class CreateMessageRequest extends BaseRequest implements CreateMessageRequestContract
 {
-    protected $targetUser;
-
     public function rules(): array
     {
-        $mediaTableName = config('chat.database.tables.media');
+        $mediaTableName = app(config('chat.classes.media_model'))->getTable();
+        $userTableName = app(config('chat.classes.user_model'))->getTable();
 
         return [
-            'recipient_id' => 'required|integer|filled',
+            'recipient_id' => "required|integer|exists:{$userTableName},id",
             'text' => 'string|required',
             'attachment_id' => "integer|exists:{$mediaTableName},id",
         ];
@@ -25,25 +23,9 @@ class CreateMessageRequest extends BaseRequest implements CreateMessageRequestCo
 
     public function validateResolved()
     {
-        $this->init();
-
         parent::validateResolved();
 
-        $this->checkTargetUserExists();
-
         $this->checkSelfMessage();
-    }
-
-    protected function init()
-    {
-        $this->targetUser = app(UserServiceContract::class)->find($this->input('recipient_id'));
-    }
-
-    protected function checkTargetUserExists()
-    {
-        if (empty($this->targetUser)) {
-            throw new NotFoundHttpException(__('chat::validation.exceptions.not_found', ['entity' => 'User']));
-        }
     }
 
     protected function checkSelfMessage()

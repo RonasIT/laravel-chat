@@ -8,11 +8,12 @@ class CreateMessagesTable extends Migration
 {
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
+        $usersTableName = app(config('chat.classes.user_model'))->getTable();
+
+        Schema::create('messages', function (Blueprint $table) use ($usersTableName) {
             $table->increments('id');
 
             $table->foreignId('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
-            $usersTableName = config('chat.database.tables.users');
             $table->foreignId('sender_id')->references('id')->on($usersTableName)->onDelete('cascade');
             $table->foreignId('recipient_id')->references('id')->on($usersTableName)->onDelete('cascade');
 
