@@ -8,6 +8,4 @@ use Illuminate\Pagination\LengthAwarePaginator;
 interface ConversationServiceContract
 {
     public function search(array $filters = []): LengthAwarePaginator;
-
-    public function find(int $id, array $data): ?Model;
 }

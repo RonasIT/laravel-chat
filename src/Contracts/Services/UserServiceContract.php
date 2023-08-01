@@ -6,5 +6,4 @@ use Illuminate\Database\Eloquent\Model;
 
 interface UserServiceContract
 {
-    function find(int $id): ?Model;
 }

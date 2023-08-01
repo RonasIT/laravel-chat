@@ -15,6 +15,4 @@ interface MessageServiceContract
     function notifyUser(Model $message, Collection $recipients);
 
     function markAsReadMessages(int $fromMessageId);
-
-    function find(int $id): ?Model;
 }
