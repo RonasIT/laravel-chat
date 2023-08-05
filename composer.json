@@ -15,18 +15,27 @@
     "require": {
         "php": ">=7.4.0",
         "ronasit/laravel-helpers": "^2.1",
-        "alymosul/laravel-exponent-push-notifications": "^2.4"
+        "alymosul/laravel-exponent-push-notifications": "^2.4",
+        "phpunit/phpunit": "^9.0",
+        "ronasit/laravel-swagger": ">=2.0.4-beta",
+        "laravel/framework": "^8.0",
+        "php-open-source-saver/jwt-auth": "^2.0",
+        "doctrine/dbal": "^3.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.4"
     },
     "autoload": {
+        "classmap": [
+            "database"
+        ],
         "psr-4": {
-            "RonasIT\\Chat\\": "src/"
+            "App\\": "app/"
         }
     },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "RonasIT\\Chat\\Providers\\ChatServiceProvider"
-            ]
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
         }
     }
 }
