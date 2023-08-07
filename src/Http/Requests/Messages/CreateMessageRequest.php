@@ -21,7 +21,7 @@ class CreateMessageRequest extends BaseRequest implements CreateMessageRequestCo
         ];
     }
 
-    public function validateResolved()
+    public function validateResolved(): void
     {
         parent::validateResolved();
 

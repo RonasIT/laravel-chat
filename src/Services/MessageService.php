@@ -36,7 +36,7 @@ class MessageService extends EntityService implements MessageServiceContract
         $message = DB::transaction(function () use ($data) {
             $conversation = $this->conversationService->getOrCreateConversationBetweenUsers(Auth::id(), $data['recipient_id']);
 
-            $message = $this
+            $message = $this->repository
                 ->with(['recipient', 'sender'])
                 ->create([
                     'conversation_id' => $conversation->id,

@@ -13,6 +13,10 @@ class MessageRepository extends BaseRepository
     public function __construct()
     {
         $this->setModel(Message::class);
+
+        $this->setAdditionalReservedFilters(
+            'owner_id'
+        );
     }
 
     public function filterByOwner(): self

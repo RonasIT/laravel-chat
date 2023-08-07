@@ -12,7 +12,7 @@ interface MessageServiceContract
 
     function search(array $filters = []): LengthAwarePaginator;
 
-    function notifyUser(Model $message, Collection $recipients);
+    function notifyUser(Model $message, Collection $recipients): void;
 
-    function markAsReadMessages(int $fromMessageId);
+    function markAsReadMessages(int $fromMessageId): int;
 }

@@ -2,33 +2,20 @@
 
 namespace RonasIT\Chat\Http\Requests\Conversations;
 
-use RonasIT\Chat\Contracts\Requests\GetConversationRequestContract;
-use RonasIT\Chat\Models\Conversation;
+use App\Models\Conversation;
+use RonasIT\Chat\Contracts\Requests\DeleteConversationRequestContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
-use RonasIT\Support\BaseRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use RonasIT\Support\BaseRequest;
 
-class GetConversationRequest extends BaseRequest implements GetConversationRequestContract
+class DeleteConversationRequest extends BaseRequest implements DeleteConversationRequestContract
 {
     protected ?Conversation $conversation;
 
     public function rules(): array
     {
-        return [
-            'with' => 'array',
-            'with.*' => 'string|required|in:' . $this->getAvailableRelations(),
-        ];
-    }
-
-    protected function getAvailableRelations(): string
-    {
-        return join(',', [
-            'messages',
-            'sender',
-            'recipient',
-            'last_message',
-        ]);
+        return [];
     }
 
     public function validateResolved(): void

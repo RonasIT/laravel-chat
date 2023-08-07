@@ -13,7 +13,7 @@ class ReadMessagesRequest extends BaseRequest implements ReadMessagesRequestCont
 {
     protected ?Message $message;
 
-    public function validateResolved()
+    public function validateResolved(): void
     {
         $this->init();
 
@@ -24,19 +24,19 @@ class ReadMessagesRequest extends BaseRequest implements ReadMessagesRequestCont
         $this->checkMessageRecipient();
     }
 
-    protected function init()
+    protected function init(): void
     {
         $this->message = app(MessageServiceContract::class)->find($this->route('id'));
     }
 
-    protected function checkMessageExists()
+    protected function checkMessageExists(): void
     {
         if (empty($this->message)) {
             throw new NotFoundHttpException(__('chat::validation.exceptions.not_found', ['entity' => 'Message']));
         }
     }
 
-    protected function checkMessageRecipient()
+    protected function checkMessageRecipient(): void
     {
         if ($this->user()->id !== $this->message['recipient_id']) {
             throw new AccessDeniedHttpException(__('chat::validation.exceptions.not_message_recipient'));

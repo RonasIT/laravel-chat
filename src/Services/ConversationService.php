@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
+use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract;
 use RonasIT\Chat\Repositories\ConversationRepository;
 use RonasIT\Support\Services\EntityService;
 
@@ -33,6 +35,22 @@ class ConversationService extends EntityService implements ConversationServiceCo
         }
 
         return $conversation;
+    }
+
+    public function delete($where): void
+    {
+        $conversation = $this->with(['recipient', 'sender'])->first($where);
+
+        $this->repository->delete($where);
+
+        $this->notifyUser($conversation, collect([$conversation->recipient, $conversation->sender]));
+    }
+
+    public function notifyUser($conversation, $recipients): void
+    {
+        $conversationDeletedNotification = app(ConversationDeletedNotificationContract::class)->setConversation($conversation);
+
+        Notification::send($recipients, $conversationDeletedNotification);
     }
 
     public function search(array $filters = []): LengthAwarePaginator

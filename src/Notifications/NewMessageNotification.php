@@ -24,9 +24,11 @@ class NewMessageNotification extends Notification implements ShouldBroadcast, Sh
         $this->sender = Auth::user();
     }
 
-    public function setMessage(Model $message)
+    public function setMessage(Model $message): self
     {
         $this->message = $message;
+
+        return $this;
     }
 
     public function via($notifiable): array

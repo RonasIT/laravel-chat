@@ -15,6 +15,7 @@ class CreateConversationsTable extends Migration
 
             $table->foreignId('sender_id')->references('id')->on($usersTableName)->onDelete('cascade');
             $table->foreignId('recipient_id')->references('id')->on($usersTableName)->onDelete('cascade');
+            $table->timestamp('last_updated_at')->nullable();
 
             $table->timestamps();
         });

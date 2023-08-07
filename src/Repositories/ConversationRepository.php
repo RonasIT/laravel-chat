@@ -13,9 +13,14 @@ class ConversationRepository extends BaseRepository
     public function __construct()
     {
         $this->setModel(Conversation::class);
+
+        $this->setAdditionalReservedFilters(
+            'owner_id',
+            'with_unread_messages_count'
+        );
     }
 
-    public function getConversationBetweenUsers(int $senderId, int $recipientId): Conversation
+    public function getConversationBetweenUsers(int $senderId, int $recipientId): ?Conversation
     {
         return $this
             ->getQuery([

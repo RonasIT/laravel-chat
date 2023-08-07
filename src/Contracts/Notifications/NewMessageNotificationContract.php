@@ -14,5 +14,5 @@ interface NewMessageNotificationContract
 
     function toExpoPush(): ExpoMessage;
 
-    function setMessage(Model $message);
+    function setMessage(Model $message): self;
 }
