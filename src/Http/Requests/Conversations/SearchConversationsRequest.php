@@ -3,9 +3,8 @@
 namespace RonasIT\Chat\Http\Requests\Conversations;
 
 use RonasIT\Chat\Contracts\Requests\SearchConversationsRequestContract;
-use RonasIT\Support\BaseRequest;
 
-class SearchConversationsRequest extends BaseRequest implements SearchConversationsRequestContract
+class SearchConversationsRequest extends BaseConversationRequest implements SearchConversationsRequestContract
 {
     public function rules(): array
     {
@@ -13,7 +12,7 @@ class SearchConversationsRequest extends BaseRequest implements SearchConversati
             'page' => 'integer',
             'per_page' => 'integer',
             'all' => 'integer',
-            'query' => 'string',
+            'query' => 'nullable|string',
             'order_by' => 'string',
             'desc' => 'boolean',
             'with_unread_messages_count' => 'boolean',

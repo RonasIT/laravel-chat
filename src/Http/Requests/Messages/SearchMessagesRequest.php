@@ -13,7 +13,7 @@ class SearchMessagesRequest extends BaseRequest implements SearchMessagesRequest
             'page' => 'integer',
             'per_page' => 'integer',
             'all' => 'integer',
-            'query' => 'string',
+            'query' => 'nullable|string',
             'order_by' => 'string',
             'desc' => 'boolean',
             'conversation_id' => 'integer',

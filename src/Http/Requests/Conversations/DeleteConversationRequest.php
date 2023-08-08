@@ -7,16 +7,10 @@ use RonasIT\Chat\Contracts\Requests\DeleteConversationRequestContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use RonasIT\Support\BaseRequest;
 
-class DeleteConversationRequest extends BaseRequest implements DeleteConversationRequestContract
+class DeleteConversationRequest extends BaseConversationRequest implements DeleteConversationRequestContract
 {
     protected ?Conversation $conversation;
-
-    public function rules(): array
-    {
-        return [];
-    }
 
     public function validateResolved(): void
     {
@@ -38,15 +32,6 @@ class DeleteConversationRequest extends BaseRequest implements DeleteConversatio
     {
         if (empty($this->conversation)) {
             throw new NotFoundHttpException(__('chat::validation.exceptions.not_found', ['entity' => 'Conversation']));
-        }
-    }
-
-    protected function checkConversationOwnership(): void
-    {
-        $conversationOwnersIdsCollection = collect([$this->conversation['sender_id'], $this->conversation['recipient_id']]);
-
-        if (!$conversationOwnersIdsCollection->contains($this->user()->id)) {
-            throw new AccessDeniedHttpException(__('chat::validation.exceptions.not_owner', ['entity' => 'Conversation']));
         }
     }
 }

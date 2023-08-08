@@ -5,11 +5,10 @@ namespace RonasIT\Chat\Http\Requests\Conversations;
 use RonasIT\Chat\Contracts\Requests\GetConversationRequestContract;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
-use RonasIT\Support\BaseRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-class GetConversationRequest extends BaseRequest implements GetConversationRequestContract
+class GetConversationRequest extends BaseConversationRequest implements GetConversationRequestContract
 {
     protected ?Conversation $conversation;
 
@@ -51,15 +50,6 @@ class GetConversationRequest extends BaseRequest implements GetConversationReque
     {
         if (empty($this->conversation)) {
             throw new NotFoundHttpException(__('chat::validation.exceptions.not_found', ['entity' => 'Conversation']));
-        }
-    }
-
-    protected function checkConversationOwnership(): void
-    {
-        $conversationOwnersIdsCollection = collect([$this->conversation['sender_id'], $this->conversation['recipient_id']]);
-
-        if (!$conversationOwnersIdsCollection->contains($this->user()->id)) {
-            throw new AccessDeniedHttpException(__('chat::validation.exceptions.not_owner', ['entity' => 'Conversation']));
         }
     }
 }

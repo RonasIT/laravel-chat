@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class ReadMessagesRequest extends BaseRequest implements ReadMessagesRequestContract
 {
-    protected ?Message $message;
+    protected ?Message $fromMessage;
 
     public function validateResolved(): void
     {
@@ -26,19 +26,19 @@ class ReadMessagesRequest extends BaseRequest implements ReadMessagesRequestCont
 
     protected function init(): void
     {
-        $this->message = app(MessageServiceContract::class)->find($this->route('id'));
+        $this->fromMessage = app(MessageServiceContract::class)->find($this->route('id'));
     }
 
     protected function checkMessageExists(): void
     {
-        if (empty($this->message)) {
+        if (empty($this->fromMessage)) {
             throw new NotFoundHttpException(__('chat::validation.exceptions.not_found', ['entity' => 'Message']));
         }
     }
 
     protected function checkMessageRecipient(): void
     {
-        if ($this->user()->id !== $this->message['recipient_id']) {
+        if ($this->user()->id !== $this->fromMessage['recipient_id']) {
             throw new AccessDeniedHttpException(__('chat::validation.exceptions.not_message_recipient'));
         }
     }
