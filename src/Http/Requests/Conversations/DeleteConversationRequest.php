@@ -2,11 +2,10 @@
 
 namespace RonasIT\Chat\Http\Requests\Conversations;
 
-use App\Models\Conversation;
 use RonasIT\Chat\Contracts\Requests\DeleteConversationRequestContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
+use RonasIT\Chat\Models\Conversation;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class DeleteConversationRequest extends BaseConversationRequest implements DeleteConversationRequestContract
 {

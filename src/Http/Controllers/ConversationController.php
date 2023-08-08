@@ -9,6 +9,7 @@ use RonasIT\Chat\Contracts\Requests\GetConversationByUserIdRequestContract;
 use RonasIT\Chat\Contracts\Requests\GetConversationRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchConversationsRequestContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
+use Symfony\Component\HttpFoundation\Response;
 
 class ConversationController extends Controller
 {

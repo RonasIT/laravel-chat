@@ -3,7 +3,6 @@
 namespace RonasIT\Chat\Http\Requests\Messages;
 
 use RonasIT\Support\BaseRequest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
 

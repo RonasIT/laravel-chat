@@ -6,7 +6,6 @@ use RonasIT\Chat\Contracts\Requests\GetConversationRequestContract;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class GetConversationRequest extends BaseConversationRequest implements GetConversationRequestContract
 {

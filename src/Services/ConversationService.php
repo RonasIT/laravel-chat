@@ -4,7 +4,6 @@ namespace RonasIT\Chat\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;

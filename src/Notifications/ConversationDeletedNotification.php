@@ -8,7 +8,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Notifications\Channels\BroadcastChannel;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use NotificationChannels\ExpoPushNotifications\ExpoMessage;
 use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract;
 use Illuminate\Database\Eloquent\Model;
 

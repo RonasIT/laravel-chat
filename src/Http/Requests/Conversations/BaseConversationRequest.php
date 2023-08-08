@@ -2,8 +2,6 @@
 
 namespace RonasIT\Chat\Http\Requests\Conversations;
 
-use App\Models\Conversation;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use RonasIT\Support\BaseRequest;
 
