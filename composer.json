@@ -1,0 +1,32 @@
+{
+    "name": "ronasit/laravel-chat",
+    "description": "This package implements chat functionality based on push notifications.",
+    "keywords": [
+        "laravel",
+        "chat"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ronas IT",
+            "homepage": "https://github.com/RonasIT/laravel-chat/graphs/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=7.4.0",
+        "ronasit/laravel-helpers": "^2.1",
+        "alymosul/laravel-exponent-push-notifications": "^2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "RonasIT\\Chat\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "RonasIT\\Chat\\Providers\\ChatServiceProvider"
+            ]
+        }
+    }
+}

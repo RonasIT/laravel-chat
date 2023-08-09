@@ -1,0 +1,656 @@
+{
+	"swagger": "2.0",
+	"host": "localhost",
+	"basePath": "\/",
+	"schemes": [],
+	"paths": {
+		"\/users\/{userId}\/conversation": {
+			"get": {
+				"tags": [
+					"users"
+				],
+				"consumes": [
+					"application\/json"
+				],
+				"produces": [
+					"application\/json"
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"description": "",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "with",
+						"description": "array",
+						"type": "object"
+					},
+					{
+						"in": "query",
+						"name": "with.*",
+						"description": "string, required, in:messages,sender,recipient,last_message",
+						"type": "string",
+						"required": true
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Operation successfully done",
+						"schema": {
+							"example": {
+								"id": 3,
+								"sender_id": 3,
+								"recipient_id": 1,
+								"last_updated_at": null,
+								"created_at": "2016-10-20T11:05:00.000000Z",
+								"updated_at": "2016-10-20T11:05:00.000000Z"
+							}
+						}
+					}
+				},
+				"security": [],
+				"description": "",
+				"summary": "get conversation by user id"
+			}
+		},
+		"\/conversations\/{id}": {
+			"get": {
+				"tags": [
+					"conversations"
+				],
+				"consumes": [
+					"application\/json"
+				],
+				"produces": [
+					"application\/json"
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"description": "",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "with",
+						"description": "array",
+						"type": "object"
+					},
+					{
+						"in": "query",
+						"name": "with.*",
+						"description": "string, required, in:messages,sender,recipient,last_message",
+						"type": "string",
+						"required": true
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Operation successfully done",
+						"schema": {
+							"example": {
+								"id": 1,
+								"sender_id": 1,
+								"recipient_id": 2,
+								"last_updated_at": null,
+								"created_at": "2016-10-20T11:05:00.000000Z",
+								"updated_at": "2016-10-20T11:05:00.000000Z"
+							}
+						}
+					},
+					"404": {
+						"description": "This entity not found",
+						"schema": {
+							"example": {
+								"error": "Conversation does not exist."
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"schema": {
+							"example": {
+								"error": "You are not the owner of this Conversation."
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"schema": {
+							"example": {
+								"error": "Token not provided"
+							}
+						}
+					}
+				},
+				"security": [],
+				"description": "",
+				"summary": "get conversation"
+			},
+			"delete": {
+				"tags": [
+					"conversations"
+				],
+				"consumes": [
+					"application\/json"
+				],
+				"produces": [
+					"text\/plain",
+					"application\/json"
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"description": "",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Operation successfully done",
+						"examples": {
+							"example": ""
+						}
+					},
+					"404": {
+						"description": "This entity not found",
+						"schema": {
+							"example": {
+								"error": "Conversation does not exist."
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"schema": {
+							"example": {
+								"error": "You are not the owner of this Conversation."
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"schema": {
+							"example": {
+								"error": "Token not provided"
+							}
+						}
+					}
+				},
+				"security": [],
+				"description": "",
+				"summary": "delete conversation"
+			}
+		},
+		"\/conversations": {
+			"get": {
+				"tags": [
+					"conversations"
+				],
+				"consumes": [
+					"application\/json"
+				],
+				"produces": [
+					"application\/json"
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"description": "integer",
+						"type": "integer"
+					},
+					{
+						"in": "query",
+						"name": "per_page",
+						"description": "integer",
+						"type": "integer"
+					},
+					{
+						"in": "query",
+						"name": "all",
+						"description": "integer",
+						"type": "integer"
+					},
+					{
+						"in": "query",
+						"name": "query",
+						"description": "string",
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "order_by",
+						"description": "string",
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "desc",
+						"description": "boolean",
+						"type": "boolean"
+					},
+					{
+						"in": "query",
+						"name": "with_unread_messages_count",
+						"description": "boolean",
+						"type": "boolean"
+					},
+					{
+						"in": "query",
+						"name": "with",
+						"description": "array",
+						"type": "object"
+					},
+					{
+						"in": "query",
+						"name": "with.*",
+						"description": "string, required, in:messages,sender,recipient,last_message",
+						"type": "string",
+						"required": true
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Operation successfully done",
+						"schema": {
+							"example": {
+								"current_page": 1,
+								"data": [
+									{
+										"id": 1,
+										"sender_id": 1,
+										"recipient_id": 2,
+										"last_updated_at": null,
+										"created_at": "2016-10-20T11:05:00.000000Z",
+										"updated_at": "2016-10-20T11:05:00.000000Z",
+										"unread_messages_count": 0
+									},
+									{
+										"id": 3,
+										"sender_id": 3,
+										"recipient_id": 1,
+										"last_updated_at": null,
+										"created_at": "2016-10-20T11:05:00.000000Z",
+										"updated_at": "2016-10-20T11:05:00.000000Z",
+										"unread_messages_count": 2
+									}
+								],
+								"first_page_url": "http:\/\/localhost\/conversations?page=1",
+								"from": 1,
+								"last_page": 1,
+								"last_page_url": "http:\/\/localhost\/conversations?page=1",
+								"links": [
+									{
+										"url": null,
+										"label": "pagination.previous",
+										"active": false
+									},
+									{
+										"url": "http:\/\/localhost\/conversations?page=1",
+										"label": "1",
+										"active": true
+									},
+									{
+										"url": null,
+										"label": "pagination.next",
+										"active": false
+									}
+								],
+								"next_page_url": null,
+								"path": "http:\/\/localhost\/conversations",
+								"per_page": 10,
+								"prev_page_url": null,
+								"to": 2,
+								"total": 2
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"schema": {
+							"example": {
+								"error": "Token not provided"
+							}
+						}
+					}
+				},
+				"security": [],
+				"description": "",
+				"summary": "search conversations"
+			}
+		},
+		"\/messages": {
+			"post": {
+				"tags": [
+					"messages"
+				],
+				"consumes": [
+					"application\/json"
+				],
+				"produces": [
+					"application\/json"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"description": "",
+						"required": true,
+						"schema": {
+							"$ref": "#\/definitions\/messagesObject"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Operation successfully done",
+						"schema": {
+							"example": {
+								"id": 5,
+								"conversation_id": 3,
+								"sender_id": 1,
+								"recipient_id": 3,
+								"text": "Some message",
+								"is_read": false,
+								"created_at": "2018-11-11T11:11:11.000000Z",
+								"updated_at": "2018-11-11T11:11:11.000000Z",
+								"attachment_id": 3,
+								"recipient": {
+									"id": 3,
+									"email": "first-organisation@example.com",
+									"password": "1",
+									"role_id": 2,
+									"created_at": "2016-10-20T11:05:00.000000Z",
+									"updated_at": "2016-10-20T11:05:00.000000Z",
+									"avatar_id": 3
+								},
+								"sender": {
+									"id": 1,
+									"email": "admin@example.com",
+									"password": "1",
+									"role_id": 2,
+									"created_at": "2016-10-20T11:05:00.000000Z",
+									"updated_at": "2016-10-20T11:05:00.000000Z",
+									"avatar_id": 1
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"schema": {
+							"example": {
+								"error": "You cannot send a message to yourself."
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"schema": {
+							"example": {
+								"error": "Token not provided"
+							}
+						}
+					}
+				},
+				"security": [],
+				"description": "",
+				"summary": "create message"
+			},
+			"get": {
+				"tags": [
+					"messages"
+				],
+				"consumes": [
+					"application\/json"
+				],
+				"produces": [
+					"application\/json"
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"description": "integer",
+						"type": "integer"
+					},
+					{
+						"in": "query",
+						"name": "per_page",
+						"description": "integer",
+						"type": "integer"
+					},
+					{
+						"in": "query",
+						"name": "all",
+						"description": "integer",
+						"type": "integer"
+					},
+					{
+						"in": "query",
+						"name": "query",
+						"description": "string",
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "order_by",
+						"description": "string",
+						"type": "string"
+					},
+					{
+						"in": "query",
+						"name": "desc",
+						"description": "boolean",
+						"type": "boolean"
+					},
+					{
+						"in": "query",
+						"name": "conversation_id",
+						"description": "integer",
+						"type": "integer"
+					},
+					{
+						"in": "query",
+						"name": "with",
+						"description": "array",
+						"type": "object"
+					},
+					{
+						"in": "query",
+						"name": "with.*",
+						"description": "string, required, in:conversation,sender,recipient,attachment",
+						"type": "string",
+						"required": true
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Operation successfully done",
+						"schema": {
+							"example": {
+								"current_page": 1,
+								"data": [
+									{
+										"id": 1,
+										"conversation_id": 1,
+										"sender_id": 1,
+										"recipient_id": 2,
+										"text": "New message",
+										"is_read": false,
+										"created_at": "2016-10-20T11:05:00.000000Z",
+										"updated_at": "2016-10-20T11:05:00.000000Z",
+										"attachment_id": null
+									},
+									{
+										"id": 3,
+										"conversation_id": 3,
+										"sender_id": 3,
+										"recipient_id": 1,
+										"text": "New message",
+										"is_read": true,
+										"created_at": "2017-10-20T11:05:00.000000Z",
+										"updated_at": "2016-10-20T11:05:00.000000Z",
+										"attachment_id": null
+									},
+									{
+										"id": 4,
+										"conversation_id": 1,
+										"sender_id": 1,
+										"recipient_id": 2,
+										"text": "New message",
+										"is_read": false,
+										"created_at": "2018-10-20T11:05:00.000000Z",
+										"updated_at": "2016-10-20T11:05:00.000000Z",
+										"attachment_id": null
+									}
+								],
+								"first_page_url": "http:\/\/localhost\/messages?page=1",
+								"from": 1,
+								"last_page": 1,
+								"last_page_url": "http:\/\/localhost\/messages?page=1",
+								"links": [
+									{
+										"url": null,
+										"label": "pagination.previous",
+										"active": false
+									},
+									{
+										"url": "http:\/\/localhost\/messages?page=1",
+										"label": "1",
+										"active": true
+									},
+									{
+										"url": null,
+										"label": "pagination.next",
+										"active": false
+									}
+								],
+								"next_page_url": null,
+								"path": "http:\/\/localhost\/messages",
+								"per_page": 10,
+								"prev_page_url": null,
+								"to": 3,
+								"total": 3
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"schema": {
+							"example": {
+								"error": "Token not provided"
+							}
+						}
+					}
+				},
+				"security": [],
+				"description": "",
+				"summary": "search messages"
+			}
+		},
+		"\/messages\/{id}\/read": {
+			"put": {
+				"tags": [
+					"messages"
+				],
+				"consumes": [
+					"application\/json"
+				],
+				"produces": [
+					"text\/plain",
+					"application\/json"
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"description": "",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Operation successfully done",
+						"examples": {
+							"example": ""
+						}
+					},
+					"404": {
+						"description": "This entity not found",
+						"schema": {
+							"example": {
+								"error": "Message does not exist."
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"schema": {
+							"example": {
+								"error": "You are not the recipient of this message."
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"schema": {
+							"example": {
+								"error": "Token not provided"
+							}
+						}
+					}
+				},
+				"security": [],
+				"description": "",
+				"summary": "read messages"
+			}
+		}
+	},
+	"definitions": {
+		"messagesObject": {
+			"type": "object",
+			"properties": {
+				"recipient_id": {
+					"type": "integer",
+					"description": "2"
+				},
+				"text": {
+					"type": "string",
+					"description": ""
+				},
+				"attachment_id": {
+					"type": "integer",
+					"description": "1"
+				}
+			},
+			"required": [
+				"recipient_id",
+				"text"
+			],
+			"example": {
+				"text": "New message",
+				"recipient_id": 3
+			}
+		}
+	},
+	"info": {
+		"description": "This is automatically collected documentation\n",
+		"version": "0.1.0",
+		"title": "Chat API",
+		"termsOfService": "",
+		"contact": {
+			"email": ""
+		}
+	}
+}
