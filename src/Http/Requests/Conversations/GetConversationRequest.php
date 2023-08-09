@@ -5,7 +5,6 @@ namespace RonasIT\Chat\Http\Requests\Conversations;
 use RonasIT\Chat\Contracts\Requests\GetConversationRequestContract;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GetConversationRequest extends BaseConversationRequest implements GetConversationRequestContract
 {
@@ -43,12 +42,5 @@ class GetConversationRequest extends BaseConversationRequest implements GetConve
     protected function init(): void
     {
         $this->conversation = app(ConversationServiceContract::class)->find($this->route('id'));
-    }
-
-    protected function checkConversationExists(): void
-    {
-        if (empty($this->conversation)) {
-            throw new NotFoundHttpException(__('chat::validation.exceptions.not_found', ['entity' => 'Conversation']));
-        }
     }
 }
