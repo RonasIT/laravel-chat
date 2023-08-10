@@ -30,6 +30,17 @@ class ChatServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'laravel-chat');
+        $this->loadRoutesFrom(__DIR__ . '/routes');
+        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+
+        $this->publishes([
+            __DIR__.'/../config/chat.php' => config_path('chat.php'),
+        ]);
+
+        $this->publishes([
+            __DIR__.'/../config/exponent-push-notifications.php' => config_path('exponent-push-notifications.php'),
+        ]);
     }
 
     public function register()
