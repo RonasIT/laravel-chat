@@ -1,6 +1,6 @@
 <?php
 
-namespace RonasIT\Chat\Providers;
+namespace RonasIT\Chat;
 
 use Illuminate\Support\ServiceProvider;
 use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract;
@@ -31,18 +31,18 @@ class ChatServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'laravel-chat');
-        $this->loadRoutesFrom(__DIR__ . '/http/routes/api.php');
-        $this->loadRoutesFrom(__DIR__ . '/http/routes/channels.php');
+        $this->loadRoutesFrom(__DIR__ . '/Http/routes/api.php');
+        $this->loadRoutesFrom(__DIR__ . '/Http/routes/channels.php');
         $this->loadMigrationsFrom(__DIR__ . '/../migrations');
 
         $this->publishes([
-            __DIR__.'/../config/chat.php' => config_path('chat.php'),
+            __DIR__. '/../config/chat.php' => config_path('chat.php'),
         ]);
 
         $this->mergeConfigFrom(__DIR__ . '/../config/exponent-push-notifications.php', 'exponent-push-notifications');
 
         $this->publishes([
-            __DIR__.'/../config/exponent-push-notifications.php' => config_path('exponent-push-notifications.php'),
+            __DIR__. '/../config/exponent-push-notifications.php' => config_path('exponent-push-notifications.php'),
         ]);
     }
 
