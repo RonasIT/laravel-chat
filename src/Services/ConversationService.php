@@ -42,12 +42,13 @@ class ConversationService extends EntityService implements ConversationServiceCo
 
         $this->repository->delete($where);
 
-        $this->notifyUser($conversation, collect([$conversation->recipient, $conversation->sender]));
+        $this->notifyUser($conversation->toArray(), collect([$conversation->recipient, $conversation->sender]));
     }
 
     public function notifyUser($conversation, $recipients): void
     {
-        $conversationDeletedNotification = app(ConversationDeletedNotificationContract::class)->setConversation($conversation);
+        $conversationDeletedNotification = app(ConversationDeletedNotificationContract::class)
+            ->setConversation($conversation);
 
         Notification::send($recipients, $conversationDeletedNotification);
     }
