@@ -3,7 +3,6 @@
 namespace RonasIT\Chat\Contracts\Notifications;
 
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Database\Eloquent\Model;
 
 interface ConversationDeletedNotificationContract
 {
@@ -11,5 +10,5 @@ interface ConversationDeletedNotificationContract
 
     function toBroadcast(): BroadcastMessage;
 
-    function setConversation(Model $conversation): self;
+    function setConversation(array $conversation): self;
 }
