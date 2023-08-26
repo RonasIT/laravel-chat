@@ -9,7 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Support\Facades\Auth;
-use NotificationChannels\ExpoPushNotifications\ExpoMessage;
 use RonasIT\Chat\Contracts\Notifications\NewMessageNotificationContract;
 
 class NewMessageNotification extends Notification implements ShouldBroadcast, ShouldQueue, NewMessageNotificationContract
@@ -33,7 +32,7 @@ class NewMessageNotification extends Notification implements ShouldBroadcast, Sh
 
     public function via($notifiable): array
     {
-        return config('chat.default_notification_channels');
+        return config('chat.default_channels');
     }
 
     public function toBroadcast(): BroadcastMessage
@@ -43,16 +42,5 @@ class NewMessageNotification extends Notification implements ShouldBroadcast, Sh
             'sender_first_name' => $this->sender->first_name,
             'sender_last_name' => $this->sender->last_name
         ]);
-    }
-
-    public function toExpoPush(): ExpoMessage
-    {
-        return ExpoMessage::create()
-            ->title("New message from {$this->sender->first_name} {$this->sender->last_name}")
-            ->body($this->message->text)
-            ->setJsonData([
-                'type' => self::class,
-                'message' => $this->message->only(['id', 'conversation_id', 'sender_id', 'recipient_id', 'text'])
-            ]);
     }
 }

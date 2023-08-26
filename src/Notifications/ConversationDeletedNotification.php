@@ -24,7 +24,7 @@ class ConversationDeletedNotification extends Notification implements ShouldBroa
 
     public function via($notifiable): array
     {
-        return config('chat.default_notification_channels');
+        return config('chat.default_channels');
     }
 
     public function toBroadcast(): BroadcastMessage
