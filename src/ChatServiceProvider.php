@@ -38,12 +38,6 @@ class ChatServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__. '/../config/chat.php' => config_path('chat.php'),
         ]);
-
-        $this->mergeConfigFrom(__DIR__ . '/../config/exponent-push-notifications.php', 'exponent-push-notifications');
-
-        $this->publishes([
-            __DIR__. '/../config/exponent-push-notifications.php' => config_path('exponent-push-notifications.php'),
-        ]);
     }
 
     public function register()
