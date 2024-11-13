@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use App\Models\Media;
 use Illuminate\Notifications\Channels\BroadcastChannel;
 
 return [
