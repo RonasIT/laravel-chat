@@ -14,7 +14,8 @@
     ],
     "require": {
         "php": ">=7.4.0",
-        "ronasit/laravel-helpers": "^2.1"
+        "ronasit/laravel-helpers": "^2.1",
+        "ronasit/laravel-media": "dev-master"
     },
     "autoload": {
         "psr-4": {
