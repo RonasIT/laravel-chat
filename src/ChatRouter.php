@@ -27,16 +27,16 @@ class ChatRouter
             ];
 
             $this->controller(ConversationController::class)->group(function () use ($options) {
-                $this->when($options['conversations_search'], fn () => $this->get('conversations', 'search')->name('conversations.search'));
-                $this->when($options['conversations_get'], fn () => $this->get('conversations/{id}', 'get')->name('conversations.get'));
-                $this->when($options['conversations_delete'], fn () => $this->delete('conversations/{id}', 'delete')->name('conversations.delete'));
-                $this->when($options['conversations_get_by_user_id'], fn () => $this->post('users/{userId}/conversation', 'getByUserId')->name('conversations.create.get.user.by.id'));
+                when($options['conversations_search'], fn () => $this->get('conversations', 'search')->name('conversations.search'));
+                when($options['conversations_get'], fn () => $this->get('conversations/{id}', 'get')->name('conversations.get'));
+                when($options['conversations_delete'], fn () => $this->delete('conversations/{id}', 'delete')->name('conversations.delete'));
+                when($options['conversations_get_by_user_id'], fn () => $this->post('users/{userId}/conversation', 'getByUserId')->name('conversations.create.get.user.by.id'));
             });
 
             $this->controller(MessageController::class)->group(function () use ($options) {
-                $this->when($options['messages_search'], fn () => $this->get('messages', 'search')->name('messages.search'));
-                $this->when($options['messages_create'], fn () => $this->post('messages', 'create')->name('messages.create'));
-                $this->when($options['messages_read'], fn () => $this->put('messages/{id}/read', 'read')->name('messages.read'));
+                when($options['messages_search'], fn () => $this->get('messages', 'search')->name('messages.search'));
+                when($options['messages_create'], fn () => $this->post('messages', 'create')->name('messages.create'));
+                when($options['messages_read'], fn () => $this->put('messages/{id}/read', 'read')->name('messages.read'));
             });
         };
     }
