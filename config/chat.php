@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\User;
-use App\Models\Media;
+RonasIT\Media\Models\Media;
 use Illuminate\Notifications\Channels\BroadcastChannel;
 
 return [

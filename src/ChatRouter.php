@@ -30,7 +30,7 @@ class ChatRouter
                 when($options['conversations_search'], fn () => $this->get('conversations', 'search')->name('conversations.search'));
                 when($options['conversations_get'], fn () => $this->get('conversations/{id}', 'get')->name('conversations.get'));
                 when($options['conversations_delete'], fn () => $this->delete('conversations/{id}', 'delete')->name('conversations.delete'));
-                when($options['conversations_get_by_user_id'], fn () => $this->post('users/{userId}/conversation', 'getByUserId')->name('conversations.create.get.user.by.id'));
+                when($options['conversations_get_by_user_id'], fn () => $this->post('users/{userId}/conversation', 'getByUserId')->name('conversations.get_by_user_id'));
             });
 
             $this->controller(MessageController::class)->group(function () use ($options) {
