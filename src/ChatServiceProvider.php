@@ -33,8 +33,6 @@ class ChatServiceProvider extends ServiceProvider
     {
         Route::mixin(new ChatRouter());
 
-        Route::macro('when', fn ($condition, $callback) => ($condition) ? $callback() : null);
-
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'chat');
         $this->loadRoutesFrom(__DIR__ . '/Http/routes/api.php');
         $this->loadRoutesFrom(__DIR__ . '/Http/routes/channels.php');
