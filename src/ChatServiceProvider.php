@@ -2,6 +2,7 @@
 
 namespace RonasIT\Chat;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract;
 use RonasIT\Chat\Contracts\Notifications\NewMessageNotificationContract;
@@ -30,6 +31,8 @@ class ChatServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        Route::mixin(new ChatRouter());
+
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'chat');
         $this->loadRoutesFrom(__DIR__ . '/Http/routes/api.php');
         $this->loadRoutesFrom(__DIR__ . '/Http/routes/channels.php');
