@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Notifications\ConversationDeletedNotification;
+use RonasIT\Chat\Notifications\NewMessageNotification;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\ModelTestState;
 
@@ -117,12 +118,11 @@ class ConversationTest extends TestCase
 
         Notification::fake();
 
-//        Notification::assertSentTo(
-//            self::$recipient,
-//            ConversationDeletedNotification::class,
-//        );
+        self::$recipient->notify(new ConversationDeletedNotification());
 
-//        Notification::assertCount(1);
+        Notification::assertSentTo(self::$recipient, ConversationDeletedNotification::class);
+
+        $response->assertNoContent();
 
         self::$conversationTestState->assertChangesEqualsFixture('conversation_deleted_conversations_state.json');
     }
@@ -130,6 +130,12 @@ class ConversationTest extends TestCase
     public function testDeleteByRecipient()
     {
         $response = $this->actingAs(self::$recipient)->json('delete', '/conversations/1');
+
+        Notification::fake();
+
+        self::$sender->notify(new ConversationDeletedNotification());
+
+        Notification::assertSentTo(self::$sender, ConversationDeletedNotification::class);
 
         $response->assertNoContent();
 

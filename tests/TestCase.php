@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Dotenv\Dotenv;
 use Illuminate\Notifications\Channels\BroadcastChannel;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Notification;
 use Orchestra\Testbench\TestCase as BaseTest;
 use RonasIT\Chat\ChatServiceProvider;
 use RonasIT\Chat\Tests\Models\User;

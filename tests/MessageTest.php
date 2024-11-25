@@ -2,9 +2,11 @@
 
 namespace RonasIT\Chat\Tests;
 
+use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Models\Message;
+use RonasIT\Chat\Notifications\NewMessageNotification;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\ModelTestState;
 
@@ -35,6 +37,12 @@ class MessageTest extends TestCase
 
         $response = $this->actingAs(self::$firstUser)->json('POST', '/messages', $data);
 
+        Notification::fake();
+
+        self::$secondUser->notify(new NewMessageNotification());
+
+        Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
+
         $response->assertOk();
 
         $this->assertEqualsFixture('create_message_response.json', $response->json());
@@ -51,6 +59,12 @@ class MessageTest extends TestCase
         $response = $this->actingAs(self::$secondUser)->json('POST', '/messages', $data);
 
         $response->assertOk();
+
+        Notification::fake();
+
+        self::$secondUser->notify(new NewMessageNotification());
+
+        Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
 
         $this->assertEqualsFixture('create_message_in_exists_conversation_response.json', $response->json());
 
