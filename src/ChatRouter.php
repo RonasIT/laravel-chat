@@ -27,27 +27,21 @@ class ChatRouter
                 'messages_read' => false,
             ];
 
-            $options = array_column($options, 'value');
-
-            $options = array_combine(array_values($options), array_values($options));
-
-            if (empty($options)){
-                $options = array_fill_keys(array_keys($defaultOptions), true);
-            } else {
-                $options = array_merge($defaultOptions, array_fill_keys(array_keys($options), true));
+            foreach ($options as $option) {
+                $defaultOptions[$option->value] = true;
             }
 
-            $this->controller(ConversationController::class)->group(function () use ($options) {
-                when($options['conversations_search'], fn () => $this->get('conversations', 'search')->name('conversations.search'));
-                when($options['conversations_get'], fn () => $this->get('conversations/{id}', 'get')->name('conversations.get'));
-                when($options['conversations_delete'], fn () => $this->delete('conversations/{id}', 'delete')->name('conversations.delete'));
-                when($options['conversations_get_by_user_id'], fn () => $this->post('users/{userId}/conversation', 'getByUserId')->name('conversations.get_by_user_id'));
+            $this->controller(ConversationController::class)->group(function () use ($defaultOptions) {
+                when($defaultOptions['conversations_search'], fn () => $this->get('conversations', 'search')->name('conversations.search'));
+                when($defaultOptions['conversations_get'], fn () => $this->get('conversations/{id}', 'get')->name('conversations.get'));
+                when($defaultOptions['conversations_delete'], fn () => $this->delete('conversations/{id}', 'delete')->name('conversations.delete'));
+                when($defaultOptions['conversations_get_by_user_id'], fn () => $this->post('users/{userId}/conversation', 'getByUserId')->name('conversations.get_by_user_id'));
             });
 
-            $this->controller(MessageController::class)->group(function () use ($options) {
-                when($options['messages_search'], fn () => $this->get('messages', 'search')->name('messages.search'));
-                when($options['messages_create'], fn () => $this->post('messages', 'create')->name('messages.create'));
-                when($options['messages_read'], fn () => $this->put('messages/{id}/read', 'read')->name('messages.read'));
+            $this->controller(MessageController::class)->group(function () use ($defaultOptions) {
+                when($defaultOptions['messages_search'], fn () => $this->get('messages', 'search')->name('messages.search'));
+                when($defaultOptions['messages_create'], fn () => $this->post('messages', 'create')->name('messages.create'));
+                when($defaultOptions['messages_read'], fn () => $this->put('messages/{id}/read', 'read')->name('messages.read'));
             });
         };
     }
