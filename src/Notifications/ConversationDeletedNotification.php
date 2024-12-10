@@ -3,10 +3,10 @@
 namespace RonasIT\Chat\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Notification;
 use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract;
 
 class ConversationDeletedNotification extends Notification implements ShouldBroadcast, ShouldQueue, ConversationDeletedNotificationContract
