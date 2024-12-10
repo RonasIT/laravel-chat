@@ -17,7 +17,7 @@ composer require ronasit/laravel-chat
 2. Publish the package configuration:
 
 ``` sh
-php artisan vendor:publish --provider=RonasIT\\Media\\ChatServiceProvider
+php artisan vendor:publish --provider=RonasIT\\Chat\\ChatServiceProvider
 ```
 
 3. For Laravel <= 5.5 add `ronasit\Chat\ChatServiceProvider::class` to the `app.providers` list in config.
