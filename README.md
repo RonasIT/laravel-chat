@@ -8,8 +8,18 @@ This plugin adds the ability for users to work with chat functionalities in a La
 
 ## Installation
 
-1. Install the package using the following command: `composer require ronasit/laravel-chat`
-2. Run `php artisan vendor:publish`
+1. Install the package using the following command:
+
+```sh
+composer require ronasit/laravel-chat
+```
+
+2. Publish the package configuration:
+
+``` sh
+php artisan vendor:publish --provider=RonasIT\\Chat\\ChatServiceProvider
+```
+
 3. For Laravel <= 5.5 add `ronasit\Chat\ChatServiceProvider::class` to the `app.providers` list in config.
 4. Set your project's User model to the `chat.classes.user_model` config.
 
