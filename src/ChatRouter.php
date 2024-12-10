@@ -2,16 +2,16 @@
 
 namespace RonasIT\Chat;
 
+use Closure;
 use RonasIT\Chat\Enums\ChatRouteActionEnum;
 use RonasIT\Chat\Http\Controllers\ConversationController;
 use RonasIT\Chat\Http\Controllers\MessageController;
-use RonasIT\Chat\Models\Conversation;
 
 class ChatRouter
 {
     public static bool $isBlockedBaseRoutes = false;
 
-    public function chat()
+    public function chat(): Closure
     {
         return function (ChatRouteActionEnum ...$options)  {
 

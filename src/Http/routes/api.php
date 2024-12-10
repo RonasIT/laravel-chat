@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use RonasIT\Chat\Http\Controllers\ConversationController;
 use RonasIT\Chat\Http\Controllers\MessageController;
 use RonasIT\Chat\Http\Middlewares\CheckManuallyRegisteredRoutesMiddleware;
