@@ -11,7 +11,7 @@ This plugin adds the ability for users to work with chat functionalities in a La
 1. Install the package using the following command:
 
 ```sh
-composer composer require ronasit/laravel-chat
+composer require ronasit/laravel-chat
 ```
 
 2. Publish the package configuration:
