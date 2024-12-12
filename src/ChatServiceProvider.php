@@ -38,7 +38,7 @@ class ChatServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/Http/routes/channels.php');
 
         $this->publishesMigrations([
-            __DIR__ .'/../migrations' => database_path('migrations'),
+            __DIR__ . '/../migrations' => database_path('migrations'),
         ]);
 
         $this->publishes([
