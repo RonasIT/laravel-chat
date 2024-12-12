@@ -29,7 +29,7 @@ use RonasIT\Chat\Services\MessageService;
 
 class ChatServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         Route::mixin(new ChatRouter());
 
@@ -43,7 +43,7 @@ class ChatServiceProvider extends ServiceProvider
         ]);
     }
 
-    public function register()
+    public function register(): void
     {
         $this->app->bind(CreateMessageRequestContract::class, CreateMessageRequest::class);
         $this->app->bind(GetConversationRequestContract::class, GetConversationRequest::class);

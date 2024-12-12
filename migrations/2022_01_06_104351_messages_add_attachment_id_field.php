@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class MessagesAddAttachmentIdField extends Migration
 {
-    public function up()
+    public function up(): void
     {
         $mediaTableName = app(config('chat.classes.media_model'))->getTable();
 
@@ -16,7 +16,7 @@ class MessagesAddAttachmentIdField extends Migration
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::table('messages', function (Blueprint $table) {
             $table->dropColumn('attachment_id');
