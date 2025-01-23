@@ -3,6 +3,7 @@
 namespace RonasIT\Chat;
 
 use Closure;
+use Illuminate\Support\Arr;
 use RonasIT\Chat\Enums\ChatRouteActionEnum;
 use RonasIT\Chat\Http\Controllers\ConversationController;
 use RonasIT\Chat\Http\Controllers\MessageController;
@@ -27,8 +28,8 @@ class ChatRouter
                 'messages_read' => false,
             ];
 
-            foreach ($options as $option) {
-                $defaultOptions[$option->value] = true;
+            if (!empty($options)) {
+                $defaultOptions = Arr::map($defaultOptions, fn ($value, $defaultOption) => !empty(Arr::first($options, fn ($option) => $option->value === $defaultOption)));
             }
 
             $this->controller(ConversationController::class)->group(function () use ($defaultOptions) {
