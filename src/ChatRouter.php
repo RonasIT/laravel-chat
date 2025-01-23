@@ -19,13 +19,13 @@ class ChatRouter
             ChatRouter::$isBlockedBaseRoutes = true;
 
             $defaultOptions = [
-                'conversations_search' => false,
-                'conversations_delete' => false,
-                'conversations_get' => false,
-                'conversations_get_by_user' => false,
-                'messages_search' => false,
-                'messages_create' => false,
-                'messages_read' => false,
+                'conversations_search' => true,
+                'conversations_delete' => true,
+                'conversations_get' => true,
+                'conversations_get_by_user' => true,
+                'messages_search' => true,
+                'messages_create' => true,
+                'messages_read' => true,
             ];
 
             if (!empty($options)) {
