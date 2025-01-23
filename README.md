@@ -22,7 +22,7 @@ php artisan vendor:publish --provider=RonasIT\\Chat\\ChatServiceProvider
 
 3. For Laravel <= 5.5 add `ronasit\Chat\ChatServiceProvider::class` to the `app.providers` list in config.
 4. Set your project's User model to the `chat.classes.user_model` config.
-5. All routes are registered by default, you can change the route registration by calling `Route::chat()` in the routes/api.php file. 
+5. All routes are registered by default, you can change the route registration by calling `Route::chat()` in the `routes/api.php` file. 
    - if you only want to register specific routes call `Route::chat()` with arguments.
    - if you want to add these routes to a special group with any prefix or middleware, call `Route::chat()` inside that group.
 
