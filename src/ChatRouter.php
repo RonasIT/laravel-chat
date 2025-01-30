@@ -29,7 +29,9 @@ class ChatRouter
             ];
 
             if (!empty($options)) {
-                $defaultOptions = Arr::map($defaultOptions, fn ($value, $defaultOption) => !empty(Arr::first($options, fn ($option) => $option->value === $defaultOption)));
+                $options = collect($options);
+
+                $defaultOptions = Arr::map($defaultOptions, fn ($value, $defaultOption) => $options->contains('value', $defaultOption));
             }
 
             $this->controller(ConversationController::class)->group(function () use ($defaultOptions) {
