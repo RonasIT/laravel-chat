@@ -3,6 +3,7 @@
 namespace RonasIT\Chat;
 
 use Closure;
+use Illuminate\Support\Arr;
 use RonasIT\Chat\Enums\ChatRouteActionEnum;
 use RonasIT\Chat\Http\Controllers\ConversationController;
 use RonasIT\Chat\Http\Controllers\MessageController;
@@ -18,17 +19,19 @@ class ChatRouter
             ChatRouter::$isBlockedBaseRoutes = true;
 
             $defaultOptions = [
-                'conversations_search' => false,
-                'conversations_delete' => false,
-                'conversations_get' => false,
-                'conversations_get_by_user' => false,
-                'messages_search' => false,
-                'messages_create' => false,
-                'messages_read' => false,
+                'conversations_search' => true,
+                'conversations_delete' => true,
+                'conversations_get' => true,
+                'conversations_get_by_user' => true,
+                'messages_search' => true,
+                'messages_create' => true,
+                'messages_read' => true,
             ];
 
-            foreach ($options as $option) {
-                $defaultOptions[$option->value] = true;
+            if (!empty($options)) {
+                $options = collect($options);
+
+                $defaultOptions = Arr::map($defaultOptions, fn ($value, $defaultOption) => $options->contains('value', $defaultOption));
             }
 
             $this->controller(ConversationController::class)->group(function () use ($defaultOptions) {
