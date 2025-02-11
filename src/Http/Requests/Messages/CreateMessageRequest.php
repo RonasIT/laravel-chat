@@ -3,7 +3,7 @@
 namespace RonasIT\Chat\Http\Requests\Messages;
 
 use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
-use RonasIT\Support\BaseRequest;
+use RonasIT\Support\Http\BaseRequest;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class CreateMessageRequest extends BaseRequest implements CreateMessageRequestContract
