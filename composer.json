@@ -15,7 +15,7 @@
     "require": {
         "php": "^8.3",
         "laravel/framework": "^11.30",
-        "ronasit/laravel-helpers": "^3.0.0-beta",
+        "ronasit/laravel-helpers": "^3.2",
         "ronasit/laravel-media": "^0.0.4-beta"
     },
     "autoload": {
