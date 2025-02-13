@@ -49,7 +49,7 @@ class MessageTest extends TestCase
 
         self::$conversationTestState->assertNotChanged();
 
-        self::$messageTestState->assertChangesEqualsFixture('message_created_messages_state.json');
+        self::$messageTestState->assertChangesEqualsFixture('message_created_messages.json');
     }
 
     public function testCreateInNotExistsConversation(): void
@@ -68,9 +68,9 @@ class MessageTest extends TestCase
 
         $this->assertEqualsFixture('create_message_in_exists_conversation_response.json', $response->json());
 
-        self::$conversationTestState->assertChangesEqualsFixture('conversation_created_messages_state.json');
+        self::$conversationTestState->assertChangesEqualsFixture('conversation_created_messages.json');
 
-        self::$messageTestState->assertChangesEqualsFixture('messages_created_messages_with_new_conversation_state.json');
+        self::$messageTestState->assertChangesEqualsFixture('messages_created_messages_with_new_conversation.json');
     }
 
     public function testCreateSelfMessage(): void
@@ -94,7 +94,7 @@ class MessageTest extends TestCase
 
         $response->assertNoContent();
 
-        self::$messageTestState->assertChangesEqualsFixture('message_read_messages_state.json');
+        self::$messageTestState->assertChangesEqualsFixture('message_read_messages.json');
     }
 
     public function testNotActingRecipientRead()
