@@ -18,5 +18,5 @@ return [
         'not_message_recipient' => 'You are not the recipient of this message.',
         'not_found' => ':entity does not exist',
         'not_owner' => 'You are not the owner of this Conversation.',
-    ]
+    ],
 ];

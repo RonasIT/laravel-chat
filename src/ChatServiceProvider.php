@@ -29,21 +29,24 @@ use RonasIT\Chat\Services\MessageService;
 
 class ChatServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         Route::mixin(new ChatRouter());
 
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'chat');
         $this->loadRoutesFrom(__DIR__ . '/Http/routes/api.php');
         $this->loadRoutesFrom(__DIR__ . '/Http/routes/channels.php');
-        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+
+        $this->publishesMigrations([
+            __DIR__ . '/../migrations' => database_path('migrations'),
+        ]);
 
         $this->publishes([
-            __DIR__. '/../config/chat.php' => config_path('chat.php'),
-        ], 'config');
+            __DIR__ . '/../config/chat.php' => config_path('chat.php'),
+        ]);
     }
 
-    public function register()
+    public function register(): void
     {
         $this->app->bind(CreateMessageRequestContract::class, CreateMessageRequest::class);
         $this->app->bind(GetConversationRequestContract::class, GetConversationRequest::class);

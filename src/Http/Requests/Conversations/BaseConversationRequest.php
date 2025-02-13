@@ -3,7 +3,7 @@
 namespace RonasIT\Chat\Http\Requests\Conversations;
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use RonasIT\Support\BaseRequest;
+use RonasIT\Support\Http\BaseRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BaseConversationRequest extends BaseRequest

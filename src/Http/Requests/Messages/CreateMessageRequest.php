@@ -2,9 +2,9 @@
 
 namespace RonasIT\Chat\Http\Requests\Messages;
 
-use RonasIT\Support\BaseRequest;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
+use RonasIT\Support\Http\BaseRequest;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class CreateMessageRequest extends BaseRequest implements CreateMessageRequestContract
 {
@@ -27,7 +27,7 @@ class CreateMessageRequest extends BaseRequest implements CreateMessageRequestCo
         $this->checkSelfMessage();
     }
 
-    protected function checkSelfMessage()
+    protected function checkSelfMessage(): void
     {
         if ($this->user()->id === $this->input('recipient_id')) {
             throw new BadRequestHttpException(__('chat::validation.exceptions.self_message'));

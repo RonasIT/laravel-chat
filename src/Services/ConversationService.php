@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
-use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract;
+use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Repositories\ConversationRepository;
 use RonasIT\Support\Services\EntityService;
 
