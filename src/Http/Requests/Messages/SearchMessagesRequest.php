@@ -2,7 +2,7 @@
 
 namespace RonasIT\Chat\Http\Requests\Messages;
 
-use RonasIT\Support\BaseRequest;
+use RonasIT\Support\Http\BaseRequest;
 use RonasIT\Chat\Contracts\Requests\SearchMessagesRequestContract;
 
 class SearchMessagesRequest extends BaseRequest implements SearchMessagesRequestContract

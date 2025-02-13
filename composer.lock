@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "feb157f8b03e10f6baff1070a71f17ea",
+    "content-hash": "6a45d37c19f5abfca89e4ced51ea253d",
     "packages": [
         {
             "name": "brick/math",
@@ -4301,16 +4301,16 @@
         },
         {
             "name": "ronasit/laravel-helpers",
-            "version": "3.1",
+            "version": "3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RonasIT/laravel-helpers.git",
-                "reference": "098b4cc9cddbedb24ef403a77123cb4df3ac9b8c"
+                "reference": "508757e4e8e3c25ef9ea3d24b1701d300b1c2cd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RonasIT/laravel-helpers/zipball/098b4cc9cddbedb24ef403a77123cb4df3ac9b8c",
-                "reference": "098b4cc9cddbedb24ef403a77123cb4df3ac9b8c",
+                "url": "https://api.github.com/repos/RonasIT/laravel-helpers/zipball/508757e4e8e3c25ef9ea3d24b1701d300b1c2cd9",
+                "reference": "508757e4e8e3c25ef9ea3d24b1701d300b1c2cd9",
                 "shasum": ""
             },
             "require": {
@@ -4377,28 +4377,28 @@
             ],
             "support": {
                 "issues": "https://github.com/RonasIT/laravel-helpers/issues",
-                "source": "https://github.com/RonasIT/laravel-helpers/tree/3.1"
+                "source": "https://github.com/RonasIT/laravel-helpers/tree/3.2"
             },
-            "time": "2024-12-02T05:30:04+00:00"
+            "time": "2025-01-15T15:41:59+00:00"
         },
         {
             "name": "ronasit/laravel-media",
-            "version": "0.0.4-beta",
+            "version": "0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RonasIT/laravel-media.git",
-                "reference": "578b357c73a262be194978c1dc8538144ee92764"
+                "reference": "1a893c3f177066cd710d31437fdc2108c5ebf402"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RonasIT/laravel-media/zipball/578b357c73a262be194978c1dc8538144ee92764",
-                "reference": "578b357c73a262be194978c1dc8538144ee92764",
+                "url": "https://api.github.com/repos/RonasIT/laravel-media/zipball/1a893c3f177066cd710d31437fdc2108c5ebf402",
+                "reference": "1a893c3f177066cd710d31437fdc2108c5ebf402",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "^11.21",
+                "laravel/framework": "^11.30",
                 "php": "^8.3",
-                "ronasit/laravel-helpers": "^3.0.0-beta",
+                "ronasit/laravel-helpers": "^3.2",
                 "spatie/laravel-medialibrary": "^11.8.3"
             },
             "require-dev": {
@@ -4440,9 +4440,9 @@
             ],
             "support": {
                 "issues": "https://github.com/RonasIT/laravel-media/issues",
-                "source": "https://github.com/RonasIT/laravel-media/tree/0.04-beta"
+                "source": "https://github.com/RonasIT/laravel-media/tree/0.1"
             },
-            "time": "2024-11-13T08:32:24+00:00"
+            "time": "2025-02-11T07:34:32+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -8400,10 +8400,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "ronasit/laravel-helpers": 10,
-        "ronasit/laravel-media": 10
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
