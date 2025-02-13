@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Notifications\ConversationDeletedNotification;
-use RonasIT\Chat\Notifications\NewMessageNotification;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\ModelTestState;
 

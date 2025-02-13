@@ -90,7 +90,7 @@ class MessageTest extends TestCase
 
     public function testRead()
     {
-        $response = $this->actingAs(self::$secondUser)->json('put', '/messages/1/read');
+        $response = $this->actingAs(User::find(4))->json('put', '/messages/3/read');
 
         $response->assertNoContent();
 
