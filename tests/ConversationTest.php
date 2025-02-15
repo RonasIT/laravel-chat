@@ -4,6 +4,7 @@ namespace RonasIT\Chat\Tests;
 
 use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\DataProvider;
+use RonasIT\Chat\ChatRouter;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Notifications\ConversationDeletedNotification;
 use RonasIT\Chat\Tests\Models\User;
@@ -26,6 +27,8 @@ class ConversationTest extends TestCase
         self::$someAuthUser ??= User::find(3);
 
         self::$conversationTestState = new ModelTestState(Conversation::class);
+
+        ChatRouter::$isBlockedBaseRoutes = false;
     }
 
     public function testGetBySender()

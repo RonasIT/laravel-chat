@@ -38,7 +38,7 @@ class ChatRouter
                 when($defaultOptions['conversations_search'], fn () => $this->get('conversations', 'search')->name('conversations.search'));
                 when($defaultOptions['conversations_get'], fn () => $this->get('conversations/{id}', 'get')->name('conversations.get'));
                 when($defaultOptions['conversations_delete'], fn () => $this->delete('conversations/{id}', 'delete')->name('conversations.delete'));
-                when($defaultOptions['conversations_get_by_user'], fn () => $this->post('users/{userId}/conversation', 'getByUserId')->name('conversations.get_by_user_id'));
+                when($defaultOptions['conversations_get_by_user'], fn () => $this->get('users/{userId}/conversation', 'getByUserId')->name('conversations.get_by_user_id'));
             });
 
             $this->controller(MessageController::class)->group(function () use ($defaultOptions) {

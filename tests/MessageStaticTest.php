@@ -1,0 +1,261 @@
+<?php
+
+namespace RonasIT\Chat\Tests;
+
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Attributes\DataProvider;
+use RonasIT\Chat\Enums\ChatRouteActionEnum;
+use RonasIT\Chat\Models\Conversation;
+use RonasIT\Chat\Models\Message;
+use RonasIT\Chat\Notifications\NewMessageNotification;
+use RonasIT\Chat\Tests\Models\User;
+use RonasIT\Chat\Tests\Support\ModelTestState;
+
+class MessageStaticTest extends TestCase
+{
+    protected static User $firstUser;
+    protected static User $secondUser;
+    protected static User $someAuthUser;
+
+    protected static ModelTestState $conversationTestState;
+    protected static ModelTestState $messageTestState;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        self::$firstUser ??= User::find(1);
+        self::$secondUser ??= User::find(2);
+        self::$someAuthUser ??= User::find(3);
+
+        self::$conversationTestState = new ModelTestState(Conversation::class);
+        self::$messageTestState = new ModelTestState(Message::class);
+    }
+
+    public function testEverythingDisabledExceptSearch(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageSearch);
+
+        $responseSearch = $this->actingAs(self::$firstUser)->getJson('/conversations');
+        $responseGet = $this->actingAs(self::$firstUser)->getJson('/conversations/1');
+        $responseDelete = $this->actingAs(self::$firstUser)->deleteJson('/conversations/1');
+        $responseGetByUser = $this->actingAs(self::$firstUser)->getJson('/users/2/conversation');
+        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/messages');
+        $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages');
+        $responseRead = $this->actingAs(self::$firstUser)->putJson('messages/1/read');
+
+        $responseSearchMessages->assertOk();
+
+        $responseGet->assertNotFound();
+        $responseDelete->assertNotFound();
+        $responseSearch->assertNotFound();
+        $responseGetByUser->assertNotFound();
+        $responseSearch->assertNotFound();
+        $responseCreate->assertNotFound();
+        $responseRead->assertNotFound();
+    }
+
+    public function testEverythingDisabledExceptCreate(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageCreate);
+
+        $data = $this->getJsonFixture('create_message_request.json');
+
+        $responseSearch = $this->actingAs(self::$firstUser)->getJson('/conversations');
+        $responseGet = $this->actingAs(self::$firstUser)->getJson('/conversations/1');
+        $responseDelete = $this->actingAs(self::$firstUser)->deleteJson('/conversations/1');
+        $responseGetByUser = $this->actingAs(self::$firstUser)->getJson('/users/2/conversation');
+        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/messages');
+        $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages', $data);
+        $responseRead = $this->actingAs(self::$firstUser)->putJson('messages/1/read');
+
+        $responseCreate->assertOk();
+
+        $responseGet->assertNotFound();
+        $responseDelete->assertNotFound();
+        $responseSearch->assertNotFound();
+        $responseGetByUser->assertNotFound();
+        $responseSearch->assertNotFound();
+        $responseSearchMessages->assertNotFound();
+        $responseRead->assertNotFound();
+    }
+
+    public function testEverythingDisabledExceptRead(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageRead);
+
+        $responseSearch = $this->actingAs(self::$firstUser)->getJson('/conversations');
+        $responseGet = $this->actingAs(self::$firstUser)->getJson('/conversations/1');
+        $responseDelete = $this->actingAs(self::$firstUser)->deleteJson('/conversations/1');
+        $responseGetByUser = $this->actingAs(self::$firstUser)->getJson('/users/2/conversation');
+        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/messages');
+        $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages');
+        $responseRead = $this->actingAs(self::$secondUser)->putJson('messages/1/read');
+
+        $responseRead->assertNoContent();
+
+        $responseGet->assertNotFound();
+        $responseDelete->assertNotFound();
+        $responseSearch->assertNotFound();
+        $responseGetByUser->assertNotFound();
+        $responseSearch->assertNotFound();
+        $responseSearchMessages->assertNotFound();
+        $responseCreate->assertNotFound();
+    }
+
+    public function testCreateInExistsConversation(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageCreate);
+
+        $data = $this->getJsonFixture('create_message_request.json');
+
+        $response = $this->actingAs(self::$firstUser)->json('POST', '/messages', $data);
+
+        Notification::fake();
+
+        self::$secondUser->notify(new NewMessageNotification());
+
+        Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture('create_message_response.json', $response->json());
+
+        self::$conversationTestState->assertNotChanged();
+
+        self::$messageTestState->assertChangesEqualsFixture('message_created_messages.json');
+    }
+
+    public function testCreateInNotExistsConversation(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageCreate);
+
+        $data = $this->getJsonFixture('create_message_in_exists_conversation_request.json');
+
+        $response = $this->actingAs(self::$secondUser)->json('POST', '/messages', $data);
+
+        $response->assertOk();
+
+        Notification::fake();
+
+        self::$secondUser->notify(new NewMessageNotification());
+
+        Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
+
+        $this->assertEqualsFixture('create_message_in_exists_conversation_response.json', $response->json());
+
+        self::$conversationTestState->assertChangesEqualsFixture('conversation_created_messages.json');
+
+        self::$messageTestState->assertChangesEqualsFixture('messages_created_messages_with_new_conversation.json');
+    }
+
+    public function testCreateSelfMessage(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageCreate);
+
+        $data = $this->getJsonFixture('create_message_request.json');
+
+        $response = $this->actingAs(self::$secondUser)->json('POST', '/messages', $data);
+
+        $response->assertBadRequest();
+
+        $response->assertJson(['message' => 'You cannot send a message to yourself.']);
+
+        self::$conversationTestState->assertNotChanged();
+
+        self::$messageTestState->assertNotChanged();
+    }
+
+    public function testCreateCreateDisabled(): void
+    {
+        $response = $this->actingAs(self::$secondUser)->json('POST', '/messages');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Not found.']);
+
+        self::$conversationTestState->assertNotChanged();
+
+        self::$messageTestState->assertNotChanged();
+    }
+
+    public function testRead()
+    {
+        Route::chat(ChatRouteActionEnum::MessageRead);
+
+        $response = $this->actingAs(User::find(4))->json('put', '/messages/3/read');
+
+        $response->assertNoContent();
+
+        self::$messageTestState->assertChangesEqualsFixture('message_read_messages.json');
+    }
+
+    public function testNotActingRecipientRead()
+    {
+        Route::chat(ChatRouteActionEnum::MessageRead);
+
+        $response = $this->actingAs(self::$firstUser)->json('put', '/messages/1/read');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'You are not the recipient of this message.']);
+
+        self::$messageTestState->assertNotChanged();
+    }
+
+    public function testNotExistsRead()
+    {
+        Route::chat(ChatRouteActionEnum::MessageRead);
+
+        $response = $this->actingAs(self::$secondUser)->json('put', '/messages/0/read');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Message does not exist']);
+
+        self::$messageTestState->assertNotChanged();
+    }
+
+    public function testReadReadDisabled()
+    {
+        $response = $this->actingAs(self::$firstUser)->json('put', '/messages/1/read');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Not found.']);
+
+        self::$messageTestState->assertNotChanged();
+    }
+
+    public static function getSearchFilters(): array
+    {
+        return [
+            [
+                'filter' => ['all' => true],
+                'fixture' => 'search_all.json',
+            ],
+        ];
+    }
+
+    #[DataProvider('getSearchFilters')]
+    public function testSearch($filter,$fixture)
+    {
+        Route::chat(ChatRouteActionEnum::MessageSearch);
+
+        $response = $this->actingAs(self::$firstUser)->json('get', '/messages', $filter);
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture($fixture, $response->json());
+    }
+
+    public function testSearchSearchDisabled()
+    {
+        $response = $this->actingAs(self::$firstUser)->json('get', '/messages');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Not found.']);
+    }
+}
