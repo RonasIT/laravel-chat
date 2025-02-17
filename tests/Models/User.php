@@ -8,7 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Models\Message;
-use RonasIT\Media\Models\Media;
 use RonasIT\Support\Traits\ModelTrait;
 
 class User extends Authenticatable
@@ -22,22 +21,22 @@ class User extends Authenticatable
         'email',
     ];
 
-    public function sendedConversations(): HasMany
+    public function sender_conversations(): HasMany
     {
         return $this->hasMany(Conversation::class, 'sender_id');
     }
 
-    public function recipientedConversations(): HasMany
+    public function recipient_conversations(): HasMany
     {
         return $this->hasMany(Conversation::class, 'recipient_id');
     }
 
-    public function sendedMessages(): HasMany
+    public function sender_messages(): HasMany
     {
         return $this->hasMany(Message::class, 'sender_id');
     }
 
-    public function recipientedMessages(): HasMany
+    public function recipient_messages(): HasMany
     {
         return $this->hasMany(Message::class, 'recipient_id');
     }
