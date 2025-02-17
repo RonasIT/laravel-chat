@@ -123,7 +123,7 @@ class ConversationTest extends TestCase
 
         $response->assertNoContent();
 
-        self::$conversationTestState->assertChangesEqualsFixture('conversation_deleted_conversations.json');
+        self::$conversationTestState->assertChangesEqualsFixture('deleted.json');
     }
 
     public function testDeleteByRecipient()
@@ -138,7 +138,7 @@ class ConversationTest extends TestCase
 
         $response->assertNoContent();
 
-        self::$conversationTestState->assertChangesEqualsFixture('conversation_deleted_conversations.json');
+        self::$conversationTestState->assertChangesEqualsFixture('deleted.json');
     }
 
     public function testDeleteBySomeUser()

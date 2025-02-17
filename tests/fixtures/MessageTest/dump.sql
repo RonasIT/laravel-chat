@@ -6,7 +6,8 @@ INSERT INTO users(id, email) VALUES
     (5, 'william.bob@example.com');
 
 INSERT INTO media(id, name, owner_id, is_public, link, preview_id, meta, created_at, updated_at) VALUES
-    (1, 'preview_Product main photo', 1 , true, 'http://localhost/test_preview_1.jpg', null, '{}', '2016-10-20 11:05:00', '2016-10-20 11:05:00');
+    (1, 'preview_Product main photo', 1 , true, 'http://localhost/test_preview_1.jpg', null, '{}', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
+    (2, 'preview_Category Photo photo', 1, false, 'http://localhost/test_preview_2.jpg', null, '{}', '2016-10-20 11:05:00', '2016-10-20 11:05:00');
 
 INSERT INTO conversations(id, sender_id, recipient_id, last_updated_at, created_at, updated_at) VALUES
     (1, 1, 2, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
