@@ -33,13 +33,11 @@ class MessageTest extends TestCase
 
     public function testCreateInExistsConversation(): void
     {
+        Notification::fake();
+
         $data = $this->getJsonFixture('create_message_request.json');
 
         $response = $this->actingAs(self::$firstUser)->json('POST', '/messages', $data);
-
-        Notification::fake();
-
-        self::$secondUser->notify(new NewMessageNotification());
 
         Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
 
@@ -54,17 +52,15 @@ class MessageTest extends TestCase
 
     public function testCreateInNotExistsConversation(): void
     {
+        Notification::fake();
+
         $data = $this->getJsonFixture('create_message_in_exists_conversation_request.json');
 
         $response = $this->actingAs(self::$secondUser)->json('POST', '/messages', $data);
 
         $response->assertOk();
 
-        Notification::fake();
-
-        self::$secondUser->notify(new NewMessageNotification());
-
-        Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
+        Notification::assertSentTo(User::find(5), NewMessageNotification::class);
 
         $this->assertEqualsFixture('create_message_in_exists_conversation_response.json', $response->json());
 
@@ -90,13 +86,11 @@ class MessageTest extends TestCase
 
     public function testCreateWithAttachment(): void
     {
+        Notification::fake();
+
         $data = $this->getJsonFixture('create_message_with_attachment_request.json');
 
         $response = $this->actingAs(self::$firstUser)->json('POST', '/messages', $data);
-
-        Notification::fake();
-
-        self::$secondUser->notify(new NewMessageNotification());
 
         Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
 
