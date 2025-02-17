@@ -88,6 +88,19 @@ class MessageTest extends TestCase
         self::$messageTestState->assertNotChanged();
     }
 
+    public function testCreateNoAuth(): void
+    {
+        $response = $this->postJson('/messages');
+
+        $response->assertUnauthorized();
+
+        $response->assertJson(['message' => 'Unauthenticated.']);
+
+        self::$conversationTestState->assertNotChanged();
+
+        self::$messageTestState->assertNotChanged();
+    }
+
     public function testRead()
     {
         $response = $this->actingAs(User::find(4))->json('put', '/messages/3/read');
@@ -101,7 +114,7 @@ class MessageTest extends TestCase
     {
         $response = $this->actingAs(self::$firstUser)->json('put', '/messages/1/read');
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
 
         $response->assertJson(['message' => 'You are not the recipient of this message.']);
 
@@ -119,6 +132,15 @@ class MessageTest extends TestCase
         self::$messageTestState->assertNotChanged();
     }
 
+    public function testReadNoAuth()
+    {
+        $response = $this->putJson('/messages/3/read');
+
+        $response->assertUnauthorized();
+
+        $response->assertJson(['message' => 'Unauthenticated.']);
+    }
+
     public static function getSearchFilters(): array
     {
         return [
@@ -126,16 +148,54 @@ class MessageTest extends TestCase
                 'filter' => ['all' => true],
                 'fixture' => 'search_all.json',
             ],
+            [
+                'filter' => [
+                    'with' => [
+                        'conversation',
+                        'sender',
+                        'recipient',
+                        'attachment',
+                    ],
+                ],
+                'fixture' => 'search_with.json',
+            ],
+            [
+                'filter' => ['conversation_id' => 1],
+                'fixture' => 'search_by_conversation_id.json',
+            ],
+            [
+                'filter' => [
+                    'page' => 2,
+                    'per_page' => 2,
+                ],
+                'fixture' => 'search_by_page_per_page.json',
+            ],
+            [
+                'filter' => [
+                    'order_by' => 'id',
+                    'desc' => true,
+                ],
+                'fixture' => 'search_by_order_by_desc.json',
+            ],
         ];
     }
 
     #[DataProvider('getSearchFilters')]
-    public function testSearch($filter,$fixture)
+    public function testSearch(array $filter, string $fixture)
     {
         $response = $this->actingAs(self::$firstUser)->json('get', '/messages', $filter);
 
         $response->assertOk();
 
         $this->assertEqualsFixture($fixture, $response->json());
+    }
+
+    public function testSearchNoAuth()
+    {
+        $response = $this->getJson('/messages');
+
+        $response->assertUnauthorized();
+
+        $response->assertJson(['message' => 'Unauthenticated.']);
     }
 }

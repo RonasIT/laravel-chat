@@ -1,0 +1,155 @@
+{
+    "current_page": 1,
+    "data": [
+        {
+            "id": 1,
+            "sender_id": 1,
+            "recipient_id": 2,
+            "last_updated_at": "2016-10-20 11:05:00",
+            "created_at": "2016-10-20T11:05:00.000000Z",
+            "updated_at": "2016-10-20T11:05:00.000000Z",
+            "messages": [
+                {
+                    "id": 1,
+                    "conversation_id": 1,
+                    "sender_id": 1,
+                    "recipient_id": 2,
+                    "text": "hi",
+                    "is_read": true,
+                    "created_at": "2016-10-20T11:05:00.000000Z",
+                    "updated_at": "2016-10-20T11:05:00.000000Z",
+                    "attachment_id": null
+                },
+                {
+                    "id": 2,
+                    "conversation_id": 1,
+                    "sender_id": 2,
+                    "recipient_id": 1,
+                    "text": "hi",
+                    "is_read": false,
+                    "created_at": "2016-10-20T11:05:00.000000Z",
+                    "updated_at": "2016-10-20T11:05:00.000000Z",
+                    "attachment_id": null
+                }
+            ],
+            "sender": {
+                "id": 1,
+                "email": "anisio.tier@example.com"
+            },
+            "recipient": {
+                "id": 2,
+                "email": "fidel.kutch@example.com"
+            },
+            "last_message": {
+                "id": 1,
+                "conversation_id": 1,
+                "sender_id": 1,
+                "recipient_id": 2,
+                "text": "hi",
+                "is_read": true,
+                "created_at": "2016-10-20T11:05:00.000000Z",
+                "updated_at": "2016-10-20T11:05:00.000000Z",
+                "attachment_id": null
+            }
+        },
+        {
+            "id": 2,
+            "sender_id": 1,
+            "recipient_id": 2,
+            "last_updated_at": "2016-10-20 11:05:00",
+            "created_at": "2016-10-20T11:05:00.000000Z",
+            "updated_at": "2016-10-20T11:05:00.000000Z",
+            "messages": [],
+            "sender": {
+                "id": 1,
+                "email": "anisio.tier@example.com"
+            },
+            "recipient": {
+                "id": 2,
+                "email": "fidel.kutch@example.com"
+            },
+            "last_message": null
+        },
+        {
+            "id": 3,
+            "sender_id": 1,
+            "recipient_id": 2,
+            "last_updated_at": "2016-10-20 11:05:00",
+            "created_at": "2016-10-20T11:05:00.000000Z",
+            "updated_at": "2016-10-20T11:05:00.000000Z",
+            "messages": [],
+            "sender": {
+                "id": 1,
+                "email": "anisio.tier@example.com"
+            },
+            "recipient": {
+                "id": 2,
+                "email": "fidel.kutch@example.com"
+            },
+            "last_message": null
+        },
+        {
+            "id": 4,
+            "sender_id": 1,
+            "recipient_id": 2,
+            "last_updated_at": "2016-10-20 11:05:00",
+            "created_at": "2016-10-20T11:05:00.000000Z",
+            "updated_at": "2016-10-20T11:05:00.000000Z",
+            "messages": [],
+            "sender": {
+                "id": 1,
+                "email": "anisio.tier@example.com"
+            },
+            "recipient": {
+                "id": 2,
+                "email": "fidel.kutch@example.com"
+            },
+            "last_message": null
+        },
+        {
+            "id": 5,
+            "sender_id": 1,
+            "recipient_id": 2,
+            "last_updated_at": "2016-10-20 11:05:00",
+            "created_at": "2016-10-20T11:05:00.000000Z",
+            "updated_at": "2016-10-20T11:05:00.000000Z",
+            "messages": [],
+            "sender": {
+                "id": 1,
+                "email": "anisio.tier@example.com"
+            },
+            "recipient": {
+                "id": 2,
+                "email": "fidel.kutch@example.com"
+            },
+            "last_message": null
+        }
+    ],
+    "first_page_url": "http:\/\/localhost\/conversations?page=1",
+    "from": 1,
+    "last_page": 1,
+    "last_page_url": "http:\/\/localhost\/conversations?page=1",
+    "links": [
+        {
+            "url": null,
+            "label": "&laquo; Previous",
+            "active": false
+        },
+        {
+            "url": "http:\/\/localhost\/conversations?page=1",
+            "label": "1",
+            "active": true
+        },
+        {
+            "url": null,
+            "label": "Next &raquo;",
+            "active": false
+        }
+    ],
+    "next_page_url": null,
+    "path": "http:\/\/localhost\/conversations",
+    "per_page": 15,
+    "prev_page_url": null,
+    "to": 5,
+    "total": 5
+}

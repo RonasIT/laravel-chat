@@ -181,16 +181,56 @@ class ConversationTest extends TestCase
                 'filter' => ['all' => true],
                 'fixture' => 'search_all.json',
             ],
+            [
+                'filter' => [
+                    'with' => [
+                        'messages',
+                        'sender',
+                        'recipient',
+                        'last_message',
+                    ],
+                ],
+                'fixture' => 'search_with.json',
+            ],
+            [
+                'filter' => [
+                    'page' => 2,
+                    'per_page' => 2,
+                ],
+                'fixture' => 'search_page_per_page.json',
+            ],
+            [
+                'filter' => [
+                    'with_unread_messages_count' => true,
+                ],
+                'fixture' => 'search_with_unread_messages_count.json',
+            ],
+            [
+                'filter' => [
+                    'order_by' => 'id',
+                    'desc' => true,
+                ],
+                'fixture' => 'search_by_order_by_desc.json',
+            ],
         ];
     }
 
     #[DataProvider('getSearchFilters')]
-    public function testSearch($filter,$fixture)
+    public function testSearch(array $filter, string $fixture)
     {
         $response = $this->actingAs(self::$sender)->json('get', '/conversations', $filter);
 
         $response->assertOk();
 
         $this->assertEqualsFixture($fixture, $response->json());
+    }
+
+    public function testSearchNoAuth()
+    {
+        $response = $this->json('get', '/conversations');
+
+        $response->assertUnauthorized();
+
+        $response->assertJson(['message' => 'Unauthenticated.']);
     }
 }
