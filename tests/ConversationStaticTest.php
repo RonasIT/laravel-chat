@@ -2,9 +2,11 @@
 
 namespace RonasIT\Chat\Tests;
 
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 use RonasIT\Chat\Enums\ChatRouteActionEnum;
 use RonasIT\Chat\Models\Conversation;
+use RonasIT\Chat\Notifications\ConversationDeletedNotification;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\ModelTestState;
 
@@ -161,7 +163,118 @@ class ConversationStaticTest extends TestCase
 
     public function testGetGetDisabled()
     {
-        $response = $this->json('get', '/conversations/1');
+        $response = $this->actingAs(self::$sender)->json('get', '/conversations/1');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Not found.']);
+    }
+
+    public function testGetBetweenUsersIdBySender()
+    {
+        Route::chat(ChatRouteActionEnum::ConversationGetByUser);
+
+        $response = $this->actingAs(self::$sender)->json('get', 'users/2/conversation');
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture('get_conversation.json', $response->json());
+    }
+
+    public function testGetBetweenUsersByRecipient()
+    {
+        Route::chat(ChatRouteActionEnum::ConversationGetByUser);
+
+        $response = $this->actingAs(self::$recipient)->json('get', 'users/1/conversation');
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture('get_conversation.json', $response->json());
+    }
+
+    public function testGetBetweenUsersWhoDontHaveConversations()
+    {
+        Route::chat(ChatRouteActionEnum::ConversationGetByUser);
+
+        $response = $this->actingAs(self::$recipient)->json('get', 'users/3/conversation');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Conversation does not exist']);
+    }
+
+    public function testGetByUserGetByUserDisabled()
+    {
+        $response = $this->actingAs(self::$sender)->json('get', 'users/2/conversation');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Not found.']);
+    }
+
+    public function testDeleteBySender()
+    {
+        Route::chat(ChatRouteActionEnum::ConversationDelete);
+
+        $response = $this->actingAs(self::$sender)->json('delete', '/conversations/1');
+
+        $response->assertNoContent();
+
+        Notification::fake();
+
+        self::$recipient->notify(new ConversationDeletedNotification());
+
+        Notification::assertSentTo(self::$recipient, ConversationDeletedNotification::class);
+
+        self::$conversationTestState->assertChangesEqualsFixture('deleted.json');
+    }
+
+    public function testDeleteByRecipient()
+    {
+        Route::chat(ChatRouteActionEnum::ConversationDelete);
+
+        $response = $this->actingAs(self::$recipient)->json('delete', '/conversations/1');
+
+        Notification::fake();
+
+        self::$sender->notify(new ConversationDeletedNotification());
+
+        Notification::assertSentTo(self::$sender, ConversationDeletedNotification::class);
+
+        $response->assertNoContent();
+
+        self::$conversationTestState->assertChangesEqualsFixture('deleted.json');
+    }
+
+    public function testDeleteBySomeUser()
+    {
+        Route::chat(ChatRouteActionEnum::ConversationDelete);
+
+        $response = $this->actingAs(self::$someAuthUser)->json('delete', '/conversations/1');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'You are not the owner of this Conversation.']);
+
+        self::$conversationTestState->assertNotChanged();
+    }
+
+    public function testDeleteNotExists()
+    {
+        Route::chat(ChatRouteActionEnum::ConversationDelete);
+
+        $response = $this->actingAs(self::$sender)->json('delete', '/conversations/0');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Conversation does not exist']);
+
+        self::$conversationTestState->assertNotChanged();
+    }
+
+    public function testDeleteDeleteDisabled()
+    {
+        $response = $this->actingAs(self::$sender)->json('delete', '/conversations/1');
 
         $response->assertNotFound();
 
