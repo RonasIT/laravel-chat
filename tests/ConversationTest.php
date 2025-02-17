@@ -37,6 +37,26 @@ class ConversationTest extends TestCase
         $this->assertEqualsFixture('get_conversation.json', $response->json());
     }
 
+    public function testGetWithRelations()
+    {
+        $response = $this->actingAs(self::$sender)->json(
+            method: 'get',
+            uri: '/conversations/1',
+            data: [
+                'with' => [
+                    'messages',
+                    'sender',
+                    'recipient',
+                    'last_message',
+                ],
+            ],
+        );
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture('get_conversation_with_relations.json', $response->json());
+    }
+
     public function testGetByRecipient()
     {
         $response = $this->actingAs(self::$sender)->json('get', '/conversations/1');
