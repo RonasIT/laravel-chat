@@ -40,6 +40,26 @@ class ConversationTest extends TestCase
         $this->assertEqualsFixture('get_conversation.json', $response->json());
     }
 
+    public function testGetWithRelations()
+    {
+        $response = $this->actingAs(self::$sender)->json(
+            method: 'get',
+            uri: '/conversations/1',
+            data: [
+                'with' => [
+                    'messages',
+                    'sender',
+                    'recipient',
+                    'last_message',
+                ],
+            ],
+        );
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture('get_conversation_with_relations.json', $response->json());
+    }
+
     public function testGetByRecipient()
     {
         $response = $this->actingAs(self::$sender)->json('get', '/conversations/1');
@@ -114,28 +134,22 @@ class ConversationTest extends TestCase
 
     public function testDeleteBySender()
     {
+        Notification::fake();
+
         $response = $this->actingAs(self::$sender)->json('delete', '/conversations/1');
 
         $response->assertNoContent();
 
-        Notification::fake();
-
-        self::$recipient->notify(new ConversationDeletedNotification());
-
         Notification::assertSentTo(self::$recipient, ConversationDeletedNotification::class);
-
-        $response->assertNoContent();
 
         self::$conversationTestState->assertChangesEqualsFixture('deleted.json');
     }
 
     public function testDeleteByRecipient()
     {
-        $response = $this->actingAs(self::$recipient)->json('delete', '/conversations/1');
-
         Notification::fake();
 
-        self::$sender->notify(new ConversationDeletedNotification());
+        $response = $this->actingAs(self::$recipient)->json('delete', '/conversations/1');
 
         Notification::assertSentTo(self::$sender, ConversationDeletedNotification::class);
 
