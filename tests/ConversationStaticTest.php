@@ -4,6 +4,7 @@ namespace RonasIT\Chat\Tests;
 
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Attributes\DataProvider;
 use RonasIT\Chat\Enums\ChatRouteActionEnum;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Notifications\ConversationDeletedNotification;
@@ -128,6 +129,28 @@ class ConversationStaticTest extends TestCase
         $this->assertEqualsFixture('get_conversation.json', $response->json());
     }
 
+    public function testGetWithRelations()
+    {
+        Route::chat(ChatRouteActionEnum::ConversationGet);
+
+        $response = $this->actingAs(self::$sender)->json(
+            method: 'get',
+            uri: '/conversations/1',
+            data: [
+                'with' => [
+                    'messages',
+                    'sender',
+                    'recipient',
+                    'last_message',
+                ],
+            ],
+        );
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture('get_conversation_with_relations.json', $response->json());
+    }
+
     public function testGetByRecipient()
     {
         Route::chat(ChatRouteActionEnum::ConversationGet);
@@ -214,15 +237,13 @@ class ConversationStaticTest extends TestCase
 
     public function testDeleteBySender()
     {
+        Notification::fake();
+
         Route::chat(ChatRouteActionEnum::ConversationDelete);
 
         $response = $this->actingAs(self::$sender)->json('delete', '/conversations/1');
 
         $response->assertNoContent();
-
-        Notification::fake();
-
-        self::$recipient->notify(new ConversationDeletedNotification());
 
         Notification::assertSentTo(self::$recipient, ConversationDeletedNotification::class);
 
@@ -231,13 +252,11 @@ class ConversationStaticTest extends TestCase
 
     public function testDeleteByRecipient()
     {
+        Notification::fake();
+
         Route::chat(ChatRouteActionEnum::ConversationDelete);
 
         $response = $this->actingAs(self::$recipient)->json('delete', '/conversations/1');
-
-        Notification::fake();
-
-        self::$sender->notify(new ConversationDeletedNotification());
 
         Notification::assertSentTo(self::$sender, ConversationDeletedNotification::class);
 
@@ -275,6 +294,68 @@ class ConversationStaticTest extends TestCase
     public function testDeleteDeleteDisabled()
     {
         $response = $this->actingAs(self::$sender)->json('delete', '/conversations/1');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Not found.']);
+    }
+
+    public static function getSearchFilters(): array
+    {
+        return [
+            [
+                'filter' => ['all' => true],
+                'fixture' => 'search_all.json',
+            ],
+            [
+                'filter' => [
+                    'with' => [
+                        'messages',
+                        'sender',
+                        'recipient',
+                        'last_message',
+                    ],
+                ],
+                'fixture' => 'search_with.json',
+            ],
+            [
+                'filter' => [
+                    'page' => 2,
+                    'per_page' => 2,
+                ],
+                'fixture' => 'search_page_per_page.json',
+            ],
+            [
+                'filter' => [
+                    'with_unread_messages_count' => true,
+                ],
+                'fixture' => 'search_with_unread_messages_count.json',
+            ],
+            [
+                'filter' => [
+                    'order_by' => 'id',
+                    'desc' => true,
+                ],
+                'fixture' => 'search_by_order_by_desc.json',
+            ],
+        ];
+    }
+
+    #[DataProvider('getSearchFilters')]
+    public function testSearch(array $filter, string $fixture)
+    {
+        Route::chat(ChatRouteActionEnum::ConversationSearch);
+
+        $response = $this->actingAs(self::$sender)->json('get', '/conversations', $filter);
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture($fixture, $response->json());
+    }
+
+    public function testSearchSearchDisabled()
+    {
+        $response = $this->actingAs(self::$sender)->json('get', '/conversations');
 
         $response->assertNotFound();
 

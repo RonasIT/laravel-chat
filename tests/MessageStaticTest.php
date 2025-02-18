@@ -106,15 +106,13 @@ class MessageStaticTest extends TestCase
 
     public function testCreateInExistsConversation(): void
     {
+        Notification::fake();
+
         Route::chat(ChatRouteActionEnum::MessageCreate);
 
         $data = $this->getJsonFixture('create_message_request.json');
 
         $response = $this->actingAs(self::$firstUser)->json('POST', '/messages', $data);
-
-        Notification::fake();
-
-        self::$secondUser->notify(new NewMessageNotification());
 
         Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
 
@@ -124,11 +122,13 @@ class MessageStaticTest extends TestCase
 
         self::$conversationTestState->assertNotChanged();
 
-        self::$messageTestState->assertChangesEqualsFixture('message_created_messages.json');
+        self::$messageTestState->assertChangesEqualsFixture('created.json');
     }
 
     public function testCreateInNotExistsConversation(): void
     {
+        Notification::fake();
+
         Route::chat(ChatRouteActionEnum::MessageCreate);
 
         $data = $this->getJsonFixture('create_message_in_exists_conversation_request.json');
@@ -137,17 +137,13 @@ class MessageStaticTest extends TestCase
 
         $response->assertOk();
 
-        Notification::fake();
-
-        self::$secondUser->notify(new NewMessageNotification());
-
-        Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
+        Notification::assertSentTo(User::find(5), NewMessageNotification::class);
 
         $this->assertEqualsFixture('create_message_in_exists_conversation_response.json', $response->json());
 
-        self::$conversationTestState->assertChangesEqualsFixture('conversation_created_messages.json');
+        self::$conversationTestState->assertChangesEqualsFixture('created.json');
 
-        self::$messageTestState->assertChangesEqualsFixture('messages_created_messages_with_new_conversation.json');
+        self::$messageTestState->assertChangesEqualsFixture('created_with_new_conversation.json');
     }
 
     public function testCreateSelfMessage(): void
@@ -188,7 +184,7 @@ class MessageStaticTest extends TestCase
 
         $response->assertNoContent();
 
-        self::$messageTestState->assertChangesEqualsFixture('message_read_messages.json');
+        self::$messageTestState->assertChangesEqualsFixture('read.json');
     }
 
     public function testNotActingRecipientRead()
@@ -235,11 +231,40 @@ class MessageStaticTest extends TestCase
                 'filter' => ['all' => true],
                 'fixture' => 'search_all.json',
             ],
+            [
+                'filter' => [
+                    'with' => [
+                        'conversation',
+                        'sender',
+                        'recipient',
+                        'attachment',
+                    ],
+                ],
+                'fixture' => 'search_with.json',
+            ],
+            [
+                'filter' => ['conversation_id' => 1],
+                'fixture' => 'search_by_conversation_id.json',
+            ],
+            [
+                'filter' => [
+                    'page' => 2,
+                    'per_page' => 2,
+                ],
+                'fixture' => 'search_by_page_per_page.json',
+            ],
+            [
+                'filter' => [
+                    'order_by' => 'id',
+                    'desc' => true,
+                ],
+                'fixture' => 'search_by_order_by_desc.json',
+            ],
         ];
     }
 
     #[DataProvider('getSearchFilters')]
-    public function testSearch($filter,$fixture)
+    public function testSearch(array $filter, string $fixture)
     {
         Route::chat(ChatRouteActionEnum::MessageSearch);
 
