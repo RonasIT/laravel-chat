@@ -16,7 +16,7 @@ class MessageTest extends TestCase
     protected static User $secondUser;
     protected static User $someAuthUser;
 
-    protected static ModelTestState $conversationTestState;
+    protected static ModelTestState $conversationState;
     protected static ModelTestState $messageState;
 
     public function setUp(): void
@@ -27,7 +27,7 @@ class MessageTest extends TestCase
         self::$secondUser ??= User::find(2);
         self::$someAuthUser ??= User::find(3);
 
-        self::$conversationTestState = new ModelTestState(Conversation::class);
+        self::$conversationState = new ModelTestState(Conversation::class);
         self::$messageState = new ModelTestState(Message::class);
     }
 
@@ -45,7 +45,7 @@ class MessageTest extends TestCase
 
         $this->assertEqualsFixture('create_message_response', $response->json());
 
-        self::$conversationTestState->assertNotChanged();
+        self::$conversationState->assertNotChanged();
 
         self::$messageState->assertChangesEqualsFixture('created');
     }
@@ -64,7 +64,7 @@ class MessageTest extends TestCase
 
         $this->assertEqualsFixture('create_message_in_exists_conversation_response', $response->json());
 
-        self::$conversationTestState->assertChangesEqualsFixture('created');
+        self::$conversationState->assertChangesEqualsFixture('created');
 
         self::$messageState->assertChangesEqualsFixture('created_with_new_conversation');
     }
@@ -79,7 +79,7 @@ class MessageTest extends TestCase
 
         $response->assertJson(['message' => 'You cannot send a message to yourself.']);
 
-        self::$conversationTestState->assertNotChanged();
+        self::$conversationState->assertNotChanged();
 
         self::$messageState->assertNotChanged();
     }
@@ -98,7 +98,7 @@ class MessageTest extends TestCase
 
         $this->assertEqualsFixture('create_message_with_attachment_response', $response->json());
 
-        self::$conversationTestState->assertNotChanged();
+        self::$conversationState->assertNotChanged();
 
         self::$messageState->assertChangesEqualsFixture('created_with_attachment');
     }
@@ -111,7 +111,7 @@ class MessageTest extends TestCase
 
         $response->assertJson(['message' => 'Unauthenticated.']);
 
-        self::$conversationTestState->assertNotChanged();
+        self::$conversationState->assertNotChanged();
 
         self::$messageState->assertNotChanged();
     }
