@@ -17,8 +17,8 @@ class MessageTest extends TestCase
     protected static User $secondUser;
     protected static User $someAuthUser;
 
-    protected static ModelTestState $conversationTestState;
-    protected static ModelTestState $messageTestState;
+    protected static ModelTestState $conversationState;
+    protected static ModelTestState $messageState;
 
     public function setUp(): void
     {
@@ -28,8 +28,8 @@ class MessageTest extends TestCase
         self::$secondUser ??= User::find(2);
         self::$someAuthUser ??= User::find(3);
 
-        self::$conversationTestState = new ModelTestState(Conversation::class);
-        self::$messageTestState = new ModelTestState(Message::class);
+        self::$conversationState = new ModelTestState(Conversation::class);
+        self::$messageState = new ModelTestState(Message::class);
 
         ChatRouter::$isBlockedBaseRoutes = false;
     }
@@ -38,72 +38,72 @@ class MessageTest extends TestCase
     {
         Notification::fake();
 
-        $data = $this->getJsonFixture('create_message_request.json');
+        $data = $this->getJsonFixture('create_message_request');
 
-        $response = $this->actingAs(self::$firstUser)->json('POST', '/messages', $data);
+        $response = $this->actingAs(self::$firstUser)->json('post', '/messages', $data);
 
         Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('create_message_response.json', $response->json());
+        $this->assertEqualsFixture('create_message_response', $response->json());
 
-        self::$conversationTestState->assertNotChanged();
+        self::$conversationState->assertNotChanged();
 
-        self::$messageTestState->assertChangesEqualsFixture('created.json');
+        self::$messageState->assertChangesEqualsFixture('created');
     }
 
     public function testCreateInNotExistsConversation(): void
     {
         Notification::fake();
 
-        $data = $this->getJsonFixture('create_message_in_exists_conversation_request.json');
+        $data = $this->getJsonFixture('create_message_in_exists_conversation_request');
 
-        $response = $this->actingAs(self::$secondUser)->json('POST', '/messages', $data);
+        $response = $this->actingAs(self::$secondUser)->json('post', '/messages', $data);
 
         $response->assertOk();
 
         Notification::assertSentTo(User::find(5), NewMessageNotification::class);
 
-        $this->assertEqualsFixture('create_message_in_exists_conversation_response.json', $response->json());
+        $this->assertEqualsFixture('create_message_in_exists_conversation_response', $response->json());
 
-        self::$conversationTestState->assertChangesEqualsFixture('created.json');
+        self::$conversationState->assertChangesEqualsFixture('created');
 
-        self::$messageTestState->assertChangesEqualsFixture('created_with_new_conversation.json');
+        self::$messageState->assertChangesEqualsFixture('created_with_new_conversation');
     }
 
     public function testCreateSelfMessage(): void
     {
-        $data = $this->getJsonFixture('create_message_request.json');
+        $data = $this->getJsonFixture('create_message_request');
 
-        $response = $this->actingAs(self::$secondUser)->json('POST', '/messages', $data);
+        $response = $this->actingAs(self::$secondUser)->json('post', '/messages', $data);
 
         $response->assertBadRequest();
 
         $response->assertJson(['message' => 'You cannot send a message to yourself.']);
 
-        self::$conversationTestState->assertNotChanged();
+        self::$conversationState->assertNotChanged();
 
-        self::$messageTestState->assertNotChanged();
+        self::$messageState->assertNotChanged();
     }
 
     public function testCreateWithAttachment(): void
     {
         Notification::fake();
 
-        $data = $this->getJsonFixture('create_message_with_attachment_request.json');
+        $data = $this->getJsonFixture('create_message_with_attachment_request');
 
-        $response = $this->actingAs(self::$firstUser)->json('POST', '/messages', $data);
+        $response = $this->actingAs(self::$firstUser)->json('post', '/messages', $data);
 
         Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('create_message_with_attachment_response.json', $response->json());
+        $this->assertEqualsFixture('create_message_with_attachment_response', $response->json());
 
-        self::$conversationTestState->assertNotChanged();
+        self::$conversationState->assertNotChanged();
 
-        self::$messageTestState->assertChangesEqualsFixture('created_with_attachment.json');
+        self::$messageState->assertChangesEqualsFixture('created_with_attachment');
     }
 
     public function testCreateNoAuth(): void
@@ -114,9 +114,9 @@ class MessageTest extends TestCase
 
         $response->assertJson(['message' => 'Unauthenticated.']);
 
-        self::$conversationTestState->assertNotChanged();
+        self::$conversationState->assertNotChanged();
 
-        self::$messageTestState->assertNotChanged();
+        self::$messageState->assertNotChanged();
     }
 
     public function testRead()
@@ -125,7 +125,7 @@ class MessageTest extends TestCase
 
         $response->assertNoContent();
 
-        self::$messageTestState->assertChangesEqualsFixture('read.json');
+        self::$messageState->assertChangesEqualsFixture('read');
     }
 
     public function testNotActingRecipientRead()
@@ -136,7 +136,7 @@ class MessageTest extends TestCase
 
         $response->assertJson(['message' => 'You are not the recipient of this message.']);
 
-        self::$messageTestState->assertNotChanged();
+        self::$messageState->assertNotChanged();
     }
 
     public function testNotExistsRead()
@@ -147,7 +147,7 @@ class MessageTest extends TestCase
 
         $response->assertJson(['message' => 'Message does not exist']);
 
-        self::$messageTestState->assertNotChanged();
+        self::$messageState->assertNotChanged();
     }
 
     public function testReadNoAuth()
@@ -164,7 +164,7 @@ class MessageTest extends TestCase
         return [
             [
                 'filter' => ['all' => true],
-                'fixture' => 'search_all.json',
+                'fixture' => 'search_all',
             ],
             [
                 'filter' => [
@@ -175,25 +175,25 @@ class MessageTest extends TestCase
                         'attachment',
                     ],
                 ],
-                'fixture' => 'search_with.json',
+                'fixture' => 'search_with_relations',
             ],
             [
                 'filter' => ['conversation_id' => 1],
-                'fixture' => 'search_by_conversation_id.json',
+                'fixture' => 'search_by_conversation_id',
             ],
             [
                 'filter' => [
                     'page' => 2,
                     'per_page' => 2,
                 ],
-                'fixture' => 'search_by_page_per_page.json',
+                'fixture' => 'search_by_page_per_page',
             ],
             [
                 'filter' => [
                     'order_by' => 'id',
                     'desc' => true,
                 ],
-                'fixture' => 'search_by_order_by_desc.json',
+                'fixture' => 'search_by_order_by_desc',
             ],
         ];
     }
