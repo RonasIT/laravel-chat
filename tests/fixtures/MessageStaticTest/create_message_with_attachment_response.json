@@ -1,0 +1,19 @@
+{
+    "id": 6,
+    "conversation_id": 1,
+    "sender_id": 1,
+    "recipient_id": 2,
+    "text": "hello",
+    "is_read": false,
+    "created_at": "2024-01-01T00:00:00.000000Z",
+    "updated_at": "2024-01-01T00:00:00.000000Z",
+    "attachment_id": 2,
+    "recipient": {
+        "id": 2,
+        "email": "fidel.kutch@example.com"
+    },
+    "sender": {
+        "id": 1,
+        "email": "anisio.tier@example.com"
+    }
+}
