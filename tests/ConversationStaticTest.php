@@ -17,7 +17,7 @@ class ConversationStaticTest extends TestCase
     protected static User $recipient;
     protected static User $someAuthUser;
 
-    protected static ModelTestState $conversationTestState;
+    protected static ModelTestState $conversationState;
 
     public function setUp(): void
     {
@@ -27,7 +27,7 @@ class ConversationStaticTest extends TestCase
         self::$recipient ??= User::find(2);
         self::$someAuthUser ??= User::find(3);
 
-        self::$conversationTestState = new ModelTestState(Conversation::class);
+        self::$conversationState = new ModelTestState(Conversation::class);
     }
 
     public function testEverythingDisabledExceptSearch(): void
@@ -126,7 +126,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('get_conversation.json', $response->json());
+        $this->assertEqualsFixture('get_conversation', $response->json());
     }
 
     public function testGetWithRelations()
@@ -148,7 +148,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('get_conversation_with_relations.json', $response->json());
+        $this->assertEqualsFixture('get_conversation_with_relations', $response->json());
     }
 
     public function testGetByRecipient()
@@ -159,7 +159,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('get_conversation.json', $response->json());
+        $this->assertEqualsFixture('get_conversation', $response->json());
     }
 
     public function testGetBySomeUser()
@@ -201,7 +201,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('get_conversation.json', $response->json());
+        $this->assertEqualsFixture('get_conversation', $response->json());
     }
 
     public function testGetBetweenUsersByRecipient()
@@ -212,7 +212,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('get_conversation.json', $response->json());
+        $this->assertEqualsFixture('get_conversation', $response->json());
     }
 
     public function testGetBetweenUsersWhoDontHaveConversations()
@@ -247,7 +247,7 @@ class ConversationStaticTest extends TestCase
 
         Notification::assertSentTo(self::$recipient, ConversationDeletedNotification::class);
 
-        self::$conversationTestState->assertChangesEqualsFixture('deleted.json');
+        self::$conversationState->assertChangesEqualsFixture('deleted');
     }
 
     public function testDeleteByRecipient()
@@ -262,7 +262,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertNoContent();
 
-        self::$conversationTestState->assertChangesEqualsFixture('deleted.json');
+        self::$conversationState->assertChangesEqualsFixture('deleted');
     }
 
     public function testDeleteBySomeUser()
@@ -275,7 +275,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertJson(['message' => 'You are not the owner of this Conversation.']);
 
-        self::$conversationTestState->assertNotChanged();
+        self::$conversationState->assertNotChanged();
     }
 
     public function testDeleteNotExists()
@@ -288,7 +288,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertJson(['message' => 'Conversation does not exist']);
 
-        self::$conversationTestState->assertNotChanged();
+        self::$conversationState->assertNotChanged();
     }
 
     public function testDeleteDeleteDisabled()
@@ -305,7 +305,7 @@ class ConversationStaticTest extends TestCase
         return [
             [
                 'filter' => ['all' => true],
-                'fixture' => 'search_all.json',
+                'fixture' => 'search_all',
             ],
             [
                 'filter' => [
@@ -316,27 +316,27 @@ class ConversationStaticTest extends TestCase
                         'last_message',
                     ],
                 ],
-                'fixture' => 'search_with.json',
+                'fixture' => 'search_with_relations',
             ],
             [
                 'filter' => [
                     'page' => 2,
                     'per_page' => 2,
                 ],
-                'fixture' => 'search_page_per_page.json',
+                'fixture' => 'search_page_per_page',
             ],
             [
                 'filter' => [
                     'with_unread_messages_count' => true,
                 ],
-                'fixture' => 'search_with_unread_messages_count.json',
+                'fixture' => 'search_with_unread_messages_count',
             ],
             [
                 'filter' => [
                     'order_by' => 'id',
                     'desc' => true,
                 ],
-                'fixture' => 'search_by_order_by_desc.json',
+                'fixture' => 'search_by_order_by_desc',
             ],
         ];
     }
