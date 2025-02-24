@@ -112,7 +112,7 @@ class MessageStaticTest extends TestCase
 
         $data = $this->getJsonFixture('create_message_request');
 
-        $response = $this->actingAs(self::$firstUser)->json('POST', '/messages', $data);
+        $response = $this->actingAs(self::$firstUser)->json('post', '/messages', $data);
 
         Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
 
@@ -133,7 +133,7 @@ class MessageStaticTest extends TestCase
 
         $data = $this->getJsonFixture('create_message_in_exists_conversation_request');
 
-        $response = $this->actingAs(self::$secondUser)->json('POST', '/messages', $data);
+        $response = $this->actingAs(self::$secondUser)->json('post', '/messages', $data);
 
         $response->assertOk();
 
@@ -152,7 +152,7 @@ class MessageStaticTest extends TestCase
 
         $data = $this->getJsonFixture('create_message_request');
 
-        $response = $this->actingAs(self::$secondUser)->json('POST', '/messages', $data);
+        $response = $this->actingAs(self::$secondUser)->json('post', '/messages', $data);
 
         $response->assertBadRequest();
 
@@ -165,7 +165,7 @@ class MessageStaticTest extends TestCase
 
     public function testCreateEndpointDisabled(): void
     {
-        $response = $this->actingAs(self::$secondUser)->json('POST', '/messages');
+        $response = $this->actingAs(self::$secondUser)->json('post', '/messages');
 
         $response->assertNotFound();
 
