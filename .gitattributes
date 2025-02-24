@@ -4,3 +4,4 @@ LICENSE export-ignore
 docker-compose.yml export-ignore
 composer.lock export-ignore
 phpunit.xml export-ignore
+.env.testing export-ignore
