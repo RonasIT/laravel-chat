@@ -16,11 +16,21 @@
         "php": "^8.3",
         "laravel/framework": "^11.30",
         "ronasit/laravel-helpers": "^3.2",
-        "ronasit/laravel-media": "^0.1"
+        "ronasit/laravel-media": "^0.1",
+        "orchestra/testbench": "^9.3"
     },
     "autoload": {
         "psr-4": {
             "RonasIT\\Chat\\": "src/"
+        },
+        "exclude-from-classmap": [
+            "tests/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RonasIT\\Chat\\Tests\\": "tests/",
+            "RonasIT\\Chat\\Tests\\Support\\": "tests/Support/"
         }
     },
     "extra": {
