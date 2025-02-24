@@ -163,7 +163,7 @@ class MessageStaticTest extends TestCase
         self::$messageState->assertNotChanged();
     }
 
-    public function testCreateCreateDisabled(): void
+    public function testCreateEndpointDisabled(): void
     {
         $response = $this->actingAs(self::$secondUser)->json('POST', '/messages');
 
@@ -213,7 +213,7 @@ class MessageStaticTest extends TestCase
         self::$messageState->assertNotChanged();
     }
 
-    public function testReadReadDisabled()
+    public function testReadEndpointDisabled()
     {
         $response = $this->actingAs(self::$firstUser)->json('put', '/messages/1/read');
 
@@ -275,7 +275,7 @@ class MessageStaticTest extends TestCase
         $this->assertEqualsFixture($fixture, $response->json());
     }
 
-    public function testSearchSearchDisabled()
+    public function testSearchEndpointDisabled()
     {
         $response = $this->actingAs(self::$firstUser)->json('get', '/messages');
 
