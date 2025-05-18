@@ -2,7 +2,7 @@
 
 namespace RonasIT\Chat\Tests\Support;
 
-use RonasIT\Support\Tests\ModelTestState as ModelTestStateBase;
+use RonasIT\Support\Testing\ModelTestState as ModelTestStateBase;
 
 class ModelTestState extends ModelTestStateBase
 {
