@@ -36,15 +36,17 @@ jobs:
           - 5432:5432
 
     steps:
-      - uses: shivammathur/setup-php@v2
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          coverage: xdebug, pcov
+          coverage: xdebug
           tools: composer:v2
         env:
           POSTGRES_HOST: postgres
           POSTGRES_PORT: 5432
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Set up PostgreSQL
@@ -80,14 +82,17 @@ jobs:
     needs: tests-with-coverage
     runs-on: ubuntu-latest
     steps:
-      - uses: shivammathur/setup-php@v2
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
         with:
           php-version: "8.4"
           tools: composer:v2
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/download-artifact@v4
+      - name: Import coverage report
+        uses: actions/download-artifact@v4
         with:
           name: clover.xml
           path: build/logs
