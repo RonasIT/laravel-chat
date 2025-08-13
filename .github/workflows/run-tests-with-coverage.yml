@@ -47,8 +47,6 @@ jobs:
           POSTGRES_PORT: 5432
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Set up PostgreSQL
         run: |
           sudo apt-get update 
@@ -89,8 +87,6 @@ jobs:
           tools: composer:v2
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Import coverage report
         uses: actions/download-artifact@v4
         with:
