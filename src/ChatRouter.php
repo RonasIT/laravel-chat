@@ -14,8 +14,7 @@ class ChatRouter
 
     public function chat(): Closure
     {
-        return function (ChatRouteActionEnum ...$options)  {
-
+        return function (ChatRouteActionEnum ...$options) {
             ChatRouter::$isBlockedBaseRoutes = true;
 
             $defaultOptions = [

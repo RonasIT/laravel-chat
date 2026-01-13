@@ -8,11 +8,11 @@ use Illuminate\Support\Collection;
 
 interface MessageServiceContract
 {
-    function create(array $data): Model;
+    public function create(array $data): Model;
 
-    function search(array $filters = []): LengthAwarePaginator;
+    public function search(array $filters = []): LengthAwarePaginator;
 
-    function notifyUser(Model $message, Collection $recipients): void;
+    public function notifyUser(Model $message, Collection $recipients): void;
 
-    function markAsReadMessages(int $fromMessageId): int;
+    public function markAsReadMessages(int $fromMessageId): int;
 }

@@ -6,9 +6,9 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 
 interface ConversationDeletedNotificationContract
 {
-    function via($notifiable): array;
+    public function via($notifiable): array;
 
-    function toBroadcast(): BroadcastMessage;
+    public function toBroadcast(): BroadcastMessage;
 
-    function setConversation(array $conversation): self;
+    public function setConversation(array $conversation): self;
 }

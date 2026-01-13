@@ -2,8 +2,8 @@
 
 namespace RonasIT\Chat\Http\Requests\Messages;
 
-use RonasIT\Support\Http\BaseRequest;
 use RonasIT\Chat\Contracts\Requests\SearchMessagesRequestContract;
+use RonasIT\Support\Http\BaseRequest;
 
 class SearchMessagesRequest extends BaseRequest implements SearchMessagesRequestContract
 {
@@ -24,7 +24,7 @@ class SearchMessagesRequest extends BaseRequest implements SearchMessagesRequest
 
     protected function getAvailableRelations(): string
     {
-        return join(',', [
+        return implode(',', [
             'conversation',
             'sender',
             'recipient',

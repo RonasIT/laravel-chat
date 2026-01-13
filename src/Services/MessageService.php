@@ -18,6 +18,7 @@ use RonasIT\Support\Services\EntityService;
 
 /**
  * @mixin MessageRepository
+ *
  * @property MessageRepository $repository
  */
 class MessageService extends EntityService implements MessageServiceContract

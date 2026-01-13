@@ -7,18 +7,18 @@ interface RequestContract
     /**
      * Get the validated data from the request.
      *
-     * @param array|string $keys
-     * @param mixed $default
+     * @param  array|string  $keys
+     * @param  mixed  $default
      *
      * @return array;
      */
-    function onlyValidated($keys = null, $default = null);
+    public function onlyValidated($keys = null, $default = null);
 
-    function rules(): array;
+    public function rules(): array;
 
-    function authorize();
+    public function authorize();
 
-    function validateResolved();
+    public function validateResolved();
 
-    function input();
+    public function input();
 }
