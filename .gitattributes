@@ -6,3 +6,4 @@ composer.lock export-ignore
 phpunit.xml export-ignore
 .env.testing export-ignore
 README.md export-ignore
+pint.json export-ignore

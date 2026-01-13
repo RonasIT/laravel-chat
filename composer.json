@@ -43,6 +43,7 @@
         "phpunit/phpunit": "^11.5",
         "phpunit/php-code-coverage": "^11.0",
         "php-coveralls/php-coveralls": "^2.7",
-        "orchestra/testbench": "^9.3"
+        "orchestra/testbench": "^9.3",
+        "laravel/pint": "^1.27"
     }
 }
