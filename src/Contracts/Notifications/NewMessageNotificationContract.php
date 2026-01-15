@@ -7,9 +7,9 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 
 interface NewMessageNotificationContract
 {
-    function via($notifiable): array;
+    public function via($notifiable): array;
 
-    function toBroadcast(): BroadcastMessage;
+    public function toBroadcast(): BroadcastMessage;
 
-    function setMessage(Model $message): self;
+    public function setMessage(Model $message): self;
 }

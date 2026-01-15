@@ -15,7 +15,7 @@ class MessageRepository extends BaseRepository
         $this->setModel(Message::class);
 
         $this->setAdditionalReservedFilters(
-            'owner_id'
+            'owner_id',
         );
     }
 

@@ -9,7 +9,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract;
 
-class ConversationDeletedNotification extends Notification implements ShouldBroadcast, ShouldQueue, ConversationDeletedNotificationContract
+class ConversationDeletedNotification extends Notification implements ConversationDeletedNotificationContract, ShouldBroadcast, ShouldQueue
 {
     use Queueable;
 

@@ -23,7 +23,7 @@ class SearchConversationsRequest extends BaseConversationRequest implements Sear
 
     protected function getAvailableRelations(): string
     {
-        return join(',', [
+        return implode(',', [
             'messages',
             'sender',
             'recipient',

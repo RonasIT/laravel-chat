@@ -16,7 +16,7 @@ class ConversationRepository extends BaseRepository
 
         $this->setAdditionalReservedFilters(
             'owner_id',
-            'with_unread_messages_count'
+            'with_unread_messages_count',
         );
     }
 
@@ -25,7 +25,7 @@ class ConversationRepository extends BaseRepository
         return $this
             ->getQuery([
                 'sender_id' => $senderId,
-                'recipient_id' => $recipientId
+                'recipient_id' => $recipientId,
             ])
             ->orWhere(function ($query) use ($senderId, $recipientId) {
                 $query->where('sender_id', $recipientId);

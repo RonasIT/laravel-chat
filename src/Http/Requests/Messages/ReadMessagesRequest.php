@@ -4,10 +4,10 @@ namespace RonasIT\Chat\Http\Requests\Messages;
 
 use RonasIT\Chat\Contracts\Requests\ReadMessagesRequestContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
-use RonasIT\Support\Http\BaseRequest;
 use RonasIT\Chat\Models\Message;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use RonasIT\Support\Http\BaseRequest;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ReadMessagesRequest extends BaseRequest implements ReadMessagesRequestContract
 {

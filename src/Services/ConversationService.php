@@ -13,6 +13,7 @@ use RonasIT\Support\Services\EntityService;
 
 /**
  * @mixin ConversationRepository
+ *
  * @property ConversationRepository $repository
  */
 class ConversationService extends EntityService implements ConversationServiceContract

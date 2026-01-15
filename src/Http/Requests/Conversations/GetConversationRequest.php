@@ -3,8 +3,8 @@
 namespace RonasIT\Chat\Http\Requests\Conversations;
 
 use RonasIT\Chat\Contracts\Requests\GetConversationRequestContract;
-use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
+use RonasIT\Chat\Models\Conversation;
 
 class GetConversationRequest extends BaseConversationRequest implements GetConversationRequestContract
 {
@@ -20,7 +20,7 @@ class GetConversationRequest extends BaseConversationRequest implements GetConve
 
     protected function getAvailableRelations(): string
     {
-        return join(',', [
+        return implode(',', [
             'messages',
             'sender',
             'recipient',
