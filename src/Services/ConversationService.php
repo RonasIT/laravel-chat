@@ -51,7 +51,7 @@ class ConversationService extends EntityService implements ConversationServiceCo
             return $conversation;
         });
 
-        //TODO: remove old cover from media table
+        // TODO: remove old cover from media table
     }
 
     public function delete($where): void

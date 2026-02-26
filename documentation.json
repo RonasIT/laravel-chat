@@ -461,7 +461,7 @@
 						"description": "Forbidden",
 						"schema": {
 							"example": {
-								"error": "You are not a member of this conversation."
+								"error": "This action is unauthorized."
 							}
 						}
 					},
@@ -664,7 +664,7 @@
 						"description": "Forbidden",
 						"schema": {
 							"example": {
-								"error": "You are not a member of this conversation."
+								"error": "This action is unauthorized."
 							}
 						}
 					},
