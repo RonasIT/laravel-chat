@@ -12,16 +12,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MessageController extends Controller
 {
-    public function create(CreateMessageRequestContract $request, MessageServiceContract $service): JsonResponse
+    public function create(CreateMessageRequestContract $request, MessageServiceContract $service, int $conversationId): JsonResponse
     {
-        $result = $service->create($request->onlyValidated());
+        $result = $service->create(array_merge($request->onlyValidated(), ['conversation_id' => $conversationId]));
 
         return response()->json($result);
     }
 
-    public function read(ReadMessagesRequestContract $request, MessageServiceContract $service, $fromMessageId): Response
+    public function read(ReadMessagesRequestContract $request, MessageServiceContract $service, int $lastReadMessageId): Response
     {
-        $service->markAsReadMessages($fromMessageId);
+        $service->markAsRead($lastReadMessageId);
 
         return response('', Response::HTTP_NO_CONTENT);
     }

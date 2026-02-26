@@ -2,6 +2,7 @@
 
 namespace RonasIT\Chat\Repositories;
 
+use Illuminate\Database\Eloquent\Builder;
 use RonasIT\Chat\Models\Message;
 use RonasIT\Support\Repositories\BaseRepository;
 
@@ -14,36 +15,21 @@ class MessageRepository extends BaseRepository
     {
         $this->setModel(Message::class);
 
-        $this->setAdditionalReservedFilters(
-            'owner_id',
-        );
+        $this->setAdditionalReservedFilters('member_id');
     }
 
-    public function filterByOwner(): self
+    public function getQuery($where = []): Builder
     {
-        if (!empty($this->filter['owner_id'])) {
-            $this->query->where(function ($query) {
-                $query
-                    ->orWhere('sender_id', $this->filter['owner_id'])
-                    ->orWhere('recipient_id', $this->filter['owner_id']);
-            });
-        }
+        $query = parent::getQuery($where);
 
-        return $this;
+        return $query->withIsRead();
     }
 
-    public function markAsReadMessages($recipientId, $fromMessageId): int
+    public function markAsRead(Message $message, int $userId): void
     {
-        return $this
-            ->getQuery()
-            ->where('conversation_id', function ($query) use ($fromMessageId) {
-                $query
-                    ->select('conversation_id')
-                    ->from('messages')
-                    ->where('id', $fromMessageId);
-            })
-            ->where('recipient_id', $recipientId)
-            ->where('id', '<=', $fromMessageId)
-            ->update(['is_read' => true]);
+        $message
+            ->conversation
+            ->members()
+            ->updateExistingPivot($userId, ['last_read_message_id' => $message->id]);
     }
 }

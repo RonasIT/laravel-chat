@@ -19,9 +19,10 @@ class ChatRouter
 
             $defaultOptions = [
                 'conversations_search' => true,
-                'conversations_delete' => true,
                 'conversations_get' => true,
-                'conversations_get_by_user' => true,
+                'conversations_update' => true,
+                'conversations_delete' => true,
+                'conversations_get_or_create_private' => true,
                 'messages_search' => true,
                 'messages_create' => true,
                 'messages_read' => true,
@@ -36,13 +37,14 @@ class ChatRouter
             $this->controller(ConversationController::class)->group(function () use ($defaultOptions) {
                 when($defaultOptions['conversations_search'], fn () => $this->get('conversations', 'search')->name('conversations.search'));
                 when($defaultOptions['conversations_get'], fn () => $this->get('conversations/{id}', 'get')->name('conversations.get'));
+                when($defaultOptions['conversations_update'], fn () => $this->put('conversations/{id}', 'update')->name('conversations.update'));
                 when($defaultOptions['conversations_delete'], fn () => $this->delete('conversations/{id}', 'delete')->name('conversations.delete'));
-                when($defaultOptions['conversations_get_by_user'], fn () => $this->get('users/{userId}/conversation', 'getByUserId')->name('conversations.get_by_user_id'));
+                when($defaultOptions['conversations_get_or_create_private'], fn () => $this->post('conversations/private', 'getOrCreatePrivate')->name('conversations.get_or_create_private'));
             });
 
             $this->controller(MessageController::class)->group(function () use ($defaultOptions) {
                 when($defaultOptions['messages_search'], fn () => $this->get('messages', 'search')->name('messages.search'));
-                when($defaultOptions['messages_create'], fn () => $this->post('messages', 'create')->name('messages.create'));
+                when($defaultOptions['messages_create'], fn () => $this->post('messages/{conversation_id}', 'create')->name('messages.create'));
                 when($defaultOptions['messages_read'], fn () => $this->put('messages/{id}/read', 'read')->name('messages.read'));
             });
         };

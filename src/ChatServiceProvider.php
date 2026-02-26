@@ -8,17 +8,19 @@ use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract
 use RonasIT\Chat\Contracts\Notifications\NewMessageNotificationContract;
 use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
 use RonasIT\Chat\Contracts\Requests\DeleteConversationRequestContract;
-use RonasIT\Chat\Contracts\Requests\GetConversationByUserIdRequestContract;
 use RonasIT\Chat\Contracts\Requests\GetConversationRequestContract;
+use RonasIT\Chat\Contracts\Requests\GetOrCreatePrivateConversationRequestContract;
 use RonasIT\Chat\Contracts\Requests\ReadMessagesRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchConversationsRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchMessagesRequestContract;
+use RonasIT\Chat\Contracts\Requests\UpdateConversationRequestContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
 use RonasIT\Chat\Http\Requests\Conversations\DeleteConversationRequest;
-use RonasIT\Chat\Http\Requests\Conversations\GetConversationByUserIdRequest;
 use RonasIT\Chat\Http\Requests\Conversations\GetConversationRequest;
+use RonasIT\Chat\Http\Requests\Conversations\GetOrCreatePrivateConversationRequest;
 use RonasIT\Chat\Http\Requests\Conversations\SearchConversationsRequest;
+use RonasIT\Chat\Http\Requests\Conversations\UpdateConversationRequest;
 use RonasIT\Chat\Http\Requests\Messages\CreateMessageRequest;
 use RonasIT\Chat\Http\Requests\Messages\ReadMessagesRequest;
 use RonasIT\Chat\Http\Requests\Messages\SearchMessagesRequest;
@@ -50,7 +52,8 @@ class ChatServiceProvider extends ServiceProvider
     {
         $this->app->bind(CreateMessageRequestContract::class, CreateMessageRequest::class);
         $this->app->bind(GetConversationRequestContract::class, GetConversationRequest::class);
-        $this->app->bind(GetConversationByUserIdRequestContract::class, GetConversationByUserIdRequest::class);
+        $this->app->bind(GetOrCreatePrivateConversationRequestContract::class, GetOrCreatePrivateConversationRequest::class);
+        $this->app->bind(UpdateConversationRequestContract::class, UpdateConversationRequest::class);
         $this->app->bind(DeleteConversationRequestContract::class, DeleteConversationRequest::class);
         $this->app->bind(SearchConversationsRequestContract::class, SearchConversationsRequest::class);
         $this->app->bind(SearchMessagesRequestContract::class, SearchMessagesRequest::class);

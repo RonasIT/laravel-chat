@@ -35,24 +35,26 @@ class MessageService extends EntityService implements MessageServiceContract
     public function create(array $data): Model
     {
         $message = DB::transaction(function () use ($data) {
-            $conversation = $this->conversationService->getOrCreateConversationBetweenUsers(Auth::id(), $data['recipient_id']);
-
             $message = $this->repository
-                ->with(['recipient', 'sender'])
+                ->with([
+                    'sender',
+                    'conversation.members',
+                ])
                 ->create([
-                    'conversation_id' => $conversation->id,
+                    'conversation_id' => $data['conversation_id'],
                     'sender_id' => Auth::id(),
-                    'recipient_id' => $data['recipient_id'],
                     'text' => $data['text'],
                     'attachment_id' => Arr::get($data, 'attachment_id'),
                 ]);
 
-            $this->conversationService->update($conversation->id, ['last_updated_at' => Carbon::now()]);
+            $this->conversationService->update($data['conversation_id'], ['last_updated_at' => Carbon::now()]);
 
             return $message;
         });
 
-        $this->notifyUser($message, collect([$message->recipient]));
+        $recipients = $message->conversation->members->reject(fn ($member) => $member->id === $member->sender_id);
+
+        $this->notifyUser($message, $recipients);
 
         return $message;
     }
@@ -60,12 +62,12 @@ class MessageService extends EntityService implements MessageServiceContract
     public function search(array $filters = []): LengthAwarePaginator
     {
         if (Auth::check()) {
-            $filters['owner_id'] = Auth::id();
+            $filters['member_id'] = Auth::id();
         }
 
         return $this
             ->searchQuery($filters)
-            ->filterByOwner()
+            ->filterBy('conversation.members.member_id', 'member_id')
             ->getSearchResults();
     }
 
@@ -76,8 +78,10 @@ class MessageService extends EntityService implements MessageServiceContract
         Notification::send($recipients, $newMessageNotification);
     }
 
-    public function markAsReadMessages($fromMessageId): int
+    public function markAsRead(int $lastReadMessageId): void
     {
-        return $this->repository->markAsReadMessages(Auth::id(), $fromMessageId);
+        $message = $this->with('conversation')->find($lastReadMessageId);
+
+        $this->repository->markAsRead($message, Auth::id());
     }
 }

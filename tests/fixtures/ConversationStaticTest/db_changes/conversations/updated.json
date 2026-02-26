@@ -1,0 +1,12 @@
+{
+    "updated": [
+        {
+            "id": 6,
+            "updated_at": "2024-01-01 00:00:00",
+            "title": "New Title",
+            "cover_id": 2
+        }
+    ],
+    "created": [],
+    "deleted": []
+}

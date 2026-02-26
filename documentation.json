@@ -4,59 +4,6 @@
 	"basePath": "\/",
 	"schemes": [],
 	"paths": {
-		"\/users\/{userId}\/conversation": {
-			"get": {
-				"tags": [
-					"users"
-				],
-				"consumes": [
-					"application\/json"
-				],
-				"produces": [
-					"application\/json"
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "userId",
-						"description": "",
-						"required": true,
-						"type": "string"
-					},
-					{
-						"in": "query",
-						"name": "with",
-						"description": "array",
-						"type": "object"
-					},
-					{
-						"in": "query",
-						"name": "with.*",
-						"description": "string, required, in:messages,sender,recipient,last_message",
-						"type": "string",
-						"required": true
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "Operation successfully done",
-						"schema": {
-							"example": {
-								"id": 3,
-								"sender_id": 3,
-								"recipient_id": 1,
-								"last_updated_at": null,
-								"created_at": "2016-10-20T11:05:00.000000Z",
-								"updated_at": "2016-10-20T11:05:00.000000Z"
-							}
-						}
-					}
-				},
-				"security": [],
-				"description": "",
-				"summary": "get conversation by user id"
-			}
-		},
 		"\/conversations\/{id}": {
 			"get": {
 				"tags": [
@@ -85,7 +32,7 @@
 					{
 						"in": "query",
 						"name": "with.*",
-						"description": "string, required, in:messages,sender,recipient,last_message",
+						"description": "string, required, in:messages,members,last_message",
 						"type": "string",
 						"required": true
 					}
@@ -96,9 +43,11 @@
 						"schema": {
 							"example": {
 								"id": 1,
-								"sender_id": 1,
-								"recipient_id": 2,
-								"last_updated_at": null,
+								"title": null,
+								"cover_id": null,
+								"creator_id": null,
+								"type": "private",
+								"last_updated_at": "2016-10-20 11:05:00",
 								"created_at": "2016-10-20T11:05:00.000000Z",
 								"updated_at": "2016-10-20T11:05:00.000000Z"
 							}
@@ -116,7 +65,7 @@
 						"description": "Forbidden",
 						"schema": {
 							"example": {
-								"error": "You are not the owner of this Conversation."
+								"error": "This action is unauthorized."
 							}
 						}
 					},
@@ -124,7 +73,7 @@
 						"description": "Unauthorized",
 						"schema": {
 							"example": {
-								"error": "Token not provided"
+								"error": "Unauthenticated."
 							}
 						}
 					}
@@ -132,6 +81,70 @@
 				"security": [],
 				"description": "",
 				"summary": "get conversation"
+			},
+			"put": {
+				"tags": [
+					"conversations"
+				],
+				"consumes": [
+					"application\/json"
+				],
+				"produces": [
+					"application\/json"
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"description": "",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"in": "body",
+						"name": "body",
+						"description": "",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/updateConversationObject"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Operation successfully done",
+						"examples": {
+							"example": ""
+						}
+					},
+					"404": {
+						"description": "This entity not found",
+						"schema": {
+							"example": {
+								"error": "Conversation does not exist."
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"schema": {
+							"example": {
+								"error": "This action is unauthorized."
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"schema": {
+							"example": {
+								"error": "Unauthenticated."
+							}
+						}
+					}
+				},
+				"security": [],
+				"description": "",
+				"summary": "update conversation"
 			},
 			"delete": {
 				"tags": [
@@ -172,7 +185,7 @@
 						"description": "Forbidden",
 						"schema": {
 							"example": {
-								"error": "You are not the owner of this Conversation."
+								"error": "This action is unauthorized."
 							}
 						}
 					},
@@ -180,7 +193,7 @@
 						"description": "Unauthorized",
 						"schema": {
 							"example": {
-								"error": "Token not provided"
+								"error": "Unauthenticated."
 							}
 						}
 					}
@@ -240,6 +253,12 @@
 					},
 					{
 						"in": "query",
+						"name": "type",
+						"description": "string, in:private,group",
+						"type": "string"
+					},
+					{
+						"in": "query",
 						"name": "with_unread_messages_count",
 						"description": "boolean",
 						"type": "boolean"
@@ -253,7 +272,7 @@
 					{
 						"in": "query",
 						"name": "with.*",
-						"description": "string, required, in:messages,sender,recipient,last_message",
+						"description": "string, required, in:messages,members,last_message",
 						"type": "string",
 						"required": true
 					}
@@ -267,18 +286,22 @@
 								"data": [
 									{
 										"id": 1,
-										"sender_id": 1,
-										"recipient_id": 2,
-										"last_updated_at": null,
+										"title": null,
+										"cover_id": null,
+										"creator_id": null,
+										"type": "private",
+										"last_updated_at": "2016-10-20 11:05:00",
 										"created_at": "2016-10-20T11:05:00.000000Z",
 										"updated_at": "2016-10-20T11:05:00.000000Z",
 										"unread_messages_count": 0
 									},
 									{
-										"id": 3,
-										"sender_id": 3,
-										"recipient_id": 1,
-										"last_updated_at": null,
+										"id": 6,
+										"title": null,
+										"cover_id": null,
+										"creator_id": 1,
+										"type": "group",
+										"last_updated_at": "2016-10-20 11:05:00",
 										"created_at": "2016-10-20T11:05:00.000000Z",
 										"updated_at": "2016-10-20T11:05:00.000000Z",
 										"unread_messages_count": 2
@@ -307,7 +330,7 @@
 								],
 								"next_page_url": null,
 								"path": "http:\/\/localhost\/conversations",
-								"per_page": 10,
+								"per_page": 15,
 								"prev_page_url": null,
 								"to": 2,
 								"total": 2
@@ -318,7 +341,7 @@
 						"description": "Unauthorized",
 						"schema": {
 							"example": {
-								"error": "Token not provided"
+								"error": "Unauthenticated."
 							}
 						}
 					}
@@ -326,6 +349,66 @@
 				"security": [],
 				"description": "",
 				"summary": "search conversations"
+			}
+		},
+		"\/conversations\/private": {
+			"post": {
+				"tags": [
+					"conversations"
+				],
+				"consumes": [
+					"application\/json"
+				],
+				"produces": [
+					"application\/json"
+				],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"description": "",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/getOrCreatePrivateConversationObject"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Operation successfully done",
+						"schema": {
+							"example": {
+								"id": 1,
+								"title": null,
+								"cover_id": null,
+								"creator_id": null,
+								"type": "private",
+								"last_updated_at": "2016-10-20 11:05:00",
+								"created_at": "2016-10-20T11:05:00.000000Z",
+								"updated_at": "2016-10-20T11:05:00.000000Z"
+							}
+						}
+					},
+					"422": {
+						"description": "Validation error",
+						"schema": {
+							"example": {
+								"error": "You cannot start a conversation with yourself."
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"schema": {
+							"example": {
+								"error": "Unauthenticated."
+							}
+						}
+					}
+				},
+				"security": [],
+				"description": "",
+				"summary": "get or create private conversation"
 			}
 		},
 		"\/messages": {
@@ -346,7 +429,7 @@
 						"description": "",
 						"required": true,
 						"schema": {
-							"$ref": "#\/definitions\/messagesObject"
+							"$ref": "#/definitions/messagesObject"
 						}
 					}
 				],
@@ -358,21 +441,10 @@
 								"id": 5,
 								"conversation_id": 3,
 								"sender_id": 1,
-								"recipient_id": 3,
 								"text": "Some message",
-								"is_read": false,
 								"created_at": "2018-11-11T11:11:11.000000Z",
 								"updated_at": "2018-11-11T11:11:11.000000Z",
 								"attachment_id": 3,
-								"recipient": {
-									"id": 3,
-									"email": "first-organisation@example.com",
-									"password": "1",
-									"role_id": 2,
-									"created_at": "2016-10-20T11:05:00.000000Z",
-									"updated_at": "2016-10-20T11:05:00.000000Z",
-									"avatar_id": 3
-								},
 								"sender": {
 									"id": 1,
 									"email": "admin@example.com",
@@ -385,11 +457,11 @@
 							}
 						}
 					},
-					"400": {
-						"description": "Bad Request",
+					"403": {
+						"description": "Forbidden",
 						"schema": {
 							"example": {
-								"error": "You cannot send a message to yourself."
+								"error": "You are not a member of this conversation."
 							}
 						}
 					},
@@ -397,7 +469,7 @@
 						"description": "Unauthorized",
 						"schema": {
 							"example": {
-								"error": "Token not provided"
+								"error": "Unauthenticated."
 							}
 						}
 					}
@@ -468,7 +540,7 @@
 					{
 						"in": "query",
 						"name": "with.*",
-						"description": "string, required, in:conversation,sender,recipient,attachment",
+						"description": "string, required, in:conversation,sender,attachment",
 						"type": "string",
 						"required": true
 					}
@@ -484,9 +556,7 @@
 										"id": 1,
 										"conversation_id": 1,
 										"sender_id": 1,
-										"recipient_id": 2,
 										"text": "New message",
-										"is_read": false,
 										"created_at": "2016-10-20T11:05:00.000000Z",
 										"updated_at": "2016-10-20T11:05:00.000000Z",
 										"attachment_id": null
@@ -495,9 +565,7 @@
 										"id": 3,
 										"conversation_id": 3,
 										"sender_id": 3,
-										"recipient_id": 1,
 										"text": "New message",
-										"is_read": true,
 										"created_at": "2017-10-20T11:05:00.000000Z",
 										"updated_at": "2016-10-20T11:05:00.000000Z",
 										"attachment_id": null
@@ -506,9 +574,7 @@
 										"id": 4,
 										"conversation_id": 1,
 										"sender_id": 1,
-										"recipient_id": 2,
 										"text": "New message",
-										"is_read": false,
 										"created_at": "2018-10-20T11:05:00.000000Z",
 										"updated_at": "2016-10-20T11:05:00.000000Z",
 										"attachment_id": null
@@ -548,7 +614,7 @@
 						"description": "Unauthorized",
 						"schema": {
 							"example": {
-								"error": "Token not provided"
+								"error": "Unauthenticated."
 							}
 						}
 					}
@@ -598,7 +664,7 @@
 						"description": "Forbidden",
 						"schema": {
 							"example": {
-								"error": "You are not the recipient of this message."
+								"error": "You are not a member of this conversation."
 							}
 						}
 					},
@@ -606,7 +672,7 @@
 						"description": "Unauthorized",
 						"schema": {
 							"example": {
-								"error": "Token not provided"
+								"error": "Unauthenticated."
 							}
 						}
 					}
@@ -618,12 +684,58 @@
 		}
 	},
 	"definitions": {
+		"updateConversationObject": {
+			"type": "object",
+			"properties": {
+				"title": {
+					"type": "string",
+					"description": "nullable"
+				},
+				"cover_id": {
+					"type": "integer",
+					"description": "nullable"
+				},
+				"member_ids": {
+					"type": "array",
+					"description": "nullable",
+					"items": {
+						"type": "integer"
+					}
+				}
+			},
+			"example": {
+				"title": "New Title",
+				"member_ids": [1, 2, 3]
+			}
+		},
+		"getOrCreatePrivateConversationObject": {
+			"type": "object",
+			"properties": {
+				"participant_id": {
+					"type": "integer",
+					"description": ""
+				},
+				"with": {
+					"type": "array",
+					"description": "nullable",
+					"items": {
+						"type": "string"
+					}
+				}
+			},
+			"required": [
+				"participant_id"
+			],
+			"example": {
+				"participant_id": 2
+			}
+		},
 		"messagesObject": {
 			"type": "object",
 			"properties": {
-				"recipient_id": {
+				"conversation_id": {
 					"type": "integer",
-					"description": "2"
+					"description": "1"
 				},
 				"text": {
 					"type": "string",
@@ -635,12 +747,12 @@
 				}
 			},
 			"required": [
-				"recipient_id",
+				"conversation_id",
 				"text"
 			],
 			"example": {
 				"text": "New message",
-				"recipient_id": 3
+				"conversation_id": 1
 			}
 		}
 	},

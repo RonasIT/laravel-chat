@@ -5,11 +5,11 @@ namespace RonasIT\Chat\Tests;
 use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RonasIT\Chat\ChatRouter;
-use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Models\Message;
 use RonasIT\Chat\Notifications\NewMessageNotification;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\ModelTestState;
+use RonasIT\Chat\Tests\Support\TableTestState;
 
 class MessageTest extends TestCase
 {
@@ -17,8 +17,8 @@ class MessageTest extends TestCase
     protected static User $secondUser;
     protected static User $someAuthUser;
 
-    protected static ModelTestState $conversationState;
     protected static ModelTestState $messageState;
+    protected static TableTestState $conversationMemberState;
 
     public function setUp(): void
     {
@@ -28,118 +28,97 @@ class MessageTest extends TestCase
         self::$secondUser ??= User::find(2);
         self::$someAuthUser ??= User::find(3);
 
-        self::$conversationState = new ModelTestState(Conversation::class);
         self::$messageState = new ModelTestState(Message::class);
+        self::$conversationMemberState = new TableTestState('conversation_member');
 
         ChatRouter::$isBlockedBaseRoutes = false;
     }
 
-    public function testCreateInExistsConversation(): void
+    public function testCreate(): void
     {
-        Notification::fake();
-
-        $data = $this->getJsonFixture('create_message_request');
-
-        $response = $this->actingAs(self::$firstUser)->json('post', '/messages', $data);
+        $response = $this->actingAs(self::$firstUser)->json('post', '/messages/1', ['text' => 'hello']);
 
         Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('create_message_response', $response->json());
-
-        self::$conversationState->assertNotChanged();
+        $this->assertEqualsFixture('create_response', $response->json());
 
         self::$messageState->assertChangesEqualsFixture('created');
     }
 
-    public function testCreateInNotExistsConversation(): void
+    public function testCreateConversationNotExists(): void
     {
-        Notification::fake();
+        $response = $this->actingAs(self::$firstUser)->json('post', '/messages/0', ['text' => 'hello']);
 
-        $data = $this->getJsonFixture('create_message_in_exists_conversation_request');
+        $response->assertNotFound();
 
-        $response = $this->actingAs(self::$secondUser)->json('post', '/messages', $data);
+        $response->assertJson(['message' => 'Conversation does not exist']);
 
-        $response->assertOk();
+        self::$messageState->assertNotChanged();
 
-        Notification::assertSentTo(User::find(5), NewMessageNotification::class);
-
-        $this->assertEqualsFixture('create_message_in_exists_conversation_response', $response->json());
-
-        self::$conversationState->assertChangesEqualsFixture('created');
-
-        self::$messageState->assertChangesEqualsFixture('created_with_new_conversation');
+        Notification::assertNothingSent();
     }
 
-    public function testCreateSelfMessage(): void
+    public function testCreateNonMember(): void
     {
-        $data = $this->getJsonFixture('create_message_request');
+        $response = $this->actingAs(self::$someAuthUser)->json('post', '/messages/1');
 
-        $response = $this->actingAs(self::$secondUser)->json('post', '/messages', $data);
+        $response->assertForbidden();
 
-        $response->assertBadRequest();
-
-        $response->assertJson(['message' => 'You cannot send a message to yourself.']);
-
-        self::$conversationState->assertNotChanged();
+        $response->assertJson(['message' => 'This action is unauthorized.']);
 
         self::$messageState->assertNotChanged();
     }
 
     public function testCreateWithAttachment(): void
     {
-        Notification::fake();
+        $data = $this->getJsonFixture('create_with_attachment_request');
 
-        $data = $this->getJsonFixture('create_message_with_attachment_request');
-
-        $response = $this->actingAs(self::$firstUser)->json('post', '/messages', $data);
+        $response = $this->actingAs(self::$firstUser)->json('post', '/messages/1', $data);
 
         Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('create_message_with_attachment_response', $response->json());
-
-        self::$conversationState->assertNotChanged();
+        $this->assertEqualsFixture('create_with_attachment_response', $response->json());
 
         self::$messageState->assertChangesEqualsFixture('created_with_attachment');
     }
 
     public function testCreateNoAuth(): void
     {
-        $response = $this->postJson('/messages');
+        $response = $this->postJson('/messages/1');
 
         $response->assertUnauthorized();
 
         $response->assertJson(['message' => 'Unauthenticated.']);
 
-        self::$conversationState->assertNotChanged();
-
         self::$messageState->assertNotChanged();
     }
 
-    public function testRead()
+    public function testRead(): void
     {
-        $response = $this->actingAs(User::find(4))->json('put', '/messages/3/read');
+        $response = $this->actingAs(self::$firstUser)->json('put', '/messages/3/read');
 
         $response->assertNoContent();
 
-        self::$messageState->assertChangesEqualsFixture('read');
+        self::$conversationMemberState->assertChangesEqualsFixture('read');
+        self::$messageState->assertNotChanged();
     }
 
-    public function testNotActingRecipientRead()
+    public function testReadNonMember(): void
     {
-        $response = $this->actingAs(self::$firstUser)->json('put', '/messages/1/read');
+        $response = $this->actingAs(self::$someAuthUser)->json('put', '/messages/1/read');
 
         $response->assertForbidden();
 
-        $response->assertJson(['message' => 'You are not the recipient of this message.']);
+        $response->assertJson(['message' => 'This action is unauthorized.']);
 
         self::$messageState->assertNotChanged();
     }
 
-    public function testNotExistsRead()
+    public function testNotExistsRead(): void
     {
         $response = $this->actingAs(self::$secondUser)->json('put', '/messages/0/read');
 
@@ -150,7 +129,7 @@ class MessageTest extends TestCase
         self::$messageState->assertNotChanged();
     }
 
-    public function testReadNoAuth()
+    public function testReadNoAuth(): void
     {
         $response = $this->putJson('/messages/3/read');
 
@@ -171,7 +150,6 @@ class MessageTest extends TestCase
                     'with' => [
                         'conversation',
                         'sender',
-                        'recipient',
                         'attachment',
                     ],
                 ],
@@ -199,7 +177,7 @@ class MessageTest extends TestCase
     }
 
     #[DataProvider('getSearchFilters')]
-    public function testSearch(array $filter, string $fixture)
+    public function testSearch(array $filter, string $fixture): void
     {
         $response = $this->actingAs(self::$firstUser)->json('get', '/messages', $filter);
 
@@ -208,7 +186,7 @@ class MessageTest extends TestCase
         $this->assertEqualsFixture($fixture, $response->json());
     }
 
-    public function testSearchNoAuth()
+    public function testSearchNoAuth(): void
     {
         $response = $this->getJson('/messages');
 

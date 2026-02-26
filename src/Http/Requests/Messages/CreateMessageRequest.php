@@ -3,18 +3,25 @@
 namespace RonasIT\Chat\Http\Requests\Messages;
 
 use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
+use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
+use RonasIT\Chat\Models\Conversation;
 use RonasIT\Support\Http\BaseRequest;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CreateMessageRequest extends BaseRequest implements CreateMessageRequestContract
 {
+    protected ?Conversation $conversation;
+
+    public function authorize(): bool
+    {
+        return $this->conversation->isMember($this->user());
+    }
+
     public function rules(): array
     {
         $mediaTableName = app(config('chat.classes.media_model'))->getTable();
-        $userTableName = app(config('chat.classes.user_model'))->getTable();
 
         return [
-            'recipient_id' => "required|integer|exists:{$userTableName},id",
             'text' => 'string|required',
             'attachment_id' => "integer|exists:{$mediaTableName},id",
         ];
@@ -22,15 +29,22 @@ class CreateMessageRequest extends BaseRequest implements CreateMessageRequestCo
 
     public function validateResolved(): void
     {
-        parent::validateResolved();
+        $this->init();
 
-        $this->checkSelfMessage();
+        $this->checkConversationExists();
+
+        parent::validateResolved();
     }
 
-    protected function checkSelfMessage(): void
+    protected function init(): void
     {
-        if ($this->user()->id === $this->input('recipient_id')) {
-            throw new BadRequestHttpException(__('chat::validation.exceptions.self_message'));
+        $this->conversation = app(ConversationServiceContract::class)->find($this->route('conversation_id'));
+    }
+
+    protected function checkConversationExists(): void
+    {
+        if (empty($this->conversation)) {
+            throw new NotFoundHttpException(__('chat::validation.exceptions.not_found', ['entity' => 'Conversation']));
         }
     }
 }

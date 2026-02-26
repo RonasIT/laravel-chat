@@ -3,20 +3,10 @@
 namespace RonasIT\Chat\Http\Requests\Conversations;
 
 use RonasIT\Support\Http\BaseRequest;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BaseConversationRequest extends BaseRequest
 {
-    protected function checkConversationOwnership(): void
-    {
-        $conversationOwnersIdsCollection = collect([$this->conversation['sender_id'], $this->conversation['recipient_id']]);
-
-        if (!$conversationOwnersIdsCollection->contains($this->user()->id)) {
-            throw new AccessDeniedHttpException(__('chat::validation.exceptions.not_owner', ['entity' => 'Conversation']));
-        }
-    }
-
     protected function checkConversationExists(): void
     {
         if (empty($this->conversation)) {

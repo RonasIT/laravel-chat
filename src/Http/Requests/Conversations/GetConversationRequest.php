@@ -10,6 +10,11 @@ class GetConversationRequest extends BaseConversationRequest implements GetConve
 {
     protected ?Conversation $conversation;
 
+    public function authorize(): bool
+    {
+        return $this->conversation->isMember($this->user());
+    }
+
     public function rules(): array
     {
         return [
@@ -22,9 +27,9 @@ class GetConversationRequest extends BaseConversationRequest implements GetConve
     {
         return implode(',', [
             'messages',
-            'sender',
-            'recipient',
+            'members',
             'last_message',
+            'cover',
         ]);
     }
 
@@ -32,11 +37,9 @@ class GetConversationRequest extends BaseConversationRequest implements GetConve
     {
         $this->init();
 
-        parent::validateResolved();
-
         $this->checkConversationExists();
 
-        $this->checkConversationOwnership();
+        parent::validateResolved();
     }
 
     protected function init(): void

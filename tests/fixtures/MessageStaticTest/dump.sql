@@ -9,16 +9,23 @@ INSERT INTO media(id, name, owner_id, is_public, link, preview_id, meta, created
     (1, 'preview_Product main photo', 1 , true, 'http://localhost/test_preview_1.jpg', null, '{}', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
     (2, 'preview_Category Photo photo', 1, false, 'http://localhost/test_preview_2.jpg', null, '{}', '2016-10-20 11:05:00', '2016-10-20 11:05:00');
 
-INSERT INTO conversations(id, sender_id, recipient_id, last_updated_at, created_at, updated_at) VALUES
-    (1, 1, 2, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
-    (2, 1, 3, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
-    (3, 1, 4, '2016-10-20 11:05:00', '2016-10-20 11:05:00',  '2016-10-20 11:05:00'),
-    (4, 1, 5, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
-    (5, 2, 3, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00');
+INSERT INTO conversations(id, type, last_updated_at, created_at, updated_at) VALUES
+    (1, 'private', '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
+    (2, 'private', '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
+    (3, 'private', '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
+    (4, 'private', '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
+    (5, 'private', '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00');
 
-INSERT INTO messages(id, sender_id, recipient_id, conversation_id, text, is_read, updated_at, created_at, attachment_id) VALUES
-    (1, 1, 2, 1, 'hi', true, '2016-10-20 11:05:00', '2016-10-20 11:05:00', 1),
-    (2, 1, 3, 2, 'hi', true, '2016-10-20 11:05:00', '2016-10-20 11:05:00', null),
-    (3, 1, 4, 3, 'hi', false, '2016-10-20 11:05:00', '2016-10-20 11:05:00', null),
-    (4, 1, 5, 4, 'hi', false, '2016-10-20 11:05:00', '2016-10-20 11:05:00', null),
-    (5, 2, 3, 5, 'hi', false, '2016-10-20 11:05:00', '2016-10-20 11:05:00', null);
+INSERT INTO conversation_member(id, conversation_id, member_id, last_read_message_id) VALUES
+    (1,1, 1, null),
+    (2,1, 2, null),
+    (3,2, 1, null),
+    (4,2, 2, null);
+
+INSERT INTO messages(id, sender_id, conversation_id, text, updated_at, created_at, attachment_id) VALUES
+    (1, 1, 1, 'hi', '2016-10-20 11:05:00', '2016-10-20 11:05:00', 1),
+    (2, 1, 1, 'hi', '2016-10-20 11:05:00', '2016-10-20 11:05:00', null),
+    (3, 2, 1, 'hi', '2016-10-20 11:05:00', '2016-10-20 11:05:00', null),
+    (4, 1, 2, 'hi', '2016-10-20 11:05:00', '2016-10-20 11:05:00', null);
+
+UPDATE conversation_member SET last_read_message_id = 1 WHERE id = 2

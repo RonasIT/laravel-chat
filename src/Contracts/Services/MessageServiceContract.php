@@ -14,5 +14,5 @@ interface MessageServiceContract
 
     public function notifyUser(Model $message, Collection $recipients): void;
 
-    public function markAsReadMessages(int $fromMessageId): int;
+    public function markAsRead(int $lastReadMessageId): void;
 }

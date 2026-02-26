@@ -1,0 +1,25 @@
+{
+    "updated": [],
+    "created": [
+        {
+            "id": 6,
+            "conversation_id": 6,
+            "member_id": 3,
+            "last_read_message_id": null
+        },
+        {
+            "id": 7,
+            "conversation_id": 6,
+            "member_id": 4,
+            "last_read_message_id": null
+        }
+    ],
+    "deleted": [
+        {
+            "id": 4,
+            "conversation_id": 6,
+            "member_id": 2,
+            "last_read_message_id": null
+        }
+    ]
+}

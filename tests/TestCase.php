@@ -6,9 +6,12 @@ use Carbon\Carbon;
 use Dotenv\Dotenv;
 use Illuminate\Notifications\Channels\BroadcastChannel;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Notification;
 use Orchestra\Testbench\TestCase as BaseTest;
 use RonasIT\Chat\ChatServiceProvider;
+use RonasIT\Chat\Contracts\Services\ConversationMemberServiceContract;
 use RonasIT\Chat\Tests\Models\User;
+use RonasIT\Chat\Tests\Services\UserService;
 use RonasIT\Media\Models\Media;
 use RonasIT\Support\Traits\FixturesTrait;
 
@@ -37,6 +40,10 @@ class TestCase extends BaseTest
         }
 
         Carbon::setTestNow(Carbon::create(2024));
+
+        Notification::fake();
+
+        $this->app->bind(ConversationMemberServiceContract::class, UserService::class);
     }
 
     public function getFixturePath(string $fixtureName): string

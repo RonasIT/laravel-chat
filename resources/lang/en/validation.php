@@ -14,9 +14,7 @@ return [
     */
 
     'exceptions' => [
-        'self_message' => 'You cannot send a message to yourself.',
-        'not_message_recipient' => 'You are not the recipient of this message.',
         'not_found' => ':entity does not exist',
-        'not_owner' => 'You are not the owner of this Conversation.',
+        'self_conversation' => 'You cannot start a conversation with yourself.',
     ],
 ];
