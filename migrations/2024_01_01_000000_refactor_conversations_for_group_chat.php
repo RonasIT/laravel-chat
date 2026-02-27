@@ -72,11 +72,13 @@ return new class extends Migration
         Schema::table('conversations', function (Blueprint $table) use ($usersTableName) {
             $table
                 ->foreignId('sender_id')
+                ->nullable()
                 ->references('id')
                 ->on($usersTableName)
                 ->cascadeOnDelete();
             $table
                 ->foreignId('recipient_id')
+                ->nullable()
                 ->references('id')
                 ->on($usersTableName)
                 ->cascadeOnDelete();
