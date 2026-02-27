@@ -4,8 +4,10 @@ namespace RonasIT\Chat\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use RonasIT\Chat\Enums\Conversation\TypeEnum;
 use RonasIT\Support\Traits\ModelTrait;
 
 class Conversation extends Model
@@ -13,11 +15,17 @@ class Conversation extends Model
     use ModelTrait;
 
     protected $fillable = [
-        'sender_id',
-        'recipient_id',
+        'creator_id',
+        'type',
+        'title',
+        'cover_id',
     ];
 
     protected $hidden = ['pivot'];
+
+    protected $casts = [
+        'type' => TypeEnum::class,
+    ];
 
     public function last_message(): HasOne
     {
@@ -29,13 +37,33 @@ class Conversation extends Model
         return $this->hasMany(Message::class);
     }
 
-    public function sender(): BelongsTo
+    public function creator(): BelongsTo
     {
         return $this->belongsTo(config('chat.classes.user_model'));
     }
 
-    public function recipient(): BelongsTo
+    public function members(): BelongsToMany
     {
-        return $this->belongsTo(config('chat.classes.user_model'));
+        return $this->belongsToMany(
+            related: config('chat.classes.user_model'),
+            table: 'conversation_member',
+            foreignPivotKey: 'conversation_id',
+            relatedPivotKey: 'member_id',
+        );
+    }
+
+    public function cover(): BelongsTo
+    {
+        return $this->belongsTo(config('chat.classes.media_model'), 'cover_id');
+    }
+
+    public function isMember(Model $member): bool
+    {
+        return $this->members()->where('member_id', $member->id)->exists();
+    }
+
+    public function isCreator(Model $member): bool
+    {
+        return $this->getAttribute('creator_id') === $member->id;
     }
 }

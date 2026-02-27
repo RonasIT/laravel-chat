@@ -4,6 +4,7 @@ namespace RonasIT\Chat\Http\Requests\Conversations;
 
 use RonasIT\Chat\Contracts\Requests\DeleteConversationRequestContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
+use RonasIT\Chat\Enums\Conversation\TypeEnum;
 use RonasIT\Chat\Models\Conversation;
 
 class DeleteConversationRequest extends BaseConversationRequest implements DeleteConversationRequestContract
@@ -18,11 +19,19 @@ class DeleteConversationRequest extends BaseConversationRequest implements Delet
 
         $this->checkConversationExists();
 
-        $this->checkConversationOwnership();
+        $this->checkCanDeleteConversation();
     }
 
     protected function init(): void
     {
         $this->conversation = app(ConversationServiceContract::class)->find($this->route('id'));
+    }
+
+    protected function checkCanDeleteConversation(): void
+    {
+        match ($this->conversation->type) {
+            TypeEnum::Private => $this->checkConversationMembership(),
+            TypeEnum::Group => $this->checkConversationCreatorship(),
+        };
     }
 }

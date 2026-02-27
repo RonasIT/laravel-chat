@@ -106,6 +106,40 @@ class MessageTest extends TestCase
         self::$messageState->assertChangesEqualsFixture('created_with_attachment');
     }
 
+    public function testCreateWithConversationId(): void
+    {
+        Notification::fake();
+
+        $data = $this->getJsonFixture('create_message_with_conversation_id_request');
+
+        $response = $this->actingAs(self::$firstUser)->json('post', '/messages', $data);
+
+        Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture('create_message_with_conversation_id_response', $response->json());
+
+        self::$conversationState->assertNotChanged();
+
+        self::$messageState->assertChangesEqualsFixture('created_with_conversation_id');
+    }
+
+    public function testCreateAsNonMember(): void
+    {
+        $data = $this->getJsonFixture('create_message_with_conversation_id_request');
+
+        $response = $this->actingAs(self::$someAuthUser)->json('post', '/messages', $data);
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'You are not a member of this conversation.']);
+
+        self::$conversationState->assertNotChanged();
+
+        self::$messageState->assertNotChanged();
+    }
+
     public function testCreateNoAuth(): void
     {
         $response = $this->postJson('/messages');
@@ -117,46 +151,6 @@ class MessageTest extends TestCase
         self::$conversationState->assertNotChanged();
 
         self::$messageState->assertNotChanged();
-    }
-
-    public function testRead()
-    {
-        $response = $this->actingAs(User::find(4))->json('put', '/messages/3/read');
-
-        $response->assertNoContent();
-
-        self::$messageState->assertChangesEqualsFixture('read');
-    }
-
-    public function testNotActingRecipientRead()
-    {
-        $response = $this->actingAs(self::$firstUser)->json('put', '/messages/1/read');
-
-        $response->assertForbidden();
-
-        $response->assertJson(['message' => 'You are not the recipient of this message.']);
-
-        self::$messageState->assertNotChanged();
-    }
-
-    public function testNotExistsRead()
-    {
-        $response = $this->actingAs(self::$secondUser)->json('put', '/messages/0/read');
-
-        $response->assertNotFound();
-
-        $response->assertJson(['message' => 'Message does not exist']);
-
-        self::$messageState->assertNotChanged();
-    }
-
-    public function testReadNoAuth()
-    {
-        $response = $this->putJson('/messages/3/read');
-
-        $response->assertUnauthorized();
-
-        $response->assertJson(['message' => 'Unauthenticated.']);
     }
 
     public static function getSearchFilters(): array
@@ -171,7 +165,6 @@ class MessageTest extends TestCase
                     'with' => [
                         'conversation',
                         'sender',
-                        'recipient',
                         'attachment',
                     ],
                 ],

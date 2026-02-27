@@ -2,6 +2,7 @@
 
 namespace RonasIT\Chat\Repositories;
 
+use RonasIT\Chat\Enums\Conversation\TypeEnum;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Support\Repositories\BaseRepository;
 
@@ -14,49 +15,20 @@ class ConversationRepository extends BaseRepository
     {
         $this->setModel(Conversation::class);
 
-        $this->setAdditionalReservedFilters(
-            'owner_id',
-            'with_unread_messages_count',
-        );
+        $this->setAdditionalReservedFilters('member_id');
     }
 
-    public function getConversationBetweenUsers(int $senderId, int $recipientId): ?Conversation
+    public function getPrivateBetweenUsers(int $firstMemberId, int $secondMemberId): ?Conversation
     {
         return $this
-            ->getQuery([
-                'sender_id' => $senderId,
-                'recipient_id' => $recipientId,
-            ])
-            ->orWhere(function ($query) use ($senderId, $recipientId) {
-                $query->where('sender_id', $recipientId);
-                $query->where('recipient_id', $senderId);
-            })
+            ->getQuery(['type' => TypeEnum::Private->value])
+            ->whereHas('members', fn ($query) => $query->where('member_id', $firstMemberId))
+            ->whereHas('members', fn ($query) => $query->where('member_id', $secondMemberId))
             ->first();
     }
 
-    public function filterByOwner(): self
+    public function attachMembers(Conversation $conversation, array $memberIds): void
     {
-        if (!empty($this->filter['owner_id'])) {
-            $this->query->where(function ($query) {
-                $query
-                    ->orWhere('sender_id', $this->filter['owner_id'])
-                    ->orWhere('recipient_id', $this->filter['owner_id']);
-            });
-        }
-
-        return $this;
-    }
-
-    public function withUnreadMessagesCount(): self
-    {
-        if (!empty($this->filter['with_unread_messages_count']) && !empty($this->filter['owner_id'])) {
-            $this->query->withCount(['messages as unread_messages_count' => function ($query) {
-                $query
-                    ->where('recipient_id', $this->filter['owner_id'])
-                    ->where('is_read', false);
-            }]);
-        }
-
-        return $this;
+        $conversation->members()->attach($memberIds);
     }
 }

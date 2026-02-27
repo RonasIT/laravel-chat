@@ -12,6 +12,6 @@ class GetConversationByUserIdRequest extends GetConversationRequest implements G
         $userId = $this->route('userId');
         $authId = $this->user()->id;
 
-        $this->conversation = app(ConversationServiceContract::class)->getConversationBetweenUsers($userId, $authId);
+        $this->conversation = app(ConversationServiceContract::class)->getPrivateBetweenUsers($userId, $authId);
     }
 }

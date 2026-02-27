@@ -48,9 +48,10 @@ class ConversationTest extends TestCase
             data: [
                 'with' => [
                     'messages',
-                    'sender',
-                    'recipient',
+                    'creator',
+                    'members',
                     'last_message',
+                    'cover',
                 ],
             ],
         );
@@ -75,7 +76,7 @@ class ConversationTest extends TestCase
 
         $response->assertForbidden();
 
-        $response->assertJson(['message' => 'You are not the owner of this Conversation.']);
+        $response->assertJson(['message' => 'You are not a member of this conversation.']);
     }
 
     public function testGetNoAuth()
@@ -116,7 +117,7 @@ class ConversationTest extends TestCase
 
     public function testGetBetweenUsersWhoDontHaveConversations()
     {
-        $response = $this->actingAs(self::$recipient)->json('get', 'users/3/conversation');
+        $response = $this->actingAs(self::$sender)->json('get', 'users/3/conversation');
 
         $response->assertNotFound();
 
@@ -164,7 +165,7 @@ class ConversationTest extends TestCase
 
         $response->assertForbidden();
 
-        $response->assertJson(['message' => 'You are not the owner of this Conversation.']);
+        $response->assertJson(['message' => 'You are not a member of this conversation.']);
 
         self::$conversationState->assertNotChanged();
     }
@@ -191,6 +192,31 @@ class ConversationTest extends TestCase
         self::$conversationState->assertNotChanged();
     }
 
+    public function testDeleteGroupByCreator()
+    {
+        Notification::fake();
+
+        $response = $this->actingAs(self::$sender)->json('delete', '/conversations/6');
+
+        $response->assertNoContent();
+
+        Notification::assertSentTo(self::$recipient, ConversationDeletedNotification::class);
+        Notification::assertSentTo(self::$someAuthUser, ConversationDeletedNotification::class);
+
+        self::$conversationState->assertChangesEqualsFixture('deleted_group');
+    }
+
+    public function testDeleteGroupByNonCreator()
+    {
+        $response = $this->actingAs(self::$recipient)->json('delete', '/conversations/6');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'You are not the creator of this Conversation.']);
+
+        self::$conversationState->assertNotChanged();
+    }
+
     public static function getSearchFilters(): array
     {
         return [
@@ -202,9 +228,10 @@ class ConversationTest extends TestCase
                 'filter' => [
                     'with' => [
                         'messages',
-                        'sender',
-                        'recipient',
+                        'creator',
+                        'members',
                         'last_message',
+                        'cover',
                     ],
                 ],
                 'fixture' => 'search_with_relations',
@@ -215,12 +242,6 @@ class ConversationTest extends TestCase
                     'per_page' => 2,
                 ],
                 'fixture' => 'search_page_per_page',
-            ],
-            [
-                'filter' => [
-                    'with_unread_messages_count' => true,
-                ],
-                'fixture' => 'search_with_unread_messages_count',
             ],
             [
                 'filter' => [

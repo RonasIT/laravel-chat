@@ -25,9 +25,10 @@ class SearchConversationsRequest extends BaseConversationRequest implements Sear
     {
         return implode(',', [
             'messages',
-            'sender',
-            'recipient',
+            'creator',
+            'members',
             'last_message',
+            'cover',
         ]);
     }
 }

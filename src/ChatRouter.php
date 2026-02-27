@@ -24,7 +24,6 @@ class ChatRouter
                 'conversations_get_by_user' => true,
                 'messages_search' => true,
                 'messages_create' => true,
-                'messages_read' => true,
             ];
 
             if (!empty($options)) {
@@ -43,7 +42,6 @@ class ChatRouter
             $this->controller(MessageController::class)->group(function () use ($defaultOptions) {
                 when($defaultOptions['messages_search'], fn () => $this->get('messages', 'search')->name('messages.search'));
                 when($defaultOptions['messages_create'], fn () => $this->post('messages', 'create')->name('messages.create'));
-                when($defaultOptions['messages_read'], fn () => $this->put('messages/{id}/read', 'read')->name('messages.read'));
             });
         };
     }

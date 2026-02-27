@@ -34,25 +34,30 @@ class MessageService extends EntityService implements MessageServiceContract
 
     public function create(array $data): Model
     {
-        $message = DB::transaction(function () use ($data) {
-            $conversation = $this->conversationService->getOrCreateConversationBetweenUsers(Auth::id(), $data['recipient_id']);
+        list($message, $conversation) = DB::transaction(function () use ($data) {
+            $conversation = (Arr::has($data, 'recipient_id'))
+                ? $this->conversationService->getOrCreatePrivateBetweenUsers(Auth::id(), $data['recipient_id'])
+                : $this->conversationService->find($data['conversation_id']);
 
             $message = $this->repository
-                ->with(['recipient', 'sender'])
+                ->with('sender')
                 ->create([
                     'conversation_id' => $conversation->id,
                     'sender_id' => Auth::id(),
-                    'recipient_id' => $data['recipient_id'],
                     'text' => $data['text'],
                     'attachment_id' => Arr::get($data, 'attachment_id'),
                 ]);
 
-            $this->conversationService->update($conversation->id, ['last_updated_at' => Carbon::now()]);
+            $conversation = $this->conversationService
+                ->with('members')
+                ->update($conversation->id, ['last_updated_at' => Carbon::now()]);
 
-            return $message;
+            return [$message, $conversation];
         });
 
-        $this->notifyUser($message, collect([$message->recipient]));
+        $recipients = $conversation->members->filter(fn ($member) => $member->id !== Auth::id());
+
+        $this->notifyUser($message, $recipients);
 
         return $message;
     }
@@ -60,12 +65,12 @@ class MessageService extends EntityService implements MessageServiceContract
     public function search(array $filters = []): LengthAwarePaginator
     {
         if (Auth::check()) {
-            $filters['owner_id'] = Auth::id();
+            $filters['member_id'] = Auth::id();
         }
 
         return $this
             ->searchQuery($filters)
-            ->filterByOwner()
+            ->filterBy('conversation.members.member_id', 'member_id')
             ->getSearchResults();
     }
 
@@ -74,10 +79,5 @@ class MessageService extends EntityService implements MessageServiceContract
         $newMessageNotification = app(NewMessageNotificationContract::class)->setMessage($message);
 
         Notification::send($recipients, $newMessageNotification);
-    }
-
-    public function markAsReadMessages($fromMessageId): int
-    {
-        return $this->repository->markAsReadMessages(Auth::id(), $fromMessageId);
     }
 }
