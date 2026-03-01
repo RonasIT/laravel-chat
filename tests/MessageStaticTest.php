@@ -11,6 +11,7 @@ use RonasIT\Chat\Models\Message;
 use RonasIT\Chat\Notifications\NewMessageNotification;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\ModelTestState;
+use RonasIT\Chat\Tests\Support\TableTestState;
 
 class MessageStaticTest extends TestCase
 {
@@ -20,6 +21,7 @@ class MessageStaticTest extends TestCase
 
     protected static ModelTestState $conversationState;
     protected static ModelTestState $messageState;
+    protected static TableTestState $conversationMemberState;
 
     public function setUp(): void
     {
@@ -31,6 +33,7 @@ class MessageStaticTest extends TestCase
 
         self::$conversationState = new ModelTestState(Conversation::class);
         self::$messageState = new ModelTestState(Message::class);
+        self::$conversationMemberState = new TableTestState('conversation_member');
     }
 
     public function testEverythingDisabledExceptSearch(): void
@@ -96,6 +99,7 @@ class MessageStaticTest extends TestCase
         self::$conversationState->assertNotChanged();
 
         self::$messageState->assertChangesEqualsFixture('created');
+        self::$conversationMemberState->assertNotChanged();
     }
 
     public function testCreateInNotExistsConversation(): void
@@ -117,6 +121,7 @@ class MessageStaticTest extends TestCase
         self::$conversationState->assertChangesEqualsFixture('created');
 
         self::$messageState->assertChangesEqualsFixture('created_with_new_conversation');
+        self::$conversationMemberState->assertChangesEqualsFixture('created');
     }
 
     public function testCreateSelfMessage(): void
@@ -176,6 +181,7 @@ class MessageStaticTest extends TestCase
         self::$conversationState->assertNotChanged();
 
         self::$messageState->assertChangesEqualsFixture('created_with_conversation_id');
+        self::$conversationMemberState->assertNotChanged();
     }
 
     public function testCreateAsNonMember(): void

@@ -9,6 +9,7 @@ use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Notifications\ConversationDeletedNotification;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\ModelTestState;
+use RonasIT\Chat\Tests\Support\TableTestState;
 
 class ConversationTest extends TestCase
 {
@@ -17,6 +18,7 @@ class ConversationTest extends TestCase
     protected static User $someAuthUser;
 
     protected static ModelTestState $conversationState;
+    protected static TableTestState $conversationMemberState;
 
     public function setUp(): void
     {
@@ -27,6 +29,7 @@ class ConversationTest extends TestCase
         self::$someAuthUser ??= User::find(3);
 
         self::$conversationState = new ModelTestState(Conversation::class);
+        self::$conversationMemberState = new TableTestState('conversation_member');
 
         ChatRouter::$isBlockedBaseRoutes = false;
     }
@@ -144,6 +147,7 @@ class ConversationTest extends TestCase
         Notification::assertSentTo(self::$recipient, ConversationDeletedNotification::class);
 
         self::$conversationState->assertChangesEqualsFixture('deleted');
+        self::$conversationMemberState->assertChangesEqualsFixture('deleted');
     }
 
     public function testDeleteByRecipient()
@@ -157,6 +161,7 @@ class ConversationTest extends TestCase
         $response->assertNoContent();
 
         self::$conversationState->assertChangesEqualsFixture('deleted');
+        self::$conversationMemberState->assertChangesEqualsFixture('deleted');
     }
 
     public function testDeleteBySomeUser()
@@ -204,6 +209,7 @@ class ConversationTest extends TestCase
         Notification::assertSentTo(self::$someAuthUser, ConversationDeletedNotification::class);
 
         self::$conversationState->assertChangesEqualsFixture('deleted_group');
+        self::$conversationMemberState->assertChangesEqualsFixture('deleted_group');
     }
 
     public function testDeleteGroupByNonCreator()
