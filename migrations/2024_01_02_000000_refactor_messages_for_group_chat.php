@@ -19,15 +19,15 @@ return new class extends Migration
                 ->on('messages')
                 ->cascadeOnDelete();
             $table
-                ->foreignId('user_id')
+                ->foreignId('member_id')
                 ->references('id')
                 ->on($usersTableName)
                 ->cascadeOnDelete();
-            $table->unique(['message_id', 'user_id']);
+            $table->unique(['message_id', 'member_id']);
         });
 
         DB::statement('
-            INSERT INTO read_messages (message_id, user_id)
+            INSERT INTO read_messages (message_id, member_id)
             SELECT id, recipient_id
             FROM messages
             WHERE is_read = true
