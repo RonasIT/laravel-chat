@@ -9,7 +9,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
 use RonasIT\Chat\Contracts\Notifications\NewMessageNotificationContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
@@ -74,9 +73,13 @@ class MessageService extends EntityService implements MessageServiceContract
 
     public function notifyUser(Model $message, Collection $recipients): void
     {
-        $newMessageNotification = app(NewMessageNotificationContract::class)->setMessage($message);
-
-        Notification::send($recipients, $newMessageNotification);
+        foreach ($recipients as $recipient) {
+            $recipient->notify(
+                app(NewMessageNotificationContract::class)
+                    ->setMessage($message)
+                    ->setNotifiable($recipient)
+            );
+        }
     }
 
     public function read(int $id): void

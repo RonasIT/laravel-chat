@@ -2,6 +2,7 @@
 
 namespace RonasIT\Chat\Notifications;
 
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,6 +18,7 @@ class NewMessageNotification extends Notification implements NewMessageNotificat
 
     protected Model $sender;
     protected Model $message;
+    protected Model $notifiable;
 
     public function __construct()
     {
@@ -28,6 +30,18 @@ class NewMessageNotification extends Notification implements NewMessageNotificat
         $this->message = $message;
 
         return $this;
+    }
+
+    public function setNotifiable(Model $notifiable): self
+    {
+        $this->notifiable = $notifiable;
+
+        return $this;
+    }
+
+    public function broadcastOn(): array
+    {
+        return [new PrivateChannel("conversation.{$this->notifiable->id}")];
     }
 
     public function via($notifiable): array

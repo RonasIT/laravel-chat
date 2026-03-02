@@ -12,4 +12,6 @@ interface NewMessageNotificationContract
     public function toBroadcast(): BroadcastMessage;
 
     public function setMessage(Model $message): self;
+
+    public function setNotifiable(Model $notifiable): self;
 }
