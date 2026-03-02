@@ -37,4 +37,6 @@ INSERT INTO messages(id, sender_id, conversation_id, text, attachment_id, update
     (6, 3, 5, 'hi', null, '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
     (7, 3, 5, 'hi', null, '2016-10-20 11:05:00', '2016-10-20 11:05:00');
 
-INSERT INTO read_messages(id, message_id, member_id, created_at, updated_at) VALUES (1, 2, 3, '2016-10-20 11:05:00', '2016-10-20 11:05:00');
+INSERT INTO read_messages(id, message_id, member_id, created_at, updated_at) VALUES
+    (1, 2, 1, '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
+    (2, 2, 3, '2016-10-20 11:05:00', '2016-10-20 11:05:00');

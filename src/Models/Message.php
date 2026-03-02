@@ -2,6 +2,7 @@
 
 namespace RonasIT\Chat\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -33,6 +34,14 @@ class Message extends Model
     public function attachment(): BelongsTo
     {
         return $this->belongsTo(config('chat.classes.media_model'), 'attachment_id');
+    }
+
+    public function scopeWithIsRead(Builder $query): Builder
+    {
+        return $query->withExists([
+            'members_who_read_message as is_read' => fn ($query) => $query
+                ->whereColumn('read_messages.member_id', '!=', 'messages.sender_id'),
+        ]);
     }
 
     public function members_who_read_message(): BelongsToMany

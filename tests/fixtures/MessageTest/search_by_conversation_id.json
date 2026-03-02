@@ -8,7 +8,8 @@
             "text": "hi",
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
-            "attachment_id": 1
+            "attachment_id": 1,
+            "is_read": false
         }
     ],
     "first_page_url": "http:\/\/localhost\/messages?page=1",
