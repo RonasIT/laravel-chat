@@ -13,4 +13,6 @@ interface MessageServiceContract
     public function search(array $filters = []): LengthAwarePaginator;
 
     public function notifyUser(Model $message, Collection $recipients): void;
+
+    public function read(int $id): void;
 }

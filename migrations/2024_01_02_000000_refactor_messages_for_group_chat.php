@@ -24,6 +24,7 @@ return new class extends Migration
                 ->on($usersTableName)
                 ->cascadeOnDelete();
             $table->unique(['message_id', 'member_id']);
+            $table->timestamps();
         });
 
         DB::statement('

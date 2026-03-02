@@ -11,4 +11,5 @@ enum ChatRouteActionEnum: string
 
     case MessageSearch = 'messages_search';
     case MessageCreate = 'messages_create';
+    case MessageRead = 'messages_read';
 }

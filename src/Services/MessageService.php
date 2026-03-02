@@ -23,13 +23,11 @@ use RonasIT\Support\Services\EntityService;
  */
 class MessageService extends EntityService implements MessageServiceContract
 {
-    protected ConversationService $conversationService;
-
-    public function __construct()
-    {
+    public function __construct(
+        protected readonly ConversationServiceContract $conversationService,
+        protected readonly ReadMessageService $readMessageService,
+    ) {
         $this->setRepository(MessageRepository::class);
-
-        $this->conversationService = app(ConversationServiceContract::class);
     }
 
     public function create(array $data): Model
@@ -79,5 +77,25 @@ class MessageService extends EntityService implements MessageServiceContract
         $newMessageNotification = app(NewMessageNotificationContract::class)->setMessage($message);
 
         Notification::send($recipients, $newMessageNotification);
+    }
+
+    public function read(int $id): void
+    {
+        $lastReadMessage = $this->find($id);
+
+        $unreadMessageIds = $this->getUnreadMessageIdsByUser(
+            conversationId: $lastReadMessage->conversation_id,
+            messageCreatedAt: $lastReadMessage->created_at,
+            memberId: Auth::id(),
+        );
+
+        if (empty($unreadMessageIds)) {
+            return;
+        }
+
+        $this->readMessageService->insertOrIgnore(array_map(fn ($messageId) => [
+            'message_id' => $messageId,
+            'member_id' => Auth::id(),
+        ], $unreadMessageIds));
     }
 }
