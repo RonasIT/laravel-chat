@@ -156,7 +156,6 @@ class MessageStaticTest extends TestCase
         $this->assertEqualsFixture('create_message_with_attachment_response', $response->json());
 
         self::$conversationState->assertNotChanged();
-
         self::$messageState->assertChangesEqualsFixture('created_with_attachment');
     }
 
