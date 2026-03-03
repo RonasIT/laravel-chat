@@ -17,7 +17,7 @@ class MessageRepository extends BaseRepository
         $this->setAdditionalReservedFilters('member_id');
     }
 
-    public function getUnreadMessageIdsByUser(int $conversationId, string $messageCreatedAt, int $memberId): array
+    public function getUnreadIdsByUser(int $conversationId, string $messageCreatedAt, int $memberId): array
     {
         return $this
             ->getQuery(['conversation_id' => $conversationId])

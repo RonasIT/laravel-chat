@@ -83,7 +83,7 @@ class MessageService extends EntityService implements MessageServiceContract
     {
         $lastReadMessage = $this->find($id);
 
-        $unreadMessageIds = $this->getUnreadMessageIdsByUser(
+        $unreadMessageIds = $this->getUnreadIdsByUser(
             conversationId: $lastReadMessage->conversation_id,
             messageCreatedAt: $lastReadMessage->created_at,
             memberId: Auth::id(),
