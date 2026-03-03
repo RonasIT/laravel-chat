@@ -1,0 +1,20 @@
+{
+    "updated": [],
+    "created": [
+        {
+            "id": 2,
+            "message_id": 6,
+            "member_id": 2,
+            "created_at": "2024-01-01 00:00:00",
+            "updated_at": "2024-01-01 00:00:00"
+        },
+        {
+            "id": 3,
+            "message_id": 7,
+            "member_id": 2,
+            "created_at": "2024-01-01 00:00:00",
+            "updated_at": "2024-01-01 00:00:00"
+        }
+    ],
+    "deleted": []
+}

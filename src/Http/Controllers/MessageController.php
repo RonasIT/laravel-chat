@@ -3,8 +3,10 @@
 namespace RonasIT\Chat\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
+use RonasIT\Chat\Contracts\Requests\ReadMessagesRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchMessagesRequestContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
 
@@ -22,5 +24,12 @@ class MessageController extends Controller
         $result = $service->search($request->onlyValidated());
 
         return response()->json($result);
+    }
+
+    public function readUpTo(ReadMessagesRequestContract $request, MessageServiceContract $service, int $toID): Response
+    {
+        $service->read($toID);
+
+        return response()->noContent();
     }
 }

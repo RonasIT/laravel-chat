@@ -4,6 +4,7 @@ namespace RonasIT\Chat\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use RonasIT\Support\Traits\ModelTrait;
 
 class Message extends Model
@@ -32,5 +33,15 @@ class Message extends Model
     public function attachment(): BelongsTo
     {
         return $this->belongsTo(config('chat.classes.media_model'), 'attachment_id');
+    }
+
+    public function readers(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            related: config('chat.classes.user_model'),
+            table: 'read_messages',
+            foreignPivotKey: 'message_id',
+            relatedPivotKey: 'member_id',
+        );
     }
 }

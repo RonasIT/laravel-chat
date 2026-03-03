@@ -24,11 +24,12 @@ return new class extends Migration
                 ->on($usersTableName)
                 ->cascadeOnDelete();
             $table->unique(['message_id', 'member_id']);
+            $table->timestamps();
         });
 
         DB::statement('
-            INSERT INTO read_messages (message_id, member_id)
-            SELECT id, recipient_id
+            INSERT INTO read_messages (message_id, member_id, created_at, updated_at)
+            SELECT id, recipient_id, created_at, created_at
             FROM messages
             WHERE is_read = true
         ');

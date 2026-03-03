@@ -7,6 +7,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use RonasIT\Chat\ChatRouter;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Models\Message;
+use RonasIT\Chat\Models\ReadMessage;
 use RonasIT\Chat\Notifications\NewMessageNotification;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\ModelTestState;
@@ -21,6 +22,7 @@ class MessageTest extends TestCase
     protected static ModelTestState $conversationState;
     protected static ModelTestState $messageState;
     protected static TableTestState $conversationMemberState;
+    protected static ModelTestState $readMessageState;
 
     public function setUp(): void
     {
@@ -33,6 +35,7 @@ class MessageTest extends TestCase
         self::$conversationState = new ModelTestState(Conversation::class);
         self::$messageState = new ModelTestState(Message::class);
         self::$conversationMemberState = new TableTestState('conversation_member');
+        self::$readMessageState = new ModelTestState(ReadMessage::class);
 
         ChatRouter::$isBlockedBaseRoutes = false;
     }
@@ -228,5 +231,45 @@ class MessageTest extends TestCase
         $response->assertUnauthorized();
 
         $response->assertJson(['message' => 'Unauthenticated.']);
+    }
+
+    public function testRead(): void
+    {
+        $response = $this->actingAs(self::$secondUser)->postJson('/messages/7/read-to');
+
+        $response->assertNoContent();
+
+        self::$readMessageState->assertChangesEqualsFixture('read');
+    }
+
+    public function testReadAlreadyRead(): void
+    {
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/2/read-to');
+
+        $response->assertNoContent();
+
+        self::$readMessageState->assertNotChanged();
+    }
+
+    public function testReadAsNonMember(): void
+    {
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/1/read-to');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
+
+        self::$readMessageState->assertNotChanged();
+    }
+
+    public function testReadNoAuth(): void
+    {
+        $response = $this->postJson('/messages/1/read-to');
+
+        $response->assertUnauthorized();
+
+        $response->assertJson(['message' => 'Unauthenticated.']);
+
+        self::$readMessageState->assertNotChanged();
     }
 }
