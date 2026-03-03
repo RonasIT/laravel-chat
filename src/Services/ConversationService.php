@@ -24,7 +24,7 @@ class ConversationService extends EntityService implements ConversationServiceCo
         $this->setRepository(ConversationRepository::class);
     }
 
-    public function getOrCreatePrivateBetweenUsers(int $firstMemberId, int $secondMemberId): Model
+    public function getOrCreatePrivate(int $firstMemberId, int $secondMemberId): Model
     {
         $conversation = $this->getPrivateBetweenUsers($firstMemberId, $secondMemberId);
 

@@ -9,7 +9,7 @@ interface ConversationServiceContract
 {
     public function search(array $filters = []): LengthAwarePaginator;
 
-    public function getOrCreatePrivateBetweenUsers(int $firstMemberId, int $secondMemberId): Model;
+    public function getOrCreatePrivate(int $firstMemberId, int $secondMemberId): Model;
 
     public function getPrivateBetweenUsers(int $firstMemberId, int $secondMemberId): ?Model;
 

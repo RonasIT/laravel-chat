@@ -52,7 +52,6 @@ class MessageTest extends TestCase
         $this->assertEqualsFixture('create_message_response', $response->json());
 
         self::$conversationState->assertNotChanged();
-
         self::$messageState->assertChangesEqualsFixture('created');
         self::$conversationMemberState->assertNotChanged();
     }
@@ -72,7 +71,6 @@ class MessageTest extends TestCase
         $this->assertEqualsFixture('create_message_in_exists_conversation_response', $response->json());
 
         self::$conversationState->assertChangesEqualsFixture('created');
-
         self::$messageState->assertChangesEqualsFixture('created_with_new_conversation');
         self::$conversationMemberState->assertChangesEqualsFixture('created');
     }
