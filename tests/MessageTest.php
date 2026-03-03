@@ -144,6 +144,22 @@ class MessageTest extends TestCase
         self::$messageState->assertNotChanged();
     }
 
+    public function testCreateConversationNotExists(): void
+    {
+        $response = $this->actingAs(self::$someAuthUser)->json('post', '/messages', [
+            'conversation_id' => 0,
+            'text' => 'test',
+        ]);
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'You are not a member of this conversation.']);
+
+        self::$conversationState->assertNotChanged();
+
+        self::$messageState->assertNotChanged();
+    }
+
     public function testCreateNoAuth(): void
     {
         $response = $this->postJson('/messages');

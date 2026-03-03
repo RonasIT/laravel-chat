@@ -197,6 +197,24 @@ class MessageStaticTest extends TestCase
         self::$messageState->assertNotChanged();
     }
 
+    public function testCreateConversationNotExists(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageCreate);
+
+        $response = $this->actingAs(self::$someAuthUser)->json('post', '/messages', [
+            'conversation_id' => 0,
+            'text' => 'test',
+        ]);
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'You are not a member of this conversation.']);
+
+        self::$conversationState->assertNotChanged();
+
+        self::$messageState->assertNotChanged();
+    }
+
     public function testCreateEndpointDisabled(): void
     {
         $response = $this->actingAs(self::$secondUser)->json('post', '/messages');

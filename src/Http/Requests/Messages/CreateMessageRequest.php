@@ -4,16 +4,12 @@ namespace RonasIT\Chat\Http\Requests\Messages;
 
 use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
-use RonasIT\Chat\Models\Conversation;
 use RonasIT\Support\Http\BaseRequest;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CreateMessageRequest extends BaseRequest implements CreateMessageRequestContract
 {
-    protected ?Conversation $conversation;
-
     public function rules(): array
     {
         $mediaTableName = app(config('chat.classes.media_model'))->getTable();
@@ -31,12 +27,7 @@ class CreateMessageRequest extends BaseRequest implements CreateMessageRequestCo
     {
         parent::validateResolved();
 
-        $this->init();
-
-        if ($this->has('conversation_id')) {
-            $this->checkConversationExists();
-            $this->checkConversationMembership();
-        }
+        $this->checkConversationMembership();
 
         $this->checkSelfMessage();
     }
@@ -50,20 +41,14 @@ class CreateMessageRequest extends BaseRequest implements CreateMessageRequestCo
 
     protected function checkConversationMembership(): void
     {
-        if (!$this->conversation->hasMember($this->user())) {
+        if (!$this->has('conversation_id')) {
+            return;
+        }
+
+        $conversation = app(ConversationServiceContract::class)->find($this->input('conversation_id'));
+
+        if (!$conversation?->hasMember($this->user())) {
             throw new AccessDeniedHttpException(__('chat::validation.exceptions.not_conversation_member'));
         }
-    }
-
-    protected function checkConversationExists(): void
-    {
-        if (is_null($this->conversation)) {
-            throw new NotFoundHttpException(__('chat::validation.exceptions.not_found', ['entity' => 'Conversation']));
-        }
-    }
-
-    protected function init(): void
-    {
-        $this->conversation = app(ConversationServiceContract::class)->find($this->input('conversation_id'));
     }
 }
