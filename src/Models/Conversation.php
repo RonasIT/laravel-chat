@@ -57,7 +57,7 @@ class Conversation extends Model
         return $this->belongsTo(config('chat.classes.media_model'), 'cover_id');
     }
 
-    public function isMember(Model $member): bool
+    public function hasMember(Model $member): bool
     {
         return $this->members()->where('member_id', $member->id)->exists();
     }

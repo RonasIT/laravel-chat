@@ -11,27 +11,25 @@ class DeleteConversationRequest extends BaseConversationRequest implements Delet
 {
     protected ?Conversation $conversation;
 
+    public function authorize(): bool
+    {
+        return match ($this->conversation->type) {
+            TypeEnum::Private => $this->conversation->hasMember($this->user()),
+            TypeEnum::Group => $this->conversation->isCreator($this->user()),
+        };
+    }
+
     public function validateResolved(): void
     {
         $this->init();
 
-        parent::validateResolved();
-
         $this->checkConversationExists();
 
-        $this->checkCanDeleteConversation();
+        parent::validateResolved();
     }
 
     protected function init(): void
     {
         $this->conversation = app(ConversationServiceContract::class)->find($this->route('id'));
-    }
-
-    protected function checkCanDeleteConversation(): void
-    {
-        match ($this->conversation->type) {
-            TypeEnum::Private => $this->checkConversationMembership(),
-            TypeEnum::Group => $this->checkConversationCreatorship(),
-        };
     }
 }
