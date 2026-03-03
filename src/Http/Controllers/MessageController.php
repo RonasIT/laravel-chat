@@ -26,9 +26,9 @@ class MessageController extends Controller
         return response()->json($result);
     }
 
-    public function readUpTo(ReadMessagesRequestContract $request, MessageServiceContract $service, int $id): Response
+    public function readUpTo(ReadMessagesRequestContract $request, MessageServiceContract $service, int $toID): Response
     {
-        $service->read($id);
+        $service->read($toID);
 
         return response()->noContent();
     }
