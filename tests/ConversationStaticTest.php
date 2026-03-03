@@ -271,7 +271,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertForbidden();
 
-        $response->assertJson(['message' => 'You are not a member of this conversation.']);
+        $response->assertJson(['message' => 'This action is unauthorized.']);
 
         self::$conversationState->assertNotChanged();
     }
@@ -314,7 +314,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertForbidden();
 
-        $response->assertJson(['message' => 'You are not the creator of this Conversation.']);
+        $response->assertJson(['message' => 'This action is unauthorized.']);
 
         self::$conversationState->assertNotChanged();
     }

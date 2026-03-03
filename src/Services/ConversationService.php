@@ -67,4 +67,9 @@ class ConversationService extends EntityService implements ConversationServiceCo
             ->filterBy('members.member_id', 'member_id')
             ->getSearchResults();
     }
+
+    public function getPrivateBetweenUsers(int $firstMemberId, int $secondMemberId): ?Model
+    {
+        return $this->getByTypeAndMembers(TypeEnum::Private, $firstMemberId, $secondMemberId);
+    }
 }

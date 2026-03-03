@@ -11,6 +11,8 @@ interface ConversationServiceContract
 
     public function getOrCreatePrivateBetweenUsers(int $firstMemberId, int $secondMemberId): Model;
 
+    public function getPrivateBetweenUsers(int $firstMemberId, int $secondMemberId): ?Model;
+
     public function delete($where): void;
 
     public function notifyUser($conversation, $recipients): void;

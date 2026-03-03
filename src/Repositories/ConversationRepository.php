@@ -18,12 +18,11 @@ class ConversationRepository extends BaseRepository
         $this->setAdditionalReservedFilters('member_id');
     }
 
-    public function getPrivateBetweenUsers(int $firstMemberId, int $secondMemberId): ?Conversation
+    public function getByTypeAndMembers(TypeEnum $type, int ...$membersIDs): ?Conversation
     {
         return $this
-            ->getQuery(['type' => TypeEnum::Private->value])
-            ->whereHas('members', fn ($query) => $query->where('member_id', $firstMemberId))
-            ->whereHas('members', fn ($query) => $query->where('member_id', $secondMemberId))
+            ->getQuery(['type' => $type])
+            ->whereHas('members', fn ($query) => $query->whereIn('member_id', $membersIDs), '>=', count($membersIDs))
             ->first();
     }
 
