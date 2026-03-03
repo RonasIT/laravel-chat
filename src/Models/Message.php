@@ -35,7 +35,7 @@ class Message extends Model
         return $this->belongsTo(config('chat.classes.media_model'), 'attachment_id');
     }
 
-    public function members_who_read_message(): BelongsToMany
+    public function readers(): BelongsToMany
     {
         return $this->belongsToMany(
             related: config('chat.classes.user_model'),

@@ -235,7 +235,7 @@ class MessageTest extends TestCase
 
     public function testRead(): void
     {
-        $response = $this->actingAs(self::$secondUser)->postJson('/messages/7/read');
+        $response = $this->actingAs(self::$secondUser)->postJson('/messages/7/read-to');
 
         $response->assertNoContent();
 
@@ -244,7 +244,7 @@ class MessageTest extends TestCase
 
     public function testReadAlreadyRead(): void
     {
-        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/2/read');
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/2/read-to');
 
         $response->assertNoContent();
 
@@ -253,7 +253,7 @@ class MessageTest extends TestCase
 
     public function testReadAsNonMember(): void
     {
-        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/1/read');
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/1/read-to');
 
         $response->assertForbidden();
 
@@ -264,7 +264,7 @@ class MessageTest extends TestCase
 
     public function testReadNoAuth(): void
     {
-        $response = $this->postJson('/messages/1/read');
+        $response = $this->postJson('/messages/1/read-to');
 
         $response->assertUnauthorized();
 

@@ -49,7 +49,7 @@ class MessageStaticTest extends TestCase
         $responseGetByUser = $this->actingAs(self::$firstUser)->getJson('/users/2/conversation');
         $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/messages');
         $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages');
-        $responseRead = $this->actingAs(self::$firstUser)->postJson('/messages/1/read');
+        $responseRead = $this->actingAs(self::$firstUser)->postJson('/messages/1/read-to');
 
         $responseSearchMessages->assertOk();
 
@@ -74,7 +74,7 @@ class MessageStaticTest extends TestCase
         $responseGetByUser = $this->actingAs(self::$firstUser)->getJson('/users/2/conversation');
         $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/messages');
         $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages', $data);
-        $responseRead = $this->actingAs(self::$firstUser)->postJson('/messages/1/read');
+        $responseRead = $this->actingAs(self::$firstUser)->postJson('/messages/1/read-to');
 
         $responseCreate->assertOk();
 
@@ -304,7 +304,7 @@ class MessageStaticTest extends TestCase
         $responseGetByUser = $this->actingAs(self::$firstUser)->getJson('/users/2/conversation');
         $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/messages');
         $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages');
-        $responseRead = $this->actingAs(self::$secondUser)->postJson('/messages/1/read');
+        $responseRead = $this->actingAs(self::$secondUser)->postJson('/messages/1/read-to');
 
         $responseRead->assertNoContent();
 
@@ -320,7 +320,7 @@ class MessageStaticTest extends TestCase
     {
         Route::chat(ChatRouteActionEnum::MessageRead);
 
-        $response = $this->actingAs(self::$secondUser)->postJson('/messages/7/read');
+        $response = $this->actingAs(self::$secondUser)->postJson('/messages/7/read-to');
 
         $response->assertNoContent();
 
@@ -331,7 +331,7 @@ class MessageStaticTest extends TestCase
     {
         Route::chat(ChatRouteActionEnum::MessageRead);
 
-        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/2/read');
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/2/read-to');
 
         $response->assertNoContent();
 
@@ -342,7 +342,7 @@ class MessageStaticTest extends TestCase
     {
         Route::chat(ChatRouteActionEnum::MessageRead);
 
-        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/1/read');
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/1/read-to');
 
         $response->assertForbidden();
 
@@ -353,7 +353,7 @@ class MessageStaticTest extends TestCase
 
     public function testReadEndpointDisabled(): void
     {
-        $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/read');
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/read-to');
 
         $response->assertNotFound();
 

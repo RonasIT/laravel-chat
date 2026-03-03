@@ -10,7 +10,7 @@ use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
 use RonasIT\Chat\Contracts\Requests\DeleteConversationRequestContract;
 use RonasIT\Chat\Contracts\Requests\GetConversationByUserIdRequestContract;
 use RonasIT\Chat\Contracts\Requests\GetConversationRequestContract;
-use RonasIT\Chat\Contracts\Requests\ReadMessageRequestContract;
+use RonasIT\Chat\Contracts\Requests\ReadMessagesRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchConversationsRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchMessagesRequestContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
@@ -20,7 +20,7 @@ use RonasIT\Chat\Http\Requests\Conversations\GetConversationByUserIdRequest;
 use RonasIT\Chat\Http\Requests\Conversations\GetConversationRequest;
 use RonasIT\Chat\Http\Requests\Conversations\SearchConversationsRequest;
 use RonasIT\Chat\Http\Requests\Messages\CreateMessageRequest;
-use RonasIT\Chat\Http\Requests\Messages\ReadMessageRequest;
+use RonasIT\Chat\Http\Requests\Messages\ReadMessagesRequest;
 use RonasIT\Chat\Http\Requests\Messages\SearchMessagesRequest;
 use RonasIT\Chat\Notifications\ConversationDeletedNotification;
 use RonasIT\Chat\Notifications\NewMessageNotification;
@@ -49,7 +49,7 @@ class ChatServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(CreateMessageRequestContract::class, CreateMessageRequest::class);
-        $this->app->bind(ReadMessageRequestContract::class, ReadMessageRequest::class);
+        $this->app->bind(ReadMessagesRequestContract::class, ReadMessagesRequest::class);
         $this->app->bind(GetConversationRequestContract::class, GetConversationRequest::class);
         $this->app->bind(GetConversationByUserIdRequestContract::class, GetConversationByUserIdRequest::class);
         $this->app->bind(DeleteConversationRequestContract::class, DeleteConversationRequest::class);

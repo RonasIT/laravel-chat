@@ -79,13 +79,13 @@ class MessageService extends EntityService implements MessageServiceContract
         Notification::send($recipients, $newMessageNotification);
     }
 
-    public function read(int $id): void
+    public function read(int $toID): void
     {
-        $lastReadMessage = $this->find($id);
+        $lastReadMessage = $this->find($toID);
 
         $unreadMessageIds = $this->getUnreadIdsByUser(
             conversationId: $lastReadMessage->conversation_id,
-            messageCreatedAt: $lastReadMessage->created_at,
+            messageId: $toID,
             memberId: Auth::id(),
         );
 
@@ -93,7 +93,7 @@ class MessageService extends EntityService implements MessageServiceContract
             return;
         }
 
-        $this->readMessageService->insert(array_map(fn ($messageId) => [
+        $this->readMessageService->insertOrIgnore(array_map(fn ($messageId) => [
             'message_id' => $messageId,
             'member_id' => Auth::id(),
         ], $unreadMessageIds));
