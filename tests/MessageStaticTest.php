@@ -346,7 +346,7 @@ class MessageStaticTest extends TestCase
 
         $response->assertForbidden();
 
-        $response->assertJson(['message' => 'You are not a member of this conversation.']);
+        $response->assertJson(['message' => 'This action is unauthorized.']);
 
         self::$readMessageState->assertNotChanged();
     }
