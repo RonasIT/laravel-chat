@@ -93,7 +93,7 @@ class MessageService extends EntityService implements MessageServiceContract
             return;
         }
 
-        $this->readMessageService->insertOrIgnore(array_map(fn ($messageId) => [
+        $this->readMessageService->insert(array_map(fn ($messageId) => [
             'message_id' => $messageId,
             'member_id' => Auth::id(),
         ], $unreadMessageIds));
