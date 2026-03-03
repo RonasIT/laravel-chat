@@ -26,7 +26,7 @@ class ConversationService extends EntityService implements ConversationServiceCo
 
     public function getOrCreatePrivate(int $firstMemberId, int $secondMemberId): Model
     {
-        $conversation = $this->getPrivateBetweenUsers($firstMemberId, $secondMemberId);
+        $conversation = $this->getPrivate($firstMemberId, $secondMemberId);
 
         if (empty($conversation)) {
             $conversation = $this->create(['type' => TypeEnum::Private]);
@@ -68,7 +68,7 @@ class ConversationService extends EntityService implements ConversationServiceCo
             ->getSearchResults();
     }
 
-    public function getPrivateBetweenUsers(int $firstMemberId, int $secondMemberId): ?Model
+    public function getPrivate(int $firstMemberId, int $secondMemberId): ?Model
     {
         return $this->getByTypeAndMembers(TypeEnum::Private, $firstMemberId, $secondMemberId);
     }
