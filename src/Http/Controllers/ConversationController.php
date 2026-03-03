@@ -26,7 +26,7 @@ class ConversationController extends Controller
     {
         $result = $service
             ->with($request->input('with', []))
-            ->getConversationBetweenUsers($request->user()->id, $userId);
+            ->getPrivate($request->user()->id, $userId);
 
         return response()->json($result);
     }

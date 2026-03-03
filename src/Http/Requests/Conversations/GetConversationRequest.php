@@ -22,9 +22,10 @@ class GetConversationRequest extends BaseConversationRequest implements GetConve
     {
         return implode(',', [
             'messages',
-            'sender',
-            'recipient',
+            'creator',
+            'members',
             'last_message',
+            'cover',
         ]);
     }
 
@@ -36,7 +37,7 @@ class GetConversationRequest extends BaseConversationRequest implements GetConve
 
         $this->checkConversationExists();
 
-        $this->checkConversationOwnership();
+        $this->checkConversationMembership();
     }
 
     protected function init(): void

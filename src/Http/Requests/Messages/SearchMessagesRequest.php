@@ -27,7 +27,6 @@ class SearchMessagesRequest extends BaseRequest implements SearchMessagesRequest
         return implode(',', [
             'conversation',
             'sender',
-            'recipient',
             'attachment',
         ]);
     }

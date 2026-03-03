@@ -8,12 +8,17 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BaseConversationRequest extends BaseRequest
 {
-    protected function checkConversationOwnership(): void
+    protected function checkConversationMembership(): void
     {
-        $conversationOwnersIdsCollection = collect([$this->conversation['sender_id'], $this->conversation['recipient_id']]);
+        if (!$this->conversation->hasMember($this->user())) {
+            throw new AccessDeniedHttpException(__('chat::validation.exceptions.not_conversation_member'));
+        }
+    }
 
-        if (!$conversationOwnersIdsCollection->contains($this->user()->id)) {
-            throw new AccessDeniedHttpException(__('chat::validation.exceptions.not_owner', ['entity' => 'Conversation']));
+    protected function checkConversationCreatorship(): void
+    {
+        if (!$this->conversation->isCreator($this->user())) {
+            throw new AccessDeniedHttpException(__('chat::validation.exceptions.not_creator'));
         }
     }
 

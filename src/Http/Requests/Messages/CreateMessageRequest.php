@@ -3,7 +3,9 @@
 namespace RonasIT\Chat\Http\Requests\Messages;
 
 use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
+use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Support\Http\BaseRequest;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class CreateMessageRequest extends BaseRequest implements CreateMessageRequestContract
@@ -14,7 +16,8 @@ class CreateMessageRequest extends BaseRequest implements CreateMessageRequestCo
         $userTableName = app(config('chat.classes.user_model'))->getTable();
 
         return [
-            'recipient_id' => "required|integer|exists:{$userTableName},id",
+            'recipient_id' => "required_without:conversation_id|prohibits:conversation_id|integer|exists:{$userTableName},id",
+            'conversation_id' => 'required_without:recipient_id|prohibits:recipient_id|integer',
             'text' => 'string|required',
             'attachment_id' => "integer|exists:{$mediaTableName},id",
         ];
@@ -24,13 +27,28 @@ class CreateMessageRequest extends BaseRequest implements CreateMessageRequestCo
     {
         parent::validateResolved();
 
+        $this->checkConversationMembership();
+
         $this->checkSelfMessage();
     }
 
     protected function checkSelfMessage(): void
     {
-        if ($this->user()->id === $this->input('recipient_id')) {
+        if ($this->has('recipient_id') && $this->user()->id === $this->input('recipient_id')) {
             throw new BadRequestHttpException(__('chat::validation.exceptions.self_message'));
+        }
+    }
+
+    protected function checkConversationMembership(): void
+    {
+        if (!$this->has('conversation_id')) {
+            return;
+        }
+
+        $conversation = app(ConversationServiceContract::class)->find($this->input('conversation_id'));
+
+        if (!$conversation?->hasMember($this->user())) {
+            throw new AccessDeniedHttpException(__('chat::validation.exceptions.not_conversation_member'));
         }
     }
 }

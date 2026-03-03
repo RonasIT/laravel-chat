@@ -10,6 +10,7 @@ use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Notifications\ConversationDeletedNotification;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\ModelTestState;
+use RonasIT\Chat\Tests\Support\TableTestState;
 
 class ConversationStaticTest extends TestCase
 {
@@ -18,6 +19,7 @@ class ConversationStaticTest extends TestCase
     protected static User $someAuthUser;
 
     protected static ModelTestState $conversationState;
+    protected static TableTestState $conversationMemberState;
 
     public function setUp(): void
     {
@@ -28,6 +30,7 @@ class ConversationStaticTest extends TestCase
         self::$someAuthUser ??= User::find(3);
 
         self::$conversationState = new ModelTestState(Conversation::class);
+        self::$conversationMemberState = new TableTestState('conversation_member');
     }
 
     public function testEverythingDisabledExceptSearch(): void
@@ -40,7 +43,6 @@ class ConversationStaticTest extends TestCase
         $responseGetByUser = $this->actingAs(self::$sender)->getJson('/users/2/conversation');
         $responseSearchMessages = $this->actingAs(self::$sender)->getJson('/messages');
         $responseCreate = $this->actingAs(self::$sender)->postJson('/messages');
-        $responseRead = $this->actingAs(self::$sender)->putJson('messages/1/read');
 
         $responseSearch->assertOk();
 
@@ -49,7 +51,6 @@ class ConversationStaticTest extends TestCase
         $responseGetByUser->assertNotFound();
         $responseSearchMessages->assertNotFound();
         $responseCreate->assertNotFound();
-        $responseRead->assertNotFound();
     }
 
     public function testEverythingDisabledExceptDelete(): void
@@ -62,7 +63,6 @@ class ConversationStaticTest extends TestCase
         $responseGetByUser = $this->actingAs(self::$sender)->getJson('/users/2/conversation');
         $responseSearchMessages = $this->actingAs(self::$sender)->getJson('/messages');
         $responseCreate = $this->actingAs(self::$sender)->postJson('/messages');
-        $responseRead = $this->actingAs(self::$sender)->putJson('messages/1/read');
 
         $responseDelete->assertNoContent();
 
@@ -71,7 +71,6 @@ class ConversationStaticTest extends TestCase
         $responseGetByUser->assertNotFound();
         $responseSearchMessages->assertNotFound();
         $responseCreate->assertNotFound();
-        $responseRead->assertNotFound();
     }
 
     public function testEverythingDisabledExceptGet(): void
@@ -84,7 +83,6 @@ class ConversationStaticTest extends TestCase
         $responseGetByUser = $this->actingAs(self::$sender)->getJson('/users/2/conversation');
         $responseSearchMessages = $this->actingAs(self::$sender)->getJson('/messages');
         $responseCreate = $this->actingAs(self::$sender)->postJson('/messages');
-        $responseRead = $this->actingAs(self::$sender)->putJson('messages/1/read');
 
         $responseGet->assertOk();
 
@@ -93,7 +91,6 @@ class ConversationStaticTest extends TestCase
         $responseGetByUser->assertNotFound();
         $responseSearchMessages->assertNotFound();
         $responseCreate->assertNotFound();
-        $responseRead->assertNotFound();
     }
 
     public function testEverythingDisabledExceptGetByUser(): void
@@ -106,7 +103,6 @@ class ConversationStaticTest extends TestCase
         $responseGetByUser = $this->actingAs(self::$sender)->getJson('/users/2/conversation');
         $responseSearchMessages = $this->actingAs(self::$sender)->getJson('/messages');
         $responseCreate = $this->actingAs(self::$sender)->postJson('/messages');
-        $responseRead = $this->actingAs(self::$sender)->putJson('messages/1/read');
 
         $responseGetByUser->assertOk();
 
@@ -115,7 +111,6 @@ class ConversationStaticTest extends TestCase
         $responseGet->assertNotFound();
         $responseSearchMessages->assertNotFound();
         $responseCreate->assertNotFound();
-        $responseRead->assertNotFound();
     }
 
     public function testGetBySender()
@@ -139,9 +134,10 @@ class ConversationStaticTest extends TestCase
             data: [
                 'with' => [
                     'messages',
-                    'sender',
-                    'recipient',
+                    'creator',
+                    'members',
                     'last_message',
+                    'cover',
                 ],
             ],
         );
@@ -170,7 +166,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertForbidden();
 
-        $response->assertJson(['message' => 'You are not the owner of this Conversation.']);
+        $response->assertJson(['message' => 'You are not a member of this conversation.']);
     }
 
     public function testGetNotExists()
@@ -219,7 +215,7 @@ class ConversationStaticTest extends TestCase
     {
         Route::chat(ChatRouteActionEnum::ConversationGetByUser);
 
-        $response = $this->actingAs(self::$recipient)->json('get', 'users/3/conversation');
+        $response = $this->actingAs(self::$sender)->json('get', 'users/3/conversation');
 
         $response->assertNotFound();
 
@@ -248,6 +244,7 @@ class ConversationStaticTest extends TestCase
         Notification::assertSentTo(self::$recipient, ConversationDeletedNotification::class);
 
         self::$conversationState->assertChangesEqualsFixture('deleted');
+        self::$conversationMemberState->assertChangesEqualsFixture('deleted');
     }
 
     public function testDeleteByRecipient()
@@ -263,6 +260,7 @@ class ConversationStaticTest extends TestCase
         $response->assertNoContent();
 
         self::$conversationState->assertChangesEqualsFixture('deleted');
+        self::$conversationMemberState->assertChangesEqualsFixture('deleted');
     }
 
     public function testDeleteBySomeUser()
@@ -273,7 +271,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertForbidden();
 
-        $response->assertJson(['message' => 'You are not the owner of this Conversation.']);
+        $response->assertJson(['message' => 'This action is unauthorized.']);
 
         self::$conversationState->assertNotChanged();
     }
@@ -287,6 +285,36 @@ class ConversationStaticTest extends TestCase
         $response->assertNotFound();
 
         $response->assertJson(['message' => 'Conversation does not exist']);
+
+        self::$conversationState->assertNotChanged();
+    }
+
+    public function testDeleteGroupByCreator()
+    {
+        Notification::fake();
+
+        Route::chat(ChatRouteActionEnum::ConversationDelete);
+
+        $response = $this->actingAs(self::$sender)->json('delete', '/conversations/6');
+
+        $response->assertNoContent();
+
+        Notification::assertSentTo(self::$recipient, ConversationDeletedNotification::class);
+        Notification::assertSentTo(self::$someAuthUser, ConversationDeletedNotification::class);
+
+        self::$conversationState->assertChangesEqualsFixture('deleted_group');
+        self::$conversationMemberState->assertChangesEqualsFixture('deleted_group');
+    }
+
+    public function testDeleteGroupByNonCreator()
+    {
+        Route::chat(ChatRouteActionEnum::ConversationDelete);
+
+        $response = $this->actingAs(self::$recipient)->json('delete', '/conversations/6');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
 
         self::$conversationState->assertNotChanged();
     }
@@ -311,9 +339,10 @@ class ConversationStaticTest extends TestCase
                 'filter' => [
                     'with' => [
                         'messages',
-                        'sender',
-                        'recipient',
+                        'creator',
+                        'members',
                         'last_message',
+                        'cover',
                     ],
                 ],
                 'fixture' => 'search_with_relations',
@@ -324,12 +353,6 @@ class ConversationStaticTest extends TestCase
                     'per_page' => 2,
                 ],
                 'fixture' => 'search_page_per_page',
-            ],
-            [
-                'filter' => [
-                    'with_unread_messages_count' => true,
-                ],
-                'fixture' => 'search_with_unread_messages_count',
             ],
             [
                 'filter' => [
