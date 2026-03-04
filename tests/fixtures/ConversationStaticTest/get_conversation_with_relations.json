@@ -15,7 +15,8 @@
             "text": "hi",
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
-            "attachment_id": null
+            "attachment_id": null,
+            "is_read": false
         },
         {
             "id": 2,
@@ -24,7 +25,8 @@
             "text": "hi",
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
-            "attachment_id": null
+            "attachment_id": null,
+            "is_read": false
         }
     ],
     "creator": null,
@@ -45,7 +47,8 @@
         "text": "hi",
         "created_at": "2016-10-20T11:05:00.000000Z",
         "updated_at": "2016-10-20T11:05:00.000000Z",
-        "attachment_id": null
+        "attachment_id": null,
+        "is_read": false
     },
     "cover": null
 }
