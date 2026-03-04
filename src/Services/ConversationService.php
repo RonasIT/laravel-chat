@@ -4,6 +4,7 @@ namespace RonasIT\Chat\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract;
@@ -62,7 +63,12 @@ class ConversationService extends EntityService implements ConversationServiceCo
             $filters['member_id'] = Auth::id();
         }
 
+        $forMemberId = (Arr::get($filters, 'with_unread_messages_count', false))
+            ? Arr::get($filters, 'member_id')
+            : null;
+
         return $this
+            ->withUnreadCountMemberId($forMemberId)
             ->searchQuery($filters)
             ->filterBy('members.member_id', 'member_id')
             ->getSearchResults();

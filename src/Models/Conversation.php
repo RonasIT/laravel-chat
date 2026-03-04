@@ -2,6 +2,7 @@
 
 namespace RonasIT\Chat\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -55,6 +56,15 @@ class Conversation extends Model
     public function cover(): BelongsTo
     {
         return $this->belongsTo(config('chat.classes.media_model'), 'cover_id');
+    }
+
+    public function scopeWithUnreadMessagesCount(Builder $query, int $memberId): Builder
+    {
+        return $query->withCount([
+            'messages as unread_messages_count' => fn ($query) => $query
+                ->whereNot('sender_id', $memberId)
+                ->whereDoesntHave('readers', fn ($query) => $query->where('read_messages.member_id', $memberId)),
+        ]);
     }
 
     public function hasMember(Model $member): bool
