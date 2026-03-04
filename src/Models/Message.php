@@ -5,7 +5,7 @@ namespace RonasIT\Chat\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use RonasIT\Support\Traits\ModelTrait;
 
 class Message extends Model
@@ -39,19 +39,14 @@ class Message extends Model
     public function scopeWithIsRead(Builder $query): Builder
     {
         return $query->withExists([
-            'readers as is_read' => fn ($query) => $query
+            'read_receipts as is_read' => fn ($query) => $query
                 ->whereColumn('read_messages.member_id', '!=', 'messages.sender_id'),
         ]);
     }
 
-    public function readers(): BelongsToMany
+    public function read_receipts(): HasMany
     {
-        return $this->belongsToMany(
-            related: config('chat.classes.user_model'),
-            table: 'read_messages',
-            foreignPivotKey: 'message_id',
-            relatedPivotKey: 'member_id',
-        );
+        return $this->hasMany(ReadMessage::class, 'message_id');
     }
 
     protected static function booted(): void
