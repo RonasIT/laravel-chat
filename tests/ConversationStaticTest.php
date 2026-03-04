@@ -211,6 +211,25 @@ class ConversationStaticTest extends TestCase
         $this->assertEqualsFixture('get_conversation', $response->json());
     }
 
+    public function testGetBetweenUsersIdWithRelations()
+    {
+        Route::chat(ChatRouteActionEnum::ConversationGetByUser);
+
+        $response = $this->actingAs(self::$sender)->json('get', 'users/2/conversation', [
+            'with' => [
+                'messages',
+                'creator',
+                'members',
+                'last_message',
+                'cover',
+            ],
+        ]);
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture('get_conversation_with_relations', $response->json());
+    }
+
     public function testGetBetweenUsersWhoDontHaveConversations()
     {
         Route::chat(ChatRouteActionEnum::ConversationGetByUser);

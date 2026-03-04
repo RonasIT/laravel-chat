@@ -24,7 +24,7 @@ class MessageRepository extends BaseRepository
             ->select('id')
             ->where('sender_id', '!=', $memberId)
             ->where('id', '<=', $toMessageId)
-            ->whereDoesntHave('readers', fn ($query) => $query->where('read_messages.member_id', $memberId))
+            ->whereDoesntHave('reads', fn ($query) => $query->where('read_messages.member_id', $memberId))
             ->orderBy('id')
             ->get()
             ->pluck('id')
