@@ -2,7 +2,6 @@
 
 namespace RonasIT\Chat\Contracts\Notifications;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 
 interface ConversationDeletedNotificationContract
