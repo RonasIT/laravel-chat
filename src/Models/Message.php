@@ -39,12 +39,12 @@ class Message extends Model
     public function scopeWithIsRead(Builder $query): Builder
     {
         return $query->withExists([
-            'read_receipts as is_read' => fn ($query) => $query
+            'reads as is_read' => fn ($query) => $query
                 ->whereColumn('read_messages.member_id', '!=', 'messages.sender_id'),
         ]);
     }
 
-    public function read_receipts(): HasMany
+    public function reads(): HasMany
     {
         return $this->hasMany(ReadMessage::class, 'message_id');
     }
