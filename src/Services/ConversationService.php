@@ -25,9 +25,9 @@ class ConversationService extends EntityService implements ConversationServiceCo
         $this->setRepository(ConversationRepository::class);
     }
 
-    public function getOrCreatePrivateBetweenUsers(int $firstMemberId, int $secondMemberId): Model
+    public function getOrCreatePrivate(int $firstMemberId, int $secondMemberId): Model
     {
-        $conversation = $this->getPrivateBetweenUsers($firstMemberId, $secondMemberId);
+        $conversation = $this->getPrivate($firstMemberId, $secondMemberId);
 
         if (empty($conversation)) {
             $conversation = $this->create(['type' => TypeEnum::Private]);
@@ -63,14 +63,19 @@ class ConversationService extends EntityService implements ConversationServiceCo
             $filters['member_id'] = Auth::id();
         }
 
-        $withUnreadMessagesCountMemberId = (Arr::has($filters, 'with_unread_messages_count'))
-            ? $filters['member_id']
+        $forMemberId = (Arr::get($filters, 'with_unread_messages_count', false))
+            ? Arr::get($filters, 'member_id')
             : null;
 
         return $this
-            ->setWithUnreadMessagesCountMemberId($withUnreadMessagesCountMemberId)
+            ->withUnreadCountMemberId($forMemberId)
             ->searchQuery($filters)
             ->filterBy('members.member_id', 'member_id')
             ->getSearchResults();
+    }
+
+    public function getPrivate(int $firstMemberId, int $secondMemberId): ?Model
+    {
+        return $this->getByTypeAndMembers(TypeEnum::Private, $firstMemberId, $secondMemberId);
     }
 }

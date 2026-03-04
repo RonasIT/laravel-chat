@@ -44,7 +44,7 @@ class Message extends Model
         ]);
     }
 
-    public function members_who_read_message(): BelongsToMany
+    public function readers(): BelongsToMany
     {
         return $this->belongsToMany(
             related: config('chat.classes.user_model'),

@@ -34,7 +34,7 @@ class MessageService extends EntityService implements MessageServiceContract
     {
         list($message, $conversation) = DB::transaction(function () use ($data) {
             $conversation = (Arr::has($data, 'recipient_id'))
-                ? $this->conversationService->getOrCreatePrivateBetweenUsers(Auth::id(), $data['recipient_id'])
+                ? $this->conversationService->getOrCreatePrivate(Auth::id(), $data['recipient_id'])
                 : $this->conversationService->find($data['conversation_id']);
 
             $message = $this->repository
@@ -79,13 +79,13 @@ class MessageService extends EntityService implements MessageServiceContract
         Notification::send($recipients, $newMessageNotification);
     }
 
-    public function read(int $id): void
+    public function read(int $toID): void
     {
-        $lastReadMessage = $this->find($id);
+        $lastReadMessage = $this->find($toID);
 
-        $unreadMessageIds = $this->getUnreadMessageIdsByUser(
+        $unreadMessageIds = $this->getUnreadIdsByUser(
             conversationId: $lastReadMessage->conversation_id,
-            messageCreatedAt: $lastReadMessage->created_at,
+            toMessageId: $toID,
             memberId: Auth::id(),
         );
 

@@ -2,39 +2,34 @@
 
 namespace RonasIT\Chat\Http\Requests\Messages;
 
-use RonasIT\Chat\Contracts\Requests\ReadMessageRequestContract;
+use RonasIT\Chat\Contracts\Requests\ReadMessagesRequestContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
 use RonasIT\Chat\Models\Message;
 use RonasIT\Support\Http\BaseRequest;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ReadMessageRequest extends BaseRequest implements ReadMessageRequestContract
+class ReadMessagesRequest extends BaseRequest implements ReadMessagesRequestContract
 {
     protected ?Message $message;
 
+    public function authorize(): bool
+    {
+        return $this->message->conversation->hasMember($this->user());
+    }
+
     public function validateResolved(): void
     {
-        parent::validateResolved();
-
         $this->init();
 
         $this->checkMessageExists();
 
-        $this->checkConversationMembership();
+        parent::validateResolved();
     }
 
     protected function checkMessageExists(): void
     {
         if (empty($this->message)) {
             throw new NotFoundHttpException(__('chat::validation.exceptions.not_found', ['entity' => 'Message']));
-        }
-    }
-
-    protected function checkConversationMembership(): void
-    {
-        if (!$this->message->conversation->isMember($this->user())) {
-            throw new AccessDeniedHttpException(__('chat::validation.exceptions.not_conversation_member'));
         }
     }
 
