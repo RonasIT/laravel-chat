@@ -13,5 +13,5 @@ interface NewMessageNotificationContract
 
     public function setMessage(Model $message): self;
 
-    public function setNotifiable(Model $notifiable): self;
+    public function setRecipientId(int $id): self;
 }

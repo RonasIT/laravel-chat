@@ -16,7 +16,7 @@ class ConversationDeletedNotification extends Notification implements Conversati
     use Queueable;
 
     protected array $conversation;
-    protected Model $notifiable;
+    protected int $recipientId;
 
     public function setConversation(array $conversation): self
     {
@@ -25,16 +25,16 @@ class ConversationDeletedNotification extends Notification implements Conversati
         return $this;
     }
 
-    public function setNotifiable(Model $notifiable): self
+    public function setRecipientId(int $id): self
     {
-        $this->notifiable = $notifiable;
+        $this->recipientId = $id;
 
         return $this;
     }
 
     public function broadcastOn(): array
     {
-        return [new PrivateChannel("chat.{$this->notifiable->id}")];
+        return [new PrivateChannel("chat.{$this->recipientId}")];
     }
 
     public function via($notifiable): array

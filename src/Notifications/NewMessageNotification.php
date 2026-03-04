@@ -18,7 +18,7 @@ class NewMessageNotification extends Notification implements NewMessageNotificat
 
     protected Model $sender;
     protected Model $message;
-    protected Model $notifiable;
+    protected int $recipientId;
 
     public function __construct()
     {
@@ -32,16 +32,16 @@ class NewMessageNotification extends Notification implements NewMessageNotificat
         return $this;
     }
 
-    public function setNotifiable(Model $notifiable): self
+    public function setRecipientId(int $id): self
     {
-        $this->notifiable = $notifiable;
+        $this->recipientId = $id;
 
         return $this;
     }
 
     public function broadcastOn(): array
     {
-        return [new PrivateChannel("chat.{$this->notifiable->id}")];
+        return [new PrivateChannel("chat.{$this->recipientId}")];
     }
 
     public function via($notifiable): array

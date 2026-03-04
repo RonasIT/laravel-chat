@@ -13,5 +13,5 @@ interface ConversationDeletedNotificationContract
 
     public function setConversation(array $conversation): self;
 
-    public function setNotifiable(Model $notifiable): self;
+    public function setRecipientId(int $id): self;
 }
