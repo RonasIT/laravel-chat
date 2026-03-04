@@ -63,7 +63,7 @@ class ConversationService extends EntityService implements ConversationServiceCo
             $filters['member_id'] = Auth::id();
         }
 
-        $withUnreadMessagesCountMemberId = (Arr::has($filters, 'with_unread_messages_count'))
+        $withUnreadMessagesCountMemberId = (Arr::get($filters, 'with_unread_messages_count', false))
             ? $filters['member_id']
             : null;
 
