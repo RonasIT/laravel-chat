@@ -50,6 +50,8 @@ class ConversationRepository extends BaseRepository
 
         if (!is_null($this->withUnreadMessagesCountMemberId)) {
             $query->withUnreadMessagesCount($this->withUnreadMessagesCountMemberId);
+
+            $this->withUnreadMessagesCountMemberId = null;
         }
 
         return $query;
