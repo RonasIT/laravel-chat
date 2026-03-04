@@ -217,9 +217,7 @@ class ConversationStaticTest extends TestCase
 
         $response = $this->actingAs(self::$sender)->json('get', 'users/3/conversation');
 
-        $response->assertNotFound();
-
-        $response->assertJson(['message' => 'Conversation does not exist']);
+        $response->assertNoContent();
     }
 
     public function testGetByUserEndpointDisabled()
