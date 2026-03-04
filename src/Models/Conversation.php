@@ -63,7 +63,7 @@ class Conversation extends Model
         return $query->withCount([
             'messages as unread_messages_count' => fn ($query) => $query
                 ->whereNot('sender_id', $memberId)
-                ->whereDoesntHave('members_who_read_message', fn ($query) => $query->where('read_messages.member_id', $memberId)),
+                ->whereDoesntHave('readers', fn ($query) => $query->where('read_messages.member_id', $memberId)),
         ]);
     }
 
