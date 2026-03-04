@@ -13,6 +13,6 @@
 
 use Illuminate\Support\Facades\Broadcast;
 
-Broadcast::channel('conversation.{userId}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('chat.{userId}', function ($user, $userId) {
+    return (int) $user->id === (int) $userId;
 });

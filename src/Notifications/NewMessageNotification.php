@@ -41,7 +41,7 @@ class NewMessageNotification extends Notification implements NewMessageNotificat
 
     public function broadcastOn(): array
     {
-        return [new PrivateChannel("conversation.{$this->notifiable->id}")];
+        return [new PrivateChannel("chat.{$this->notifiable->id}")];
     }
 
     public function via($notifiable): array

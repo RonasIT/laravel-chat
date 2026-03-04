@@ -34,7 +34,7 @@ class ConversationDeletedNotification extends Notification implements Conversati
 
     public function broadcastOn(): array
     {
-        return [new PrivateChannel("conversation.{$this->notifiable->id}")];
+        return [new PrivateChannel("chat.{$this->notifiable->id}")];
     }
 
     public function via($notifiable): array

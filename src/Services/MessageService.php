@@ -77,7 +77,7 @@ class MessageService extends EntityService implements MessageServiceContract
             $recipient->notify(
                 app(NewMessageNotificationContract::class)
                     ->setMessage($message)
-                    ->setNotifiable($recipient)
+                    ->setNotifiable($recipient),
             );
         }
     }

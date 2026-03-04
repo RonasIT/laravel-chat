@@ -54,7 +54,7 @@ class ConversationService extends EntityService implements ConversationServiceCo
             $recipient->notify(
                 app(ConversationDeletedNotificationContract::class)
                     ->setConversation($conversation)
-                    ->setNotifiable($recipient)
+                    ->setNotifiable($recipient),
             );
         }
     }

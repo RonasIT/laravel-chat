@@ -6,11 +6,13 @@ use Carbon\Carbon;
 use Dotenv\Dotenv;
 use Illuminate\Notifications\Channels\BroadcastChannel;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Notification;
 use Orchestra\Testbench\TestCase as BaseTest;
 use RonasIT\Chat\ChatServiceProvider;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Media\Models\Media;
 use RonasIT\Support\Traits\FixturesTrait;
+use ReflectionClass;
 
 class TestCase extends BaseTest
 {
@@ -70,5 +72,48 @@ class TestCase extends BaseTest
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', 'secret'),
         ]);
+    }
+
+    protected function getObjectAttributes(object $object): array
+    {
+        $result = [];
+
+        $properties = (new ReflectionClass($object))->getProperties();
+
+        foreach ($properties as $property) {
+            $value = $property->getValue($object);
+
+            $result[$property->getName()] = $value;
+        }
+
+        return json_decode(json_encode($result), true);
+    }
+
+    protected function assertBroadcastNotificationSent(string $fixtureName, bool $exportMode = false): void
+    {
+        $notifications = Notification::sentNotifications();
+
+        $actualData = [];
+
+        foreach ($notifications as $notifiableIDs) {
+            foreach ($notifiableIDs as $modelNotifications) {
+                foreach ($modelNotifications as $notificationClassName => $modelNotification) {
+                    foreach ($modelNotification as $notification) {
+                        $broadcastNotification = $notification['notification'];
+
+                        $notification['notification'] = $this->getObjectAttributes($notification['notification']);
+                        $notification['notification']['broadcast_on'] = $broadcastNotification->broadcastOn();
+                        $notification['notification']['broadcast_data'] = $broadcastNotification->toBroadcast()->data;
+                        unset($notification['notification']['id']);
+
+                        $actualData[$notificationClassName][] = $notification;
+                    }
+                }
+            }
+        }
+
+        $preparedActualData = json_decode(json_encode($actualData), true);
+
+        $this->assertEqualsFixture("broadcast_notifications/{$fixtureName}", $preparedActualData, $exportMode);
     }
 }
