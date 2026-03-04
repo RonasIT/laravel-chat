@@ -34,7 +34,7 @@ class ConversationStaticTest extends TestCase
 
     public function testEverythingDisabledExceptSearch(): void
     {
-        Route::chat(ChatRouteActionEnum::ConversationSearch);
+        Route::chat(ChatRouteActionEnum::ConversationsSearch);
 
         $responseSearch = $this->actingAs(self::$sender)->getJson('/conversations');
         $responseGet = $this->actingAs(self::$sender)->getJson('/conversations/1');
@@ -137,6 +137,7 @@ class ConversationStaticTest extends TestCase
                     'members',
                     'last_message',
                     'cover',
+                    'pinned_messages',
                 ],
             ],
         );
@@ -221,6 +222,7 @@ class ConversationStaticTest extends TestCase
                 'members',
                 'last_message',
                 'cover',
+                'pinned_messages',
             ],
         ]);
 
@@ -358,6 +360,7 @@ class ConversationStaticTest extends TestCase
                         'members',
                         'last_message',
                         'cover',
+                        'pinned_messages',
                     ],
                 ],
                 'fixture' => 'search_with_relations',
@@ -386,7 +389,7 @@ class ConversationStaticTest extends TestCase
     #[DataProvider('getSearchFilters')]
     public function testSearch(array $filter, string $fixture)
     {
-        Route::chat(ChatRouteActionEnum::ConversationSearch);
+        Route::chat(ChatRouteActionEnum::ConversationsSearch);
 
         $response = $this->actingAs(self::$sender)->json('get', '/conversations', $filter);
 

@@ -23,6 +23,7 @@ class MessageStaticTest extends TestCase
     protected static ModelTestState $messageState;
     protected static TableTestState $conversationMemberState;
     protected static ModelTestState $readMessageState;
+    protected static TableTestState $pinnedMessageState;
 
     public function setUp(): void
     {
@@ -36,11 +37,12 @@ class MessageStaticTest extends TestCase
         self::$messageState = new ModelTestState(Message::class);
         self::$conversationMemberState = new TableTestState('conversation_member');
         self::$readMessageState = new ModelTestState(ReadMessage::class);
+        self::$pinnedMessageState = new TableTestState('pinned_messages');
     }
 
     public function testEverythingDisabledExceptSearch(): void
     {
-        Route::chat(ChatRouteActionEnum::MessageSearch);
+        Route::chat(ChatRouteActionEnum::MessagesSearch);
 
         $responseSearch = $this->actingAs(self::$firstUser)->getJson('/conversations');
         $responseGet = $this->actingAs(self::$firstUser)->getJson('/conversations/1');
@@ -275,7 +277,7 @@ class MessageStaticTest extends TestCase
     #[DataProvider('getSearchFilters')]
     public function testSearch(array $filter, string $fixture)
     {
-        Route::chat(ChatRouteActionEnum::MessageSearch);
+        Route::chat(ChatRouteActionEnum::MessagesSearch);
 
         $response = $this->actingAs(self::$firstUser)->json('get', '/messages', $filter);
 
@@ -295,7 +297,7 @@ class MessageStaticTest extends TestCase
 
     public function testEverythingDisabledExceptRead(): void
     {
-        Route::chat(ChatRouteActionEnum::MessageRead);
+        Route::chat(ChatRouteActionEnum::MessagesRead);
 
         $responseSearch = $this->actingAs(self::$firstUser)->getJson('/conversations');
         $responseGet = $this->actingAs(self::$firstUser)->getJson('/conversations/1');
@@ -317,7 +319,7 @@ class MessageStaticTest extends TestCase
 
     public function testRead(): void
     {
-        Route::chat(ChatRouteActionEnum::MessageRead);
+        Route::chat(ChatRouteActionEnum::MessagesRead);
 
         $response = $this->actingAs(self::$secondUser)->postJson('/messages/7/read-to');
 
@@ -328,7 +330,7 @@ class MessageStaticTest extends TestCase
 
     public function testReadAlreadyRead(): void
     {
-        Route::chat(ChatRouteActionEnum::MessageRead);
+        Route::chat(ChatRouteActionEnum::MessagesRead);
 
         $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/2/read-to');
 
@@ -339,7 +341,7 @@ class MessageStaticTest extends TestCase
 
     public function testReadAsNonMember(): void
     {
-        Route::chat(ChatRouteActionEnum::MessageRead);
+        Route::chat(ChatRouteActionEnum::MessagesRead);
 
         $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/1/read-to');
 
@@ -359,5 +361,88 @@ class MessageStaticTest extends TestCase
         $response->assertJson(['message' => 'Not found.']);
 
         self::$readMessageState->assertNotChanged();
+    }
+
+    public function testEverythingDisabledExceptPin(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessagePin);
+
+        $responseSearch = $this->actingAs(self::$firstUser)->getJson('/conversations');
+        $responseGet = $this->actingAs(self::$firstUser)->getJson('/conversations/1');
+        $responseDelete = $this->actingAs(self::$firstUser)->deleteJson('/conversations/1');
+        $responseGetByUser = $this->actingAs(self::$firstUser)->getJson('/users/2/conversation');
+        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/messages');
+        $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages');
+        $responseRead = $this->actingAs(self::$firstUser)->postJson('/messages/1/read-to');
+        $responsePin = $this->actingAs(self::$firstUser)->postJson('/messages/1/pin');
+
+        $responsePin->assertNoContent();
+
+        $responseSearch->assertNotFound();
+        $responseGet->assertNotFound();
+        $responseDelete->assertNotFound();
+        $responseGetByUser->assertNotFound();
+        $responseSearchMessages->assertNotFound();
+        $responseCreate->assertNotFound();
+        $responseRead->assertNotFound();
+    }
+
+    public function testPin(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessagePin);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/2/pin');
+
+        $response->assertNoContent();
+
+        self::$pinnedMessageState->assertChangesEqualsFixture('pinned');
+    }
+
+    public function testPinAlreadyPinned(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessagePin);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/pin');
+
+        $response->assertNoContent();
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testPinAsNonMember(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessagePin);
+
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/1/pin');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testPinNotFound(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessagePin);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/0/pin');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Message does not exist']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testPinEndpointDisabled(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/pin');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Not found.']);
+
+        self::$pinnedMessageState->assertNotChanged();
     }
 }

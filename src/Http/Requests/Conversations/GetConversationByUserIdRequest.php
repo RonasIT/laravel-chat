@@ -23,6 +23,7 @@ class GetConversationByUserIdRequest extends BaseRequest implements GetConversat
             'members',
             'last_message',
             'cover',
+            'pinned_messages',
         ]);
     }
 }

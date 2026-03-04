@@ -54,6 +54,7 @@ class ConversationTest extends TestCase
                     'members',
                     'last_message',
                     'cover',
+                    'pinned_messages',
                 ],
             ],
         );
@@ -126,6 +127,7 @@ class ConversationTest extends TestCase
                 'members',
                 'last_message',
                 'cover',
+                'pinned_messages',
             ],
         ]);
 
@@ -251,6 +253,7 @@ class ConversationTest extends TestCase
                         'members',
                         'last_message',
                         'cover',
+                        'pinned_messages',
                     ],
                 ],
                 'fixture' => 'search_with_relations',

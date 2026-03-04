@@ -67,6 +67,19 @@ class Conversation extends Model
         ]);
     }
 
+    public function pinned_messages(): BelongsToMany
+    {
+        return $this
+            ->belongsToMany(
+                related: Message::class,
+                table: 'pinned_messages',
+                foreignPivotKey: 'conversation_id',
+                relatedPivotKey: 'message_id',
+            )
+            ->orderByPivot('id', 'desc')
+            ->withTimestamps();
+    }
+
     public function hasMember(Model $member): bool
     {
         return $this->members()->where('member_id', $member->id)->exists();
