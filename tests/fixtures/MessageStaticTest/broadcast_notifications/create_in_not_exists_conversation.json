@@ -19,10 +19,7 @@
                         "email": "fidel.kutch@example.com"
                     }
                 },
-                "notifiable": {
-                    "id": 5,
-                    "email": "william.bob@example.com"
-                },
+                "recipientId": 5,
                 "locale": null,
                 "connection": null,
                 "queue": null,

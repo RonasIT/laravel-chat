@@ -19,10 +19,7 @@
                         "email": "anisio.tier@example.com"
                     }
                 },
-                "notifiable": {
-                    "id": 2,
-                    "email": "fidel.kutch@example.com"
-                },
+                "recipientId": 2,
                 "locale": null,
                 "connection": null,
                 "queue": null,
