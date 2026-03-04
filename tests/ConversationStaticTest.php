@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RonasIT\Chat\Enums\ChatRouteActionEnum;
 use RonasIT\Chat\Models\Conversation;
-use RonasIT\Chat\Notifications\ConversationDeletedNotification;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\ModelTestState;
 use RonasIT\Chat\Tests\Support\TableTestState;
@@ -258,7 +257,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertNoContent();
 
-        Notification::assertSentTo(self::$recipient, ConversationDeletedNotification::class);
+        $this->assertBroadcastNotificationSent('delete_by_sender');
 
         self::$conversationState->assertChangesEqualsFixture('deleted');
         self::$conversationMemberState->assertChangesEqualsFixture('deleted');
@@ -272,7 +271,7 @@ class ConversationStaticTest extends TestCase
 
         $response = $this->actingAs(self::$recipient)->json('delete', '/conversations/1');
 
-        Notification::assertSentTo(self::$sender, ConversationDeletedNotification::class);
+        $this->assertBroadcastNotificationSent('delete_by_recipient');
 
         $response->assertNoContent();
 
@@ -316,8 +315,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertNoContent();
 
-        Notification::assertSentTo(self::$recipient, ConversationDeletedNotification::class);
-        Notification::assertSentTo(self::$someAuthUser, ConversationDeletedNotification::class);
+        $this->assertBroadcastNotificationSent('delete_group_by_creator');
 
         self::$conversationState->assertChangesEqualsFixture('deleted_group');
         self::$conversationMemberState->assertChangesEqualsFixture('deleted_group');

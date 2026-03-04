@@ -11,4 +11,6 @@ interface ConversationDeletedNotificationContract
     public function toBroadcast(): BroadcastMessage;
 
     public function setConversation(array $conversation): self;
+
+    public function setRecipientId(int $id): self;
 }

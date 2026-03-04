@@ -2,6 +2,7 @@
 
 namespace RonasIT\Chat\Notifications;
 
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -14,12 +15,25 @@ class ConversationDeletedNotification extends Notification implements Conversati
     use Queueable;
 
     protected array $conversation;
+    protected int $recipientId;
 
     public function setConversation(array $conversation): self
     {
         $this->conversation = $conversation;
 
         return $this;
+    }
+
+    public function setRecipientId(int $id): self
+    {
+        $this->recipientId = $id;
+
+        return $this;
+    }
+
+    public function broadcastOn(): array
+    {
+        return [new PrivateChannel("chat.{$this->recipientId}")];
     }
 
     public function via($notifiable): array

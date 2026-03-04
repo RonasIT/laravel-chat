@@ -8,7 +8,6 @@ use RonasIT\Chat\ChatRouter;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Models\Message;
 use RonasIT\Chat\Models\ReadMessage;
-use RonasIT\Chat\Notifications\NewMessageNotification;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\ModelTestState;
 use RonasIT\Chat\Tests\Support\TableTestState;
@@ -48,7 +47,7 @@ class MessageTest extends TestCase
 
         $response = $this->actingAs(self::$firstUser)->json('post', '/messages', $data);
 
-        Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
+        $this->assertBroadcastNotificationSent('create_in_exists_conversation');
 
         $response->assertOk();
 
@@ -69,7 +68,7 @@ class MessageTest extends TestCase
 
         $response->assertOk();
 
-        Notification::assertSentTo(User::find(5), NewMessageNotification::class);
+        $this->assertBroadcastNotificationSent('create_in_not_exists_conversation');
 
         $this->assertEqualsFixture('create_message_in_exists_conversation_response', $response->json());
 
@@ -101,7 +100,7 @@ class MessageTest extends TestCase
 
         $response = $this->actingAs(self::$firstUser)->json('post', '/messages', $data);
 
-        Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
+        $this->assertBroadcastNotificationSent('create_with_attachment');
 
         $response->assertOk();
 
@@ -120,7 +119,7 @@ class MessageTest extends TestCase
 
         $response = $this->actingAs(self::$firstUser)->json('post', '/messages', $data);
 
-        Notification::assertSentTo(self::$secondUser, NewMessageNotification::class);
+        $this->assertBroadcastNotificationSent('create_with_conversation_id');
 
         $response->assertOk();
 

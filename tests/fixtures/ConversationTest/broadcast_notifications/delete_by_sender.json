@@ -1,0 +1,74 @@
+{
+    "RonasIT\\Chat\\Notifications\\ConversationDeletedNotification": [
+        {
+            "notification": {
+                "conversation": {
+                    "id": 1,
+                    "last_updated_at": "2016-10-20 11:05:00",
+                    "created_at": "2016-10-20T11:05:00.000000Z",
+                    "updated_at": "2016-10-20T11:05:00.000000Z",
+                    "creator_id": null,
+                    "type": "private",
+                    "title": null,
+                    "cover_id": null,
+                    "members": [
+                        {
+                            "id": 1,
+                            "email": "anisio.tier@example.com"
+                        },
+                        {
+                            "id": 2,
+                            "email": "fidel.kutch@example.com"
+                        }
+                    ]
+                },
+                "recipientId": 2,
+                "locale": null,
+                "connection": null,
+                "queue": null,
+                "delay": null,
+                "afterCommit": null,
+                "middleware": [],
+                "chained": [],
+                "chainConnection": null,
+                "chainQueue": null,
+                "chainCatchCallbacks": null,
+                "broadcast_on": [
+                    {
+                        "name": "private-chat.2"
+                    }
+                ],
+                "broadcast_data": {
+                    "conversation": {
+                        "id": 1,
+                        "last_updated_at": "2016-10-20 11:05:00",
+                        "created_at": "2016-10-20T11:05:00.000000Z",
+                        "updated_at": "2016-10-20T11:05:00.000000Z",
+                        "creator_id": null,
+                        "type": "private",
+                        "title": null,
+                        "cover_id": null,
+                        "members": [
+                            {
+                                "id": 1,
+                                "email": "anisio.tier@example.com"
+                            },
+                            {
+                                "id": 2,
+                                "email": "fidel.kutch@example.com"
+                            }
+                        ]
+                    }
+                }
+            },
+            "channels": [
+                "Illuminate\\Notifications\\Channels\\BroadcastChannel"
+            ],
+            "notifiable": {
+                "id": 2,
+                "email": "fidel.kutch@example.com"
+            },
+            "locale": null
+        }
+    ]
+}
