@@ -12,7 +12,7 @@ use RonasIT\Support\Repositories\BaseRepository;
  */
 class ConversationRepository extends BaseRepository
 {
-    protected ?int $withUnreadMessagesCountMemberId = null;
+    protected ?int $withUnreadCountMemberId = null;
 
     public function __construct()
     {
@@ -24,12 +24,11 @@ class ConversationRepository extends BaseRepository
         );
     }
 
-    public function getPrivateBetweenUsers(int $firstMemberId, int $secondMemberId): ?Conversation
+    public function getByTypeAndMembers(TypeEnum $type, int ...$membersIDs): ?Conversation
     {
         return $this
-            ->getQuery(['type' => TypeEnum::Private->value])
-            ->whereHas('members', fn ($query) => $query->where('member_id', $firstMemberId))
-            ->whereHas('members', fn ($query) => $query->where('member_id', $secondMemberId))
+            ->getQuery(['type' => $type])
+            ->whereHas('members', fn ($query) => $query->whereIn('member_id', $membersIDs), '>=', count($membersIDs))
             ->first();
     }
 
@@ -38,9 +37,9 @@ class ConversationRepository extends BaseRepository
         $conversation->members()->attach($memberIds);
     }
 
-    public function setWithUnreadMessagesCountMemberId(?int $memberId): self
+    public function withUnreadCountMemberId(?int $memberId): self
     {
-        $this->withUnreadMessagesCountMemberId = $memberId;
+        $this->withUnreadCountMemberId = $memberId;
 
         return $this;
     }
@@ -49,8 +48,10 @@ class ConversationRepository extends BaseRepository
     {
         $query = parent::getQuery($where);
 
-        if (!is_null($this->withUnreadMessagesCountMemberId)) {
-            $query->withUnreadMessagesCount($this->withUnreadMessagesCountMemberId);
+        if (!is_null($this->withUnreadCountMemberId)) {
+            $query->withUnreadMessagesCount($this->withUnreadCountMemberId);
+
+            $this->withUnreadCountMemberId = null;
         }
 
         return $query;

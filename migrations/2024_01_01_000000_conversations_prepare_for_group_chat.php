@@ -45,6 +45,7 @@ return new class extends Migration
         });
 
         DB::statement("UPDATE conversations SET type = 'private'");
+        DB::statement('ALTER TABLE conversations ALTER COLUMN type SET NOT NULL');
 
         DB::statement('
             INSERT INTO conversation_member (conversation_id, member_id)
@@ -55,8 +56,6 @@ return new class extends Migration
             INSERT INTO conversation_member (conversation_id, member_id)
             SELECT id, recipient_id FROM conversations
         ');
-
-        DB::statement('ALTER TABLE conversations ALTER COLUMN type SET NOT NULL');
 
         Schema::table('conversations', function (Blueprint $table) {
             $table->dropForeign(['sender_id']);

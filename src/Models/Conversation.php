@@ -63,11 +63,11 @@ class Conversation extends Model
         return $query->withCount([
             'messages as unread_messages_count' => fn ($query) => $query
                 ->whereNot('sender_id', $memberId)
-                ->whereDoesntHave('members_who_read_message', fn ($query) => $query->where('read_messages.member_id', $memberId)),
+                ->whereDoesntHave('reads', fn ($query) => $query->where('read_messages.member_id', $memberId)),
         ]);
     }
 
-    public function isMember(Model $member): bool
+    public function hasMember(Model $member): bool
     {
         return $this->members()->where('member_id', $member->id)->exists();
     }

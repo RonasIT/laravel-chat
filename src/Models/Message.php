@@ -5,7 +5,7 @@ namespace RonasIT\Chat\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use RonasIT\Support\Traits\ModelTrait;
 
 class Message extends Model
@@ -39,18 +39,18 @@ class Message extends Model
     public function scopeWithIsRead(Builder $query): Builder
     {
         return $query->withExists([
-            'members_who_read_message as is_read' => fn ($query) => $query
+            'reads as is_read' => fn ($query) => $query
                 ->whereColumn('read_messages.member_id', '!=', 'messages.sender_id'),
         ]);
     }
 
-    public function members_who_read_message(): BelongsToMany
+    public function reads(): HasMany
     {
-        return $this->belongsToMany(
-            related: config('chat.classes.user_model'),
-            table: 'read_messages',
-            foreignPivotKey: 'message_id',
-            relatedPivotKey: 'member_id',
-        );
+        return $this->hasMany(ReadMessage::class, 'message_id');
+    }
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('with_is_read', fn (Builder $query) => $query->withIsRead());
     }
 }

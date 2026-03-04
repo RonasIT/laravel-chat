@@ -3,9 +3,9 @@
 namespace RonasIT\Chat\Repositories;
 
 use Illuminate\Support\Arr;
-use RonasIT\Support\Repositories\BaseRepository as RonasITBaseRepository;
+use RonasIT\Support\Repositories\BaseRepository as RonasITRepository;
 
-class BaseRepository extends RonasITBaseRepository
+class BaseRepository extends RonasITRepository
 {
     public function insertOrIgnore(array $data): bool
     {

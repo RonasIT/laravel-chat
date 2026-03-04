@@ -55,7 +55,6 @@ class MessageTest extends TestCase
         $this->assertEqualsFixture('create_message_response', $response->json());
 
         self::$conversationState->assertNotChanged();
-
         self::$messageState->assertChangesEqualsFixture('created');
         self::$conversationMemberState->assertNotChanged();
     }
@@ -75,7 +74,6 @@ class MessageTest extends TestCase
         $this->assertEqualsFixture('create_message_in_exists_conversation_response', $response->json());
 
         self::$conversationState->assertChangesEqualsFixture('created');
-
         self::$messageState->assertChangesEqualsFixture('created_with_new_conversation');
         self::$conversationMemberState->assertChangesEqualsFixture('created');
     }
@@ -139,6 +137,22 @@ class MessageTest extends TestCase
         $data = $this->getJsonFixture('create_message_with_conversation_id_request');
 
         $response = $this->actingAs(self::$someAuthUser)->json('post', '/messages', $data);
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'You are not a member of this conversation.']);
+
+        self::$conversationState->assertNotChanged();
+
+        self::$messageState->assertNotChanged();
+    }
+
+    public function testCreateConversationNotExists(): void
+    {
+        $response = $this->actingAs(self::$someAuthUser)->json('post', '/messages', [
+            'conversation_id' => 0,
+            'text' => 'test',
+        ]);
 
         $response->assertForbidden();
 
@@ -221,7 +235,7 @@ class MessageTest extends TestCase
 
     public function testRead(): void
     {
-        $response = $this->actingAs(self::$secondUser)->postJson('/messages/7/read');
+        $response = $this->actingAs(self::$secondUser)->postJson('/messages/7/read-to');
 
         $response->assertNoContent();
 
@@ -230,7 +244,7 @@ class MessageTest extends TestCase
 
     public function testReadAlreadyRead(): void
     {
-        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/2/read');
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/2/read-to');
 
         $response->assertNoContent();
 
@@ -239,18 +253,18 @@ class MessageTest extends TestCase
 
     public function testReadAsNonMember(): void
     {
-        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/1/read');
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/1/read-to');
 
         $response->assertForbidden();
 
-        $response->assertJson(['message' => 'You are not a member of this conversation.']);
+        $response->assertJson(['message' => 'This action is unauthorized.']);
 
         self::$readMessageState->assertNotChanged();
     }
 
     public function testReadNoAuth(): void
     {
-        $response = $this->postJson('/messages/1/read');
+        $response = $this->postJson('/messages/1/read-to');
 
         $response->assertUnauthorized();
 
