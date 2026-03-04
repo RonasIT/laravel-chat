@@ -22,13 +22,15 @@ class ConversationController extends Controller
         return response()->json($result);
     }
 
-    public function getByUserId(GetConversationByUserIdRequestContract $request, ConversationServiceContract $service, $userId): JsonResponse
+    public function getByUserId(GetConversationByUserIdRequestContract $request, ConversationServiceContract $service, $userId): JsonResponse|Response
     {
         $result = $service
             ->with($request->input('with', []))
             ->getPrivate($request->user()->id, $userId);
 
-        return response()->json($result);
+        return (is_null($result))
+            ? response()->noContent()
+            : response()->json($result);
     }
 
     public function search(SearchConversationsRequestContract $request, ConversationServiceContract $service): JsonResponse

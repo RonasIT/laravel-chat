@@ -118,13 +118,28 @@ class ConversationTest extends TestCase
         $this->assertEqualsFixture('get_conversation', $response->json());
     }
 
+    public function testGetBetweenUsersIdWithRelations()
+    {
+        $response = $this->actingAs(self::$sender)->json('get', 'users/2/conversation', [
+            'with' => [
+                'messages',
+                'creator',
+                'members',
+                'last_message',
+                'cover',
+            ],
+        ]);
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture('get_conversation_with_relations', $response->json());
+    }
+
     public function testGetBetweenUsersWhoDontHaveConversations()
     {
         $response = $this->actingAs(self::$sender)->json('get', 'users/3/conversation');
 
-        $response->assertNotFound();
-
-        $response->assertJson(['message' => 'Conversation does not exist']);
+        $response->assertNoContent();
     }
 
     public function testGetBetweenAuthAndNoAuthUsers()

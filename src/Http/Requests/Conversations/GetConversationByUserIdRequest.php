@@ -3,15 +3,26 @@
 namespace RonasIT\Chat\Http\Requests\Conversations;
 
 use RonasIT\Chat\Contracts\Requests\GetConversationByUserIdRequestContract;
-use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
+use RonasIT\Support\Http\BaseRequest;
 
-class GetConversationByUserIdRequest extends GetConversationRequest implements GetConversationByUserIdRequestContract
+class GetConversationByUserIdRequest extends BaseRequest implements GetConversationByUserIdRequestContract
 {
-    protected function init(): void
+    public function rules(): array
     {
-        $userId = $this->route('userId');
-        $authId = $this->user()->id;
+        return [
+            'with' => 'array',
+            'with.*' => 'string|required|in:' . $this->getAvailableRelations(),
+        ];
+    }
 
-        $this->conversation = app(ConversationServiceContract::class)->getPrivate($userId, $authId);
+    protected function getAvailableRelations(): string
+    {
+        return implode(',', [
+            'messages',
+            'creator',
+            'members',
+            'last_message',
+            'cover',
+        ]);
     }
 }
