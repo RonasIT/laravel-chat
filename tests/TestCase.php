@@ -8,11 +8,11 @@ use Illuminate\Notifications\Channels\BroadcastChannel;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Orchestra\Testbench\TestCase as BaseTest;
+use ReflectionClass;
 use RonasIT\Chat\ChatServiceProvider;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Media\Models\Media;
 use RonasIT\Support\Traits\FixturesTrait;
-use ReflectionClass;
 
 class TestCase extends BaseTest
 {
