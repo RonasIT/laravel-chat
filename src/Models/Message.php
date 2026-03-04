@@ -39,7 +39,7 @@ class Message extends Model
     public function scopeWithIsRead(Builder $query): Builder
     {
         return $query->withExists([
-            'members_who_read_message as is_read' => fn ($query) => $query
+            'readers as is_read' => fn ($query) => $query
                 ->whereColumn('read_messages.member_id', '!=', 'messages.sender_id'),
         ]);
     }
@@ -52,5 +52,10 @@ class Message extends Model
             foreignPivotKey: 'message_id',
             relatedPivotKey: 'member_id',
         );
+    }
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope('with_is_read', fn (Builder $query) => $query->withIsRead());
     }
 }

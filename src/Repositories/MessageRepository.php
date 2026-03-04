@@ -2,7 +2,6 @@
 
 namespace RonasIT\Chat\Repositories;
 
-use Illuminate\Database\Eloquent\Builder;
 use RonasIT\Chat\Models\Message;
 use RonasIT\Support\Repositories\BaseRepository;
 
@@ -30,12 +29,5 @@ class MessageRepository extends BaseRepository
             ->get()
             ->pluck('id')
             ->toArray();
-    }
-
-    protected function getQuery($where = []): Builder
-    {
-        $query = parent::getQuery($where);
-
-        return $query->withIsRead();
     }
 }
