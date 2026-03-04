@@ -17,14 +17,14 @@ class MessageRepository extends BaseRepository
         $this->setAdditionalReservedFilters('member_id');
     }
 
-    public function getUnreadMessageIdsByUser(int $conversationId, string $messageCreatedAt, int $memberId): array
+    public function getUnreadIdsByUser(int $conversationId, int $toMessageId, int $memberId): array
     {
         return $this
             ->getQuery(['conversation_id' => $conversationId])
             ->select('id')
             ->where('sender_id', '!=', $memberId)
-            ->where('created_at', '<=', $messageCreatedAt)
-            ->whereDoesntHave('members_who_read_message', fn ($query) => $query->where('read_messages.member_id', $memberId))
+            ->where('id', '<=', $toMessageId)
+            ->whereDoesntHave('readers', fn ($query) => $query->where('read_messages.member_id', $memberId))
             ->orderBy('id')
             ->get()
             ->pluck('id')

@@ -67,7 +67,7 @@ class Conversation extends Model
         ]);
     }
 
-    public function isMember(Model $member): bool
+    public function hasMember(Model $member): bool
     {
         return $this->members()->where('member_id', $member->id)->exists();
     }

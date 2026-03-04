@@ -10,7 +10,7 @@ class BaseConversationRequest extends BaseRequest
 {
     protected function checkConversationMembership(): void
     {
-        if (!$this->conversation->isMember($this->user())) {
+        if (!$this->conversation->hasMember($this->user())) {
             throw new AccessDeniedHttpException(__('chat::validation.exceptions.not_conversation_member'));
         }
     }

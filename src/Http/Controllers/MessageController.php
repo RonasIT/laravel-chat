@@ -6,7 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
-use RonasIT\Chat\Contracts\Requests\ReadMessageRequestContract;
+use RonasIT\Chat\Contracts\Requests\ReadMessagesRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchMessagesRequestContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
 
@@ -26,9 +26,9 @@ class MessageController extends Controller
         return response()->json($result);
     }
 
-    public function read(ReadMessageRequestContract $request, MessageServiceContract $service, int $id): Response
+    public function readUpTo(ReadMessagesRequestContract $request, MessageServiceContract $service, int $toID): Response
     {
-        $service->read($id);
+        $service->read($toID);
 
         return response()->noContent();
     }
