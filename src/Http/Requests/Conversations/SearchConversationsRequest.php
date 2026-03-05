@@ -3,6 +3,7 @@
 namespace RonasIT\Chat\Http\Requests\Conversations;
 
 use RonasIT\Chat\Contracts\Requests\SearchConversationsRequestContract;
+use RonasIT\Chat\Enums\Conversation\TypeEnum;
 
 class SearchConversationsRequest extends BaseConversationRequest implements SearchConversationsRequestContract
 {
@@ -15,6 +16,7 @@ class SearchConversationsRequest extends BaseConversationRequest implements Sear
             'query' => 'nullable|string',
             'order_by' => 'string',
             'desc' => 'boolean',
+            'type' => 'string|in:' . TypeEnum::toString(),
             'with_unread_messages_count' => 'boolean',
             'with' => 'array',
             'with.*' => 'string|required|in:' . $this->getAvailableRelations(),

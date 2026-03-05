@@ -67,6 +67,8 @@ class MessageStaticTest extends TestCase
     {
         Route::chat(ChatRouteActionEnum::MessageCreate);
 
+        Notification::fake();
+
         $data = $this->getJsonFixture('create_message_request');
 
         $responseSearch = $this->actingAs(self::$firstUser)->getJson('/conversations');

@@ -17,6 +17,11 @@ class MessageRepository extends BaseRepository
         $this->setAdditionalReservedFilters('member_id');
     }
 
+    public function create(array $data): Message
+    {
+        return parent::create($data)->setAttribute('is_read', false);
+    }
+
     public function getUnreadIdsByUser(int $conversationId, int $toMessageId, int $memberId): array
     {
         return $this
