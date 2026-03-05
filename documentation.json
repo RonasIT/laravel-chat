@@ -269,12 +269,12 @@
 					{
 						"in": "query",
 						"name": "type",
-					"description": "string, in:private,group",
-					"schema": {"type": "string"}
-				},
-				{
-					"in": "query",
-					"name": "with_unread_messages_count",
+						"description": "string, in:private,group",
+						"schema": {"type": "string"}
+					},
+					{
+						"in": "query",
+						"name": "with_unread_messages_count",
 						"description": "boolean",
 						"schema": {"type": "boolean"}
 					},
