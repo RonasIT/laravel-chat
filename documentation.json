@@ -24,7 +24,7 @@
 					{
 						"in": "query",
 						"name": "with.*",
-						"description": "string, required, in:messages,creator,members,last_message,cover",
+						"description": "string, required, in:messages,creator,members,last_message,cover,pinned_messages",
 						"required": true,
 						"schema": {"type": "string"}
 					}
@@ -95,7 +95,7 @@
 					{
 						"in": "query",
 						"name": "with.*",
-						"description": "string, required, in:messages,creator,members,last_message,cover",
+						"description": "string, required, in:messages,creator,members,last_message,cover,pinned_messages",
 						"required": true,
 						"schema": {"type": "string"}
 					}
@@ -268,6 +268,12 @@
 					},
 					{
 						"in": "query",
+						"name": "type",
+						"description": "string, in:private,group",
+						"schema": {"type": "string"}
+					},
+					{
+						"in": "query",
 						"name": "with_unread_messages_count",
 						"description": "boolean",
 						"schema": {"type": "boolean"}
@@ -281,7 +287,7 @@
 					{
 						"in": "query",
 						"name": "with.*",
-						"description": "string, required, in:messages,creator,members,last_message,cover",
+						"description": "string, required, in:messages,creator,members,last_message,cover,pinned_messages",
 						"required": true,
 						"schema": {"type": "string"}
 					}

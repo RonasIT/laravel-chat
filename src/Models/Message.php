@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Arr;
 use RonasIT\Support\Traits\ModelTrait;
 
 class Message extends Model
@@ -21,9 +22,16 @@ class Message extends Model
 
     protected $hidden = ['pivot'];
 
+    protected $appends = ['is_read'];
+
     public function conversation(): BelongsTo
     {
         return $this->belongsTo(Conversation::class);
+    }
+
+    public function getIsReadAttribute()
+    {
+        return Arr::get($this->attributes, 'is_read', false);
     }
 
     public function sender(): BelongsTo

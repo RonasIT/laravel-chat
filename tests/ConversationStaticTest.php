@@ -54,6 +54,8 @@ class ConversationStaticTest extends TestCase
 
     public function testEverythingDisabledExceptDelete(): void
     {
+        Notification::fake();
+
         Route::chat(ChatRouteActionEnum::ConversationDelete);
 
         $responseSearch = $this->actingAs(self::$sender)->getJson('/conversations');
@@ -382,6 +384,14 @@ class ConversationStaticTest extends TestCase
             [
                 'filter' => ['with_unread_messages_count' => true],
                 'fixture' => 'search_with_unread_messages_count',
+            ],
+            [
+                'filter' => ['type' => 'private'],
+                'fixture' => 'search_by_type_private',
+            ],
+            [
+                'filter' => ['type' => 'group'],
+                'fixture' => 'search_by_type_group',
             ],
         ];
     }
