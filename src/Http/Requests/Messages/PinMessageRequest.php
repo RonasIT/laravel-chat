@@ -2,11 +2,11 @@
 
 namespace RonasIT\Chat\Http\Requests\Messages;
 
-use RonasIT\Chat\Contracts\Requests\ReadMessagesRequestContract;
+use RonasIT\Chat\Contracts\Requests\PinMessageRequestContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
 use RonasIT\Chat\Models\Message;
 
-class ReadMessagesRequest extends BaseMessageRequest implements ReadMessagesRequestContract
+class PinMessageRequest extends BaseMessageRequest implements PinMessageRequestContract
 {
     protected ?Message $message;
 

@@ -4,12 +4,13 @@ namespace RonasIT\Chat\Enums;
 
 enum ChatRouteActionEnum: string
 {
-    case ConversationSearch = 'conversations_search';
-    case ConversationDelete = 'conversations_delete';
-    case ConversationGet = 'conversations_get';
-    case ConversationGetByUser = 'conversations_get_by_user';
+    case ConversationsSearch = 'conversations_search';
+    case ConversationDelete = 'conversation_delete';
+    case ConversationGet = 'conversation_get';
+    case ConversationGetByUser = 'conversation_get_by_user';
 
-    case MessageSearch = 'messages_search';
-    case MessageCreate = 'messages_create';
-    case MessageRead = 'messages_read';
+    case MessagesSearch = 'messages_search';
+    case MessageCreate = 'message_create';
+    case MessagesRead = 'messages_read';
+    case MessagePin = 'message_pin';
 }

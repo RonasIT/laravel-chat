@@ -53,7 +53,29 @@
                 "attachment_id": null,
                 "is_read": false
             },
-            "cover": null
+            "cover": null,
+            "pinned_messages": [
+                {
+                    "id": 2,
+                    "conversation_id": 1,
+                    "sender_id": 2,
+                    "text": "hi",
+                    "created_at": "2016-10-20T11:05:00.000000Z",
+                    "updated_at": "2016-10-20T11:05:00.000000Z",
+                    "attachment_id": null,
+                    "is_read": false
+                },
+                {
+                    "id": 1,
+                    "conversation_id": 1,
+                    "sender_id": 1,
+                    "text": "hi",
+                    "created_at": "2016-10-20T11:05:00.000000Z",
+                    "updated_at": "2016-10-20T11:05:00.000000Z",
+                    "attachment_id": null,
+                    "is_read": false
+                }
+            ]
         },
         {
             "id": 2,
@@ -77,7 +99,8 @@
                 }
             ],
             "last_message": null,
-            "cover": null
+            "cover": null,
+            "pinned_messages": []
         },
         {
             "id": 3,
@@ -101,7 +124,8 @@
                 }
             ],
             "last_message": null,
-            "cover": null
+            "cover": null,
+            "pinned_messages": []
         },
         {
             "id": 4,
@@ -125,7 +149,8 @@
                 }
             ],
             "last_message": null,
-            "cover": null
+            "cover": null,
+            "pinned_messages": []
         },
         {
             "id": 5,
@@ -149,7 +174,8 @@
                 }
             ],
             "last_message": null,
-            "cover": null
+            "cover": null,
+            "pinned_messages": []
         },
         {
             "id": 6,
@@ -190,7 +216,8 @@
                 "owner_id": 1,
                 "preview_id": null,
                 "meta": []
-            }
+            },
+            "pinned_messages": []
         }
     ],
     "first_page_url": "http:\/\/localhost\/conversations?page=1",

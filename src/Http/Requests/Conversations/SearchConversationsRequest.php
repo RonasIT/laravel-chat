@@ -29,6 +29,7 @@ class SearchConversationsRequest extends BaseConversationRequest implements Sear
             'members',
             'last_message',
             'cover',
+            'pinned_messages',
         ]);
     }
 }

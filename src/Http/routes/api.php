@@ -14,4 +14,5 @@ Route::group(['middleware' => ['auth', CheckManuallyRegisteredRoutesMiddleware::
     Route::get('messages', [MessageController::class, 'search']);
     Route::post('messages', [MessageController::class, 'create']);
     Route::post('messages/{id}/read-to', [MessageController::class, 'readUpTo']);
+    Route::post('messages/{id}/pin', [MessageController::class, 'pin']);
 });

@@ -26,6 +26,7 @@ class GetConversationRequest extends BaseConversationRequest implements GetConve
             'members',
             'last_message',
             'cover',
+            'pinned_messages',
         ]);
     }
 

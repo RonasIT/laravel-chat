@@ -44,6 +44,11 @@ class ConversationRepository extends BaseRepository
         return $this;
     }
 
+    public function pinMessage(Conversation $conversation, int $messageId): void
+    {
+        $conversation->pinned_messages()->syncWithoutDetaching([$messageId]);
+    }
+
     protected function getQuery($where = []): Builder
     {
         $query = parent::getQuery($where);

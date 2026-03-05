@@ -15,4 +15,6 @@ interface MessageServiceContract
     public function notifyUser(Model $message, Collection $recipients): void;
 
     public function read(int $toID): void;
+
+    public function pin(int $id): void;
 }

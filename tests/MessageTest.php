@@ -22,6 +22,7 @@ class MessageTest extends TestCase
     protected static ModelTestState $messageState;
     protected static TableTestState $conversationMemberState;
     protected static ModelTestState $readMessageState;
+    protected static TableTestState $pinnedMessageState;
 
     public function setUp(): void
     {
@@ -35,6 +36,7 @@ class MessageTest extends TestCase
         self::$messageState = new ModelTestState(Message::class);
         self::$conversationMemberState = new TableTestState('conversation_member');
         self::$readMessageState = new ModelTestState(ReadMessage::class);
+        self::$pinnedMessageState = new TableTestState('pinned_messages');
 
         ChatRouter::$isBlockedBaseRoutes = false;
     }
@@ -270,5 +272,56 @@ class MessageTest extends TestCase
         $response->assertJson(['message' => 'Unauthenticated.']);
 
         self::$readMessageState->assertNotChanged();
+    }
+
+    public function testPin(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/2/pin');
+
+        $response->assertNoContent();
+
+        self::$pinnedMessageState->assertChangesEqualsFixture('pinned');
+    }
+
+    public function testPinAlreadyPinned(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/pin');
+
+        $response->assertNoContent();
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testPinAsNonMember(): void
+    {
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/1/pin');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testPinNotFound(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/0/pin');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Message does not exist']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testPinNoAuth(): void
+    {
+        $response = $this->postJson('/messages/1/pin');
+
+        $response->assertUnauthorized();
+
+        $response->assertJson(['message' => 'Unauthenticated.']);
+
+        self::$pinnedMessageState->assertNotChanged();
     }
 }
