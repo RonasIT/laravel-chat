@@ -20,6 +20,8 @@ class SearchConversationsRequest extends BaseConversationRequest implements Sear
             'with_unread_messages_count' => 'boolean',
             'with' => 'array',
             'with.*' => 'string|required|in:' . $this->getAvailableRelations(),
+            'with_count' => 'array',
+            'with_count.*' => 'string|required|in:' . $this->getCountableRelations(),
         ];
     }
 
@@ -32,6 +34,13 @@ class SearchConversationsRequest extends BaseConversationRequest implements Sear
             'last_message',
             'cover',
             'pinned_messages',
+        ]);
+    }
+
+    protected function getCountableRelations(): string
+    {
+        return implode(',', [
+            'members',
         ]);
     }
 }

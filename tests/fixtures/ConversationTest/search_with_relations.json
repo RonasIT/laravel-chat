@@ -10,6 +10,7 @@
             "type": "private",
             "title": null,
             "cover_id": null,
+            "members_count": 2,
             "messages": [
                 {
                     "id": 1,
@@ -86,6 +87,7 @@
             "type": "private",
             "title": null,
             "cover_id": null,
+            "members_count": 2,
             "messages": [],
             "creator": null,
             "members": [
@@ -111,6 +113,7 @@
             "type": "private",
             "title": null,
             "cover_id": null,
+            "members_count": 2,
             "messages": [],
             "creator": null,
             "members": [
@@ -136,6 +139,7 @@
             "type": "private",
             "title": null,
             "cover_id": null,
+            "members_count": 2,
             "messages": [],
             "creator": null,
             "members": [
@@ -161,6 +165,7 @@
             "type": "private",
             "title": null,
             "cover_id": null,
+            "members_count": 2,
             "messages": [],
             "creator": null,
             "members": [
@@ -186,6 +191,7 @@
             "type": "group",
             "title": "Group Chat",
             "cover_id": 1,
+            "members_count": 3,
             "messages": [],
             "creator": {
                 "id": 1,

@@ -27,6 +27,19 @@
 						"description": "string, required, in:messages,creator,members,last_message,cover,pinned_messages",
 						"required": true,
 						"schema": {"type": "string"}
+					},
+					{
+						"in": "query",
+						"name": "with_count",
+						"description": "array",
+						"schema": {"type": "object"}
+					},
+					{
+						"in": "query",
+						"name": "with_count.*",
+						"description": "string, required, in:members",
+						"required": true,
+						"schema": {"type": "string"}
 					}
 				],
 				"responses": {
@@ -98,6 +111,19 @@
 						"description": "string, required, in:messages,creator,members,last_message,cover,pinned_messages",
 						"required": true,
 						"schema": {"type": "string"}
+					},
+					{
+						"in": "query",
+						"name": "with_count",
+						"description": "array",
+						"schema": {"type": "object"}
+					},
+					{
+						"in": "query",
+						"name": "with_count.*",
+						"description": "string, required, in:members",
+						"required": true,
+						"schema": {"type": "string"}
 					}
 				],
 				"responses": {
@@ -142,7 +168,7 @@
 									"type": "object",
 									"$ref": "#\/components\/schemas\/forbiddenResponseObject"
 								},
-								"example": {"message": "You are not a member of this conversation."}
+								"example": {"message": "This action is unauthorized."}
 							}
 						}
 					},
@@ -290,6 +316,19 @@
 						"description": "string, required, in:messages,creator,members,last_message,cover,pinned_messages",
 						"required": true,
 						"schema": {"type": "string"}
+					},
+					{
+						"in": "query",
+						"name": "with_count",
+						"description": "array",
+						"schema": {"type": "object"}
+					},
+					{
+						"in": "query",
+						"name": "with_count.*",
+						"description": "string, required, in:members",
+						"required": true,
+						"schema": {"type": "string"}
 					}
 				],
 				"responses": {
@@ -396,27 +435,15 @@
 							}
 						}
 					},
-					"400": {
-						"description": "Bad Request",
+					"422": {
+						"description": "Unprocessable Entity",
 						"content": {
 							"application\/json": {
 								"schema": {
 									"type": "object",
 									"$ref": "#\/components\/schemas\/badRequestResponseObject"
 								},
-								"example": {"message": "You cannot send a message to yourself."}
-							}
-						}
-					},
-					"403": {
-						"description": "Forbidden",
-						"content": {
-							"application\/json": {
-								"schema": {
-									"type": "object",
-									"$ref": "#\/components\/schemas\/forbiddenResponseObject"
-								},
-								"example": {"message": "You are not a member of this conversation."}
+								"example": {"message": "The recipient id must not be the same as the message sender id."}
 							}
 						}
 					},

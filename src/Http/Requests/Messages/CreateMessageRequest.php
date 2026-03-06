@@ -2,11 +2,10 @@
 
 namespace RonasIT\Chat\Http\Requests\Messages;
 
+use Illuminate\Validation\Validator;
 use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Support\Http\BaseRequest;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class CreateMessageRequest extends BaseRequest implements CreateMessageRequestContract
 {
@@ -23,23 +22,26 @@ class CreateMessageRequest extends BaseRequest implements CreateMessageRequestCo
         ];
     }
 
-    public function validateResolved(): void
+    public function after(): array
     {
-        parent::validateResolved();
-
-        $this->checkConversationMembership();
-
-        $this->checkSelfMessage();
+        return [
+            function (Validator $validator) {
+                if ($validator->errors()->isEmpty()) {
+                    $this->checkSelfMessage($validator);
+                    $this->checkConversation($validator);
+                }
+            },
+        ];
     }
 
-    protected function checkSelfMessage(): void
+    protected function checkSelfMessage(Validator $validator): void
     {
         if ($this->has('recipient_id') && $this->user()->id === $this->input('recipient_id')) {
-            throw new BadRequestHttpException(__('chat::validation.exceptions.self_message'));
+            $validator->errors()->add('recipient_id', __('chat::validation.custom.recipient_same_as_sender'));
         }
     }
 
-    protected function checkConversationMembership(): void
+    protected function checkConversation(Validator $validator): void
     {
         if (!$this->has('conversation_id')) {
             return;
@@ -48,7 +50,7 @@ class CreateMessageRequest extends BaseRequest implements CreateMessageRequestCo
         $conversation = app(ConversationServiceContract::class)->find($this->input('conversation_id'));
 
         if (!$conversation?->hasMember($this->user())) {
-            throw new AccessDeniedHttpException(__('chat::validation.exceptions.not_conversation_member'));
+            $validator->errors()->add('conversation_id', __('validation.exists', ['attribute' => 'conversation id']));
         }
     }
 }
