@@ -89,4 +89,14 @@ class Conversation extends Model
     {
         return $this->getAttribute('creator_id') === $member->id;
     }
+
+    public function isGroup(): bool
+    {
+        return $this->getAttribute('type') === TypeEnum::Group;
+    }
+
+    public function isPrivate(): bool
+    {
+        return $this->getAttribute('type') === TypeEnum::Private;
+    }
 }

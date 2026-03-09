@@ -52,7 +52,7 @@ class MessageService extends EntityService implements MessageServiceContract
             return [$message, $conversation];
         });
 
-        $recipients = $conversation->members->filter(fn ($member) => $member->id !== Auth::id());
+        $recipients = $conversation->members->filter(fn ($member) => $member->id !== $message->sender_id);
 
         $this->notifyUser($message, $recipients);
 
