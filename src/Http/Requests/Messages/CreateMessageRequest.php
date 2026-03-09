@@ -24,10 +24,6 @@ class CreateMessageRequest extends BaseRequest implements CreateMessageRequestCo
 
     public function after(): array
     {
-        if (!$validator->errors()->isEmpty()) {
-            return [];
-        }
-
         return [
             fn (Validator $validator) => !$validator->errors()->isEmpty() || $this->checkSelfMessage($validator),
             fn (Validator $validator) => !$validator->errors()->isEmpty() || $this->checkConversation($validator),
