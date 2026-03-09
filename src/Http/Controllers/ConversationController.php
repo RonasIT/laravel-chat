@@ -17,6 +17,7 @@ class ConversationController extends Controller
     {
         $result = $service
             ->with($request->input('with', []))
+            ->withCount($request->input('with_count', []))
             ->find($id);
 
         return response()->json($result);
@@ -26,6 +27,7 @@ class ConversationController extends Controller
     {
         $result = $service
             ->with($request->input('with', []))
+            ->withCount($request->input('with_count', []))
             ->getPrivate($request->user()->id, $userId);
 
         return (is_null($result))

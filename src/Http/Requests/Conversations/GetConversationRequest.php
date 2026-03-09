@@ -10,11 +10,18 @@ class GetConversationRequest extends BaseConversationRequest implements GetConve
 {
     protected ?Conversation $conversation;
 
+    public function authorize(): bool
+    {
+        return $this->conversation->hasMember($this->user());
+    }
+
     public function rules(): array
     {
         return [
             'with' => 'array',
             'with.*' => 'string|required|in:' . $this->getAvailableRelations(),
+            'with_count' => 'array',
+            'with_count.*' => 'string|required|in:' . $this->getCountableRelations(),
         ];
     }
 
@@ -30,15 +37,20 @@ class GetConversationRequest extends BaseConversationRequest implements GetConve
         ]);
     }
 
+    protected function getCountableRelations(): string
+    {
+        return implode(',', [
+            'members',
+        ]);
+    }
+
     public function validateResolved(): void
     {
         $this->init();
 
-        parent::validateResolved();
-
         $this->checkConversationExists();
 
-        $this->checkConversationMembership();
+        parent::validateResolved();
     }
 
     protected function init(): void

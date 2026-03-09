@@ -56,6 +56,9 @@ class ConversationTest extends TestCase
                     'cover',
                     'pinned_messages',
                 ],
+                'with_count' => [
+                    'members',
+                ],
             ],
         );
 
@@ -79,7 +82,7 @@ class ConversationTest extends TestCase
 
         $response->assertForbidden();
 
-        $response->assertJson(['message' => 'You are not a member of this conversation.']);
+        $response->assertJson(['message' => 'This action is unauthorized.']);
     }
 
     public function testGetNoAuth()
@@ -128,6 +131,9 @@ class ConversationTest extends TestCase
                 'last_message',
                 'cover',
                 'pinned_messages',
+            ],
+            'with_count' => [
+                'members',
             ],
         ]);
 
@@ -254,6 +260,9 @@ class ConversationTest extends TestCase
                         'last_message',
                         'cover',
                         'pinned_messages',
+                    ],
+                    'with_count' => [
+                        'members',
                     ],
                 ],
                 'fixture' => 'search_with_relations',

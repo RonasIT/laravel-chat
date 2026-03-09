@@ -85,9 +85,9 @@ class MessageTest extends TestCase
 
         $response = $this->actingAs(self::$secondUser)->json('post', '/messages', $data);
 
-        $response->assertBadRequest();
+        $response->assertUnprocessable();
 
-        $response->assertJson(['message' => 'You cannot send a message to yourself.']);
+        $response->assertJson(['message' => 'The recipient id must not be the same as the message sender id.']);
 
         self::$conversationState->assertNotChanged();
 
@@ -139,9 +139,9 @@ class MessageTest extends TestCase
 
         $response = $this->actingAs(self::$someAuthUser)->json('post', '/messages', $data);
 
-        $response->assertForbidden();
+        $response->assertUnprocessable();
 
-        $response->assertJson(['message' => 'You are not a member of this conversation.']);
+        $response->assertJson(['message' => 'The selected conversation id is invalid.']);
 
         self::$conversationState->assertNotChanged();
 
@@ -155,9 +155,9 @@ class MessageTest extends TestCase
             'text' => 'test',
         ]);
 
-        $response->assertForbidden();
+        $response->assertUnprocessable();
 
-        $response->assertJson(['message' => 'You are not a member of this conversation.']);
+        $response->assertJson(['message' => 'The selected conversation id is invalid.']);
 
         self::$conversationState->assertNotChanged();
 

@@ -12,6 +12,8 @@ class GetConversationByUserIdRequest extends BaseRequest implements GetConversat
         return [
             'with' => 'array',
             'with.*' => 'string|required|in:' . $this->getAvailableRelations(),
+            'with_count' => 'array',
+            'with_count.*' => 'string|required|in:' . $this->getCountableRelations(),
         ];
     }
 
@@ -24,6 +26,13 @@ class GetConversationByUserIdRequest extends BaseRequest implements GetConversat
             'last_message',
             'cover',
             'pinned_messages',
+        ]);
+    }
+
+    protected function getCountableRelations(): string
+    {
+        return implode(',', [
+            'members',
         ]);
     }
 }
