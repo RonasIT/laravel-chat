@@ -29,8 +29,8 @@ class CreateMessageRequest extends BaseRequest implements CreateMessageRequestCo
         }
 
         return [
-            fn (Validator $validator) => $this->checkSelfMessage($validator),
-            fn (Validator $validator) => $this->checkConversation($validator),
+            fn (Validator $validator) => !$validator->errors()->isEmpty() || $this->checkSelfMessage($validator),
+            fn (Validator $validator) => !$validator->errors()->isEmpty() || $this->checkConversation($validator),
         ];
     }
 
