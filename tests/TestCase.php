@@ -29,6 +29,8 @@ class TestCase extends BaseTest
         Config::set('chat.classes.user_model', User::class);
         Config::set('chat.classes.media_model', Media::class);
         Config::set('chat.default_channels.0', BroadcastChannel::class);
+        Config::set('chat.order_by.conversation', ['id', 'created_at', 'updated_at']);
+        Config::set('chat.order_by.message', ['id', 'created_at']);
 
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadMigrationsFrom(__DIR__ . '/../migrations');

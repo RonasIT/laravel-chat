@@ -2,6 +2,7 @@
 
 namespace RonasIT\Chat\Tests;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -295,6 +296,21 @@ class MessageStaticTest extends TestCase
         $response->assertNotFound();
 
         $response->assertJson(['message' => 'Not found.']);
+    }
+
+    public function testSearchWithOrderByNotAllowedByConfig()
+    {
+        Route::chat(ChatRouteActionEnum::MessagesSearch);
+
+        Config::set('chat.order_by.message', ['id']);
+
+        $response = $this->actingAs(self::$firstUser)->json('get', '/messages', [
+            'order_by' => 'invalid_attribute',
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJson(['message' => 'The selected order by is invalid.']);
     }
 
     public function testEverythingDisabledExceptRead(): void

@@ -2,6 +2,7 @@
 
 namespace RonasIT\Chat\Tests;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RonasIT\Chat\ChatRouter;
@@ -313,5 +314,18 @@ class ConversationTest extends TestCase
         $response->assertUnauthorized();
 
         $response->assertJson(['message' => 'Unauthenticated.']);
+    }
+
+    public function testSearchWithOrderByNotAllowedByConfig()
+    {
+        Config::set('chat.order_by.conversation', ['id']);
+
+        $response = $this->actingAs(self::$sender)->json('get', '/conversations', [
+            'order_by' => 'invalid_attribute',
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJson(['message' => 'The selected order by is invalid.']);
     }
 }
