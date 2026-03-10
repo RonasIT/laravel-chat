@@ -30,12 +30,12 @@ class Conversation extends Model
 
     public function last_message(): HasOne
     {
-        return $this->hasOne(Message::class)->latest();
+        return $this->hasOne(config('chat.classes.message_model'))->latest();
     }
 
     public function messages(): HasMany
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(config('chat.classes.message_model'));
     }
 
     public function creator(): BelongsTo
@@ -71,7 +71,7 @@ class Conversation extends Model
     {
         return $this
             ->belongsToMany(
-                related: Message::class,
+                related: config('chat.classes.message_model'),
                 table: 'pinned_messages',
                 foreignPivotKey: 'conversation_id',
                 relatedPivotKey: 'message_id',

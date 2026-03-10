@@ -26,7 +26,7 @@ class Message extends Model
 
     public function conversation(): BelongsTo
     {
-        return $this->belongsTo(Conversation::class);
+        return $this->belongsTo(config('chat.classes.conversation_model'));
     }
 
     public function getIsReadAttribute()

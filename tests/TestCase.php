@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Notification;
 use Orchestra\Testbench\TestCase as BaseTest;
 use ReflectionClass;
 use RonasIT\Chat\ChatServiceProvider;
+use RonasIT\Chat\Models\Conversation;
+use RonasIT\Chat\Models\Message;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Media\Models\Media;
 use RonasIT\Support\Traits\FixturesTrait;
@@ -28,6 +30,8 @@ class TestCase extends BaseTest
 
         Config::set('chat.classes.user_model', User::class);
         Config::set('chat.classes.media_model', Media::class);
+        Config::set('chat.classes.conversation_model', Conversation::class);
+        Config::set('chat.classes.message_model', Message::class);
         Config::set('chat.default_channels.0', BroadcastChannel::class);
 
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
