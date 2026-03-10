@@ -15,9 +15,7 @@ use RonasIT\Chat\Contracts\Requests\ReadMessagesRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchConversationsRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchMessagesRequestContract;
 use RonasIT\Chat\Contracts\Resources\ConversationResourceContract;
-use RonasIT\Chat\Contracts\Resources\ConversationsCollectionResourceContract;
 use RonasIT\Chat\Contracts\Resources\MessageResourceContract;
-use RonasIT\Chat\Contracts\Resources\MessagesCollectionResourceContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
 use RonasIT\Chat\Http\Requests\Conversations\DeleteConversationRequest;
@@ -74,9 +72,9 @@ class ChatServiceProvider extends ServiceProvider
         $this->app->bind(ConversationDeletedNotificationContract::class, ConversationDeletedNotification::class);
 
         $this->app->bind(ConversationResourceContract::class, ConversationResource::class);
-        $this->app->bind(ConversationsCollectionResourceContract::class, ConversationsCollectionResource::class);
-
         $this->app->bind(MessageResourceContract::class, MessageResource::class);
-        $this->app->bind(MessagesCollectionResourceContract::class, MessagesCollectionResource::class);
+
+        $this->app->alias(MessageResource::class, MessageResourceContract::class);
+        $this->app->alias(ConversationResource::class, ConversationResourceContract::class);
     }
 }

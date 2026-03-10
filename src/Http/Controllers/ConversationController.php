@@ -8,9 +8,7 @@ use RonasIT\Chat\Contracts\Requests\GetConversationByUserIdRequestContract;
 use RonasIT\Chat\Contracts\Requests\GetConversationRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchConversationsRequestContract;
 use RonasIT\Chat\Contracts\Resources\ConversationResourceContract;
-use RonasIT\Chat\Contracts\Resources\ConversationsCollectionResourceContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
-use RonasIT\Chat\Http\Resources\ConversationResource;
 use RonasIT\Chat\Http\Resources\ConversationsCollectionResource;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +21,7 @@ class ConversationController extends Controller
             ->withCount($request->input('with_count', []))
             ->find($id);
 
-        return ConversationResource::make($result);
+        return app(ConversationResourceContract::class, ['resource' => $result]);
     }
 
     public function getByUserId(GetConversationByUserIdRequestContract $request, ConversationServiceContract $service, int $userId): ConversationResourceContract|Response
@@ -35,10 +33,10 @@ class ConversationController extends Controller
 
         return (is_null($result))
             ? response()->noContent()
-            : ConversationResource::make($result);
+            : app(ConversationResourceContract::class, ['resource' => $result]);
     }
 
-    public function search(SearchConversationsRequestContract $request, ConversationServiceContract $service): ConversationsCollectionResourceContract
+    public function search(SearchConversationsRequestContract $request, ConversationServiceContract $service): ConversationsCollectionResource
     {
         $result = $service->search($request->onlyValidated());
 

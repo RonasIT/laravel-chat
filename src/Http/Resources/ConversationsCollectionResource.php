@@ -3,9 +3,12 @@
 namespace RonasIT\Chat\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use RonasIT\Chat\Contracts\Resources\ConversationsCollectionResourceContract;
+use RonasIT\Chat\Contracts\Resources\ConversationResourceContract;
 
-class ConversationsCollectionResource extends ResourceCollection implements ConversationsCollectionResourceContract
+class ConversationsCollectionResource extends ResourceCollection
 {
-    public $collects = ConversationResource::class;
+    public function collects(): string
+    {
+        return app()->getAlias(ConversationResourceContract::class);
+    }
 }

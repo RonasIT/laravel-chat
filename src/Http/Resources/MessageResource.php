@@ -13,10 +13,7 @@ class MessageResource extends BaseResource implements MessageResourceContract
     {
         return [
             'id' => $this->resource->id,
-            'conversation_id' => $this->resource->conversation_id,
-            'sender_id' => $this->resource->sender_id,
             'text' => $this->resource->text,
-            'attachment_id' => $this->resource->attachment_id,
             'is_read' => $this->resource->is_read,
             'created_at' => $this->resource->created_at,
             'updated_at' => $this->resource->updated_at,
