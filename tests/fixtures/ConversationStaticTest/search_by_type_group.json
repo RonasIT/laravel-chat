@@ -1,5 +1,4 @@
 {
-    "current_page": 1,
     "data": [
         {
             "id": 6,
@@ -12,31 +11,36 @@
             "cover_id": 1
         }
     ],
-    "first_page_url": "http:\/\/localhost\/conversations?page=1",
-    "from": 1,
-    "last_page": 1,
-    "last_page_url": "http:\/\/localhost\/conversations?page=1",
-    "links": [
-        {
-            "url": null,
-            "label": "&laquo; Previous",
-            "active": false
-        },
-        {
-            "url": "http:\/\/localhost\/conversations?page=1",
-            "label": "1",
-            "active": true
-        },
-        {
-            "url": null,
-            "label": "Next &raquo;",
-            "active": false
-        }
-    ],
-    "next_page_url": null,
-    "path": "http:\/\/localhost\/conversations",
-    "per_page": 15,
-    "prev_page_url": null,
-    "to": 1,
-    "total": 1
+    "links": {
+        "first": "http:\/\/localhost\/conversations?page=1",
+        "last": "http:\/\/localhost\/conversations?page=1",
+        "prev": null,
+        "next": null
+    },
+    "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "links": [
+            {
+                "url": null,
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "http:\/\/localhost\/conversations?page=1",
+                "label": "1",
+                "active": true
+            },
+            {
+                "url": null,
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "path": "http:\/\/localhost\/conversations",
+        "per_page": 15,
+        "to": 1,
+        "total": 1
+    }
 }

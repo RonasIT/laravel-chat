@@ -79,7 +79,7 @@ class MessageStaticTest extends TestCase
         $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages', $data);
         $responseRead = $this->actingAs(self::$firstUser)->postJson('/messages/1/read-to');
 
-        $responseCreate->assertOk();
+        $responseCreate->assertCreated();
 
         $responseGet->assertNotFound();
         $responseDelete->assertNotFound();
@@ -102,7 +102,7 @@ class MessageStaticTest extends TestCase
 
         $this->assertBroadcastNotificationSent('create_in_exists_conversation');
 
-        $response->assertOk();
+        $response->assertCreated();
 
         $this->assertEqualsFixture('create_message_response', $response->json());
 
@@ -121,7 +121,7 @@ class MessageStaticTest extends TestCase
 
         $response = $this->actingAs(self::$secondUser)->json('post', '/messages', $data);
 
-        $response->assertOk();
+        $response->assertCreated();
 
         $this->assertBroadcastNotificationSent('create_in_not_exists_conversation');
 
@@ -161,7 +161,7 @@ class MessageStaticTest extends TestCase
 
         $this->assertBroadcastNotificationSent('create_with_attachment');
 
-        $response->assertOk();
+        $response->assertCreated();
 
         $this->assertEqualsFixture('create_message_with_attachment_response', $response->json());
 
@@ -181,7 +181,7 @@ class MessageStaticTest extends TestCase
 
         $this->assertBroadcastNotificationSent('create_with_conversation_id');
 
-        $response->assertOk();
+        $response->assertCreated();
 
         $this->assertEqualsFixture('create_message_with_conversation_id_response', $response->json());
 
