@@ -14,9 +14,9 @@ use RonasIT\Chat\Contracts\Requests\PinMessageRequestContract;
 use RonasIT\Chat\Contracts\Requests\ReadMessagesRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchConversationsRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchMessagesRequestContract;
-use RonasIT\Chat\Contracts\Resources\ConversationCollectionResourceContract;
+use RonasIT\Chat\Contracts\Resources\ConversationsCollectionResourceContract;
 use RonasIT\Chat\Contracts\Resources\ConversationResourceContract;
-use RonasIT\Chat\Contracts\Resources\MessageCollectionResourceContract;
+use RonasIT\Chat\Contracts\Resources\MessagesCollectionResourceContract;
 use RonasIT\Chat\Contracts\Resources\MessageResourceContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
@@ -28,9 +28,9 @@ use RonasIT\Chat\Http\Requests\Messages\CreateMessageRequest;
 use RonasIT\Chat\Http\Requests\Messages\PinMessageRequest;
 use RonasIT\Chat\Http\Requests\Messages\ReadMessagesRequest;
 use RonasIT\Chat\Http\Requests\Messages\SearchMessagesRequest;
-use RonasIT\Chat\Http\Resources\ConversationCollectionResource;
+use RonasIT\Chat\Http\Resources\ConversationsCollectionResource;
 use RonasIT\Chat\Http\Resources\ConversationResource;
-use RonasIT\Chat\Http\Resources\MessageCollectionResource;
+use RonasIT\Chat\Http\Resources\MessagesCollectionResource;
 use RonasIT\Chat\Http\Resources\MessageResource;
 use RonasIT\Chat\Notifications\ConversationDeletedNotification;
 use RonasIT\Chat\Notifications\NewMessageNotification;
@@ -74,9 +74,9 @@ class ChatServiceProvider extends ServiceProvider
         $this->app->bind(ConversationDeletedNotificationContract::class, ConversationDeletedNotification::class);
 
         $this->app->bind(ConversationResourceContract::class, ConversationResource::class);
-        $this->app->bind(ConversationCollectionResourceContract::class, ConversationCollectionResource::class);
+        $this->app->bind(ConversationsCollectionResourceContract::class, ConversationsCollectionResource::class);
 
         $this->app->bind(MessageResourceContract::class, MessageResource::class);
-        $this->app->bind(MessageCollectionResourceContract::class, MessageCollectionResource::class);
+        $this->app->bind(MessagesCollectionResourceContract::class, MessagesCollectionResource::class);
     }
 }

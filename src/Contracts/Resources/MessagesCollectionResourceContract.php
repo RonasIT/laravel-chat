@@ -2,6 +2,6 @@
 
 namespace RonasIT\Chat\Contracts\Resources;
 
-interface ConversationCollectionResourceContract
+interface MessagesCollectionResourceContract
 {
 }

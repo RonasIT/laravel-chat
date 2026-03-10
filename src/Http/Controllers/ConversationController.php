@@ -7,11 +7,11 @@ use RonasIT\Chat\Contracts\Requests\DeleteConversationRequestContract;
 use RonasIT\Chat\Contracts\Requests\GetConversationByUserIdRequestContract;
 use RonasIT\Chat\Contracts\Requests\GetConversationRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchConversationsRequestContract;
-use RonasIT\Chat\Contracts\Resources\ConversationCollectionResourceContract;
 use RonasIT\Chat\Contracts\Resources\ConversationResourceContract;
+use RonasIT\Chat\Contracts\Resources\ConversationsCollectionResourceContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
-use RonasIT\Chat\Http\Resources\ConversationCollectionResource;
 use RonasIT\Chat\Http\Resources\ConversationResource;
+use RonasIT\Chat\Http\Resources\ConversationsCollectionResource;
 use Symfony\Component\HttpFoundation\Response;
 
 class ConversationController extends Controller
@@ -38,11 +38,11 @@ class ConversationController extends Controller
             : ConversationResource::make($result);
     }
 
-    public function search(SearchConversationsRequestContract $request, ConversationServiceContract $service): ConversationCollectionResourceContract
+    public function search(SearchConversationsRequestContract $request, ConversationServiceContract $service): ConversationsCollectionResourceContract
     {
         $result = $service->search($request->onlyValidated());
 
-        return ConversationCollectionResource::make($result);
+        return ConversationsCollectionResource::make($result);
     }
 
     public function delete(DeleteConversationRequestContract $request, ConversationServiceContract $service, int $id): Response
