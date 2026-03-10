@@ -13,4 +13,9 @@ return [
     'default_channels' => [
         BroadcastChannel::class,
     ],
+
+    'order_by' => [
+        'conversation' => ['id', 'created_at', 'updated_at'],
+        'message' => ['id', 'created_at'],
+    ],
 ];
