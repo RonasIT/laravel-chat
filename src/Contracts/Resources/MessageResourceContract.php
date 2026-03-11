@@ -2,9 +2,6 @@
 
 namespace RonasIT\Chat\Contracts\Resources;
 
-use Illuminate\Http\Request;
-
-interface MessageResourceContract
+interface MessageResourceContract extends ResourceContract
 {
-    public function toArray(Request $request): array;
 }
