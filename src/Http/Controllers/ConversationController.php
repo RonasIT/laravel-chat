@@ -2,28 +2,29 @@
 
 namespace RonasIT\Chat\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use RonasIT\Chat\Contracts\Requests\DeleteConversationRequestContract;
 use RonasIT\Chat\Contracts\Requests\GetConversationByUserIdRequestContract;
 use RonasIT\Chat\Contracts\Requests\GetConversationRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchConversationsRequestContract;
+use RonasIT\Chat\Contracts\Resources\ConversationResourceContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
+use RonasIT\Chat\Http\Resources\ConversationsCollectionResource;
 use Symfony\Component\HttpFoundation\Response;
 
 class ConversationController extends Controller
 {
-    public function get(GetConversationRequestContract $request, ConversationServiceContract $service, $id): JsonResponse
+    public function get(GetConversationRequestContract $request, ConversationServiceContract $service, int $id): ConversationResourceContract
     {
         $result = $service
             ->with($request->input('with', []))
             ->withCount($request->input('with_count', []))
             ->find($id);
 
-        return response()->json($result);
+        return app(ConversationResourceContract::class, ['resource' => $result]);
     }
 
-    public function getByUserId(GetConversationByUserIdRequestContract $request, ConversationServiceContract $service, $userId): JsonResponse|Response
+    public function getByUserId(GetConversationByUserIdRequestContract $request, ConversationServiceContract $service, int $userId): ConversationResourceContract|Response
     {
         $result = $service
             ->with($request->input('with', []))
@@ -32,20 +33,20 @@ class ConversationController extends Controller
 
         return (is_null($result))
             ? response()->noContent()
-            : response()->json($result);
+            : app(ConversationResourceContract::class, ['resource' => $result]);
     }
 
-    public function search(SearchConversationsRequestContract $request, ConversationServiceContract $service): JsonResponse
+    public function search(SearchConversationsRequestContract $request, ConversationServiceContract $service): ConversationsCollectionResource
     {
         $result = $service->search($request->onlyValidated());
 
-        return response()->json($result);
+        return ConversationsCollectionResource::make($result);
     }
 
-    public function delete(DeleteConversationRequestContract $request, ConversationServiceContract $service, $id): Response
+    public function delete(DeleteConversationRequestContract $request, ConversationServiceContract $service, int $id): Response
     {
         $service->delete($id);
 
-        return response('', Response::HTTP_NO_CONTENT);
+        return response()->noContent();
     }
 }
