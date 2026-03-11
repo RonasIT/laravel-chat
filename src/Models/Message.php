@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
+use RonasIT\Chat\Contracts\Models\ConversationModelContract;
+use RonasIT\Chat\Contracts\Models\MessageModelContract;
 use RonasIT\Support\Traits\ModelTrait;
 
-class Message extends Model
+class Message extends Model implements MessageModelContract
 {
     use ModelTrait;
 
@@ -26,7 +28,7 @@ class Message extends Model
 
     public function conversation(): BelongsTo
     {
-        return $this->belongsTo(config('chat.classes.conversation_model'));
+        return $this->belongsTo(app()->getAlias(ConversationModelContract::class));
     }
 
     public function getIsReadAttribute()

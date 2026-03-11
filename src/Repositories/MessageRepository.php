@@ -2,13 +2,14 @@
 
 namespace RonasIT\Chat\Repositories;
 
+use RonasIT\Chat\Contracts\Models\MessageModelContract;
 use RonasIT\Support\Repositories\BaseRepository;
 
 class MessageRepository extends BaseRepository
 {
     public function __construct()
     {
-        $this->setModel(config('chat.classes.message_model'));
+        $this->setModel(app()->getAlias(MessageModelContract::class));
 
         $this->setAdditionalReservedFilters('member_id');
     }

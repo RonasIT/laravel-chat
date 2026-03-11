@@ -4,6 +4,7 @@ namespace RonasIT\Chat\Repositories;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use RonasIT\Chat\Contracts\Models\ConversationModelContract;
 use RonasIT\Chat\Enums\Conversation\TypeEnum;
 use RonasIT\Support\Repositories\BaseRepository;
 
@@ -13,7 +14,7 @@ class ConversationRepository extends BaseRepository
 
     public function __construct()
     {
-        $this->setModel(config('chat.classes.conversation_model'));
+        $this->setModel(app()->getAlias(ConversationModelContract::class));
 
         $this->setAdditionalReservedFilters(
             'member_id',
