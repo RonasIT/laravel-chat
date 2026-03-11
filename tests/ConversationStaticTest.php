@@ -402,6 +402,13 @@ class ConversationStaticTest extends TestCase
                 'filter' => ['type' => 'group'],
                 'fixture' => 'search_by_type_group',
             ],
+            [
+                'filter' => [
+                    'type' => 'private',
+                    'with' => ['cover'],
+                ],
+                'fixture' => 'search_private_with_overridden_fields',
+            ],
         ];
     }
 

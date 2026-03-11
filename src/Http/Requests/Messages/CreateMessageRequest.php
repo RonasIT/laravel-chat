@@ -11,8 +11,8 @@ class CreateMessageRequest extends BaseRequest implements CreateMessageRequestCo
 {
     public function rules(): array
     {
-        $mediaTableName = app(config('chat.classes.media_model'))->getTable();
-        $userTableName = app(config('chat.classes.user_model'))->getTable();
+        $mediaTableName = app(config('chat.classes.media.model'))->getTable();
+        $userTableName = app(config('chat.classes.user.model'))->getTable();
 
         return [
             'recipient_id' => "required_without:conversation_id|prohibits:conversation_id|integer|exists:{$userTableName},id",
