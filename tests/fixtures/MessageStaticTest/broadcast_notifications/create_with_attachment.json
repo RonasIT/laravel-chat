@@ -1,5 +1,5 @@
 {
-    "RonasIT\\Chat\\Notifications\\NewMessageNotification": [
+    "RonasIT\\Chat\\Notifications\\MessageCreatedNotification": [
         {
             "notification": {
                 "sender": {
