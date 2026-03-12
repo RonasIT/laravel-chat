@@ -274,7 +274,7 @@ class MessageTest extends TestCase
 
         self::$pinnedMessageState->assertChangesEqualsFixture('pinned');
 
-        $this->assertBroadcastNotificationSent('pin', true);
+        $this->assertBroadcastNotificationSent('pin');
     }
 
     public function testPinAlreadyPinned(): void
