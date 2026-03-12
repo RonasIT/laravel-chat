@@ -2,7 +2,6 @@
 
 namespace RonasIT\Chat\Tests;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -430,8 +429,6 @@ class ConversationStaticTest extends TestCase
     public function testSearchWithOrderByNotAllowedByConfig()
     {
         Route::chat(ChatRouteActionEnum::ConversationsSearch);
-
-        Config::set('chat.order_by.conversation', ['id']);
 
         $response = $this->actingAs(self::$sender)->json('get', '/conversations', [
             'order_by' => 'invalid_attribute',
