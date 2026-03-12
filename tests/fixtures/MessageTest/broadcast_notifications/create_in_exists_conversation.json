@@ -53,7 +53,8 @@
                     },
                     "sender_first_name": null,
                     "sender_last_name": null
-                }
+                },
+                "broadcast_type": "message.created"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"

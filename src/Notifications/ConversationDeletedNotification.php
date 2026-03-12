@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract;
+use RonasIT\Chat\Enums\BroadcastNotificationTypeEnum;
 
 class ConversationDeletedNotification extends Notification implements ConversationDeletedNotificationContract, ShouldBroadcast, ShouldQueue
 {
@@ -44,5 +45,10 @@ class ConversationDeletedNotification extends Notification implements Conversati
     public function toBroadcast(): BroadcastMessage
     {
         return new BroadcastMessage(['conversation' => $this->conversation]);
+    }
+
+    public function broadcastType(): string
+    {
+        return BroadcastNotificationTypeEnum::ConversationDeleted->value;
     }
 }

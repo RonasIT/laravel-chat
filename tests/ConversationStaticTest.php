@@ -2,7 +2,6 @@
 
 namespace RonasIT\Chat\Tests;
 
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RonasIT\Chat\Enums\ChatRouteActionEnum;
@@ -54,7 +53,7 @@ class ConversationStaticTest extends TestCase
 
     public function testEverythingDisabledExceptDelete(): void
     {
-        Notification::fake();
+        
 
         Route::chat(ChatRouteActionEnum::ConversationDelete);
 
@@ -259,7 +258,7 @@ class ConversationStaticTest extends TestCase
 
     public function testDeleteBySender()
     {
-        Notification::fake();
+        
 
         Route::chat(ChatRouteActionEnum::ConversationDelete);
 
@@ -275,7 +274,7 @@ class ConversationStaticTest extends TestCase
 
     public function testDeleteByRecipient()
     {
-        Notification::fake();
+        
 
         Route::chat(ChatRouteActionEnum::ConversationDelete);
 
@@ -317,7 +316,7 @@ class ConversationStaticTest extends TestCase
 
     public function testDeleteGroupByCreator()
     {
-        Notification::fake();
+        
 
         Route::chat(ChatRouteActionEnum::ConversationDelete);
 

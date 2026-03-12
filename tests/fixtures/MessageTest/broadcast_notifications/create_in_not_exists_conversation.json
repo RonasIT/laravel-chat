@@ -1,4 +1,62 @@
 {
+    "RonasIT\\Chat\\Notifications\\ConversationCreatedNotification": [
+        {
+            "notification": {
+                "conversation": {
+                    "id": 6,
+                    "last_updated_at": null,
+                    "created_at": "2024-01-01T00:00:00.000000Z",
+                    "updated_at": "2024-01-01T00:00:00.000000Z",
+                    "creator_id": null,
+                    "type": "private",
+                    "title": null,
+                    "cover_id": null,
+                    "members": [
+                        {
+                            "id": 2,
+                            "email": "fidel.kutch@example.com"
+                        },
+                        {
+                            "id": 5,
+                            "email": "william.bob@example.com"
+                        }
+                    ]
+                },
+                "recipientId": 5,
+                "locale": null,
+                "broadcast_on": [
+                    {
+                        "name": "private-chat.5"
+                    }
+                ],
+                "broadcast_data": {
+                    "conversation": {
+                        "id": 6,
+                        "type": "private",
+                        "title": null,
+                        "last_updated_at": null,
+                        "created_at": "2024-01-01T00:00:00.000000Z",
+                        "last_message": {
+                            "id": 8,
+                            "text": "hello",
+                            "is_read": false,
+                            "created_at": "2024-01-01T00:00:00.000000Z",
+                            "updated_at": "2024-01-01T00:00:00.000000Z"
+                        }
+                    }
+                },
+                "broadcast_type": "conversation.created"
+            },
+            "channels": [
+                "Illuminate\\Notifications\\Channels\\BroadcastChannel"
+            ],
+            "notifiable": {
+                "id": 5,
+                "email": "william.bob@example.com"
+            },
+            "locale": null
+        }
+    ],
     "RonasIT\\Chat\\Notifications\\NewMessageNotification": [
         {
             "notification": {
@@ -53,7 +111,8 @@
                     },
                     "sender_first_name": null,
                     "sender_last_name": null
-                }
+                },
+                "broadcast_type": "message.created"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
