@@ -9,8 +9,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use RonasIT\Chat\Contracts\Notifications\ConversationCreatedNotificationContract;
-use RonasIT\Chat\Contracts\Notifications\ConversationUpdatedNotificationContract;
 use RonasIT\Chat\Contracts\Notifications\NewMessageNotificationContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
@@ -77,16 +75,11 @@ class MessageService extends EntityService implements MessageServiceContract
 
     public function notifyUser(Conversation $conversation, Model $message, Collection $recipients): void
     {
+        if ($conversation->wasRecentlyCreated) {
+            $this->conversationService->sendCreatedNotifications($conversation, $recipients);
+        }
+
         foreach ($recipients as $recipient) {
-            if ($conversation->wasRecentlyCreated) {
-                $conversationCreatedNotification = app(ConversationCreatedNotificationContract::class, [
-                    'conversation' => $conversation,
-                    'recipientId' => $recipient->id,
-                ]);
-
-                $recipient->notify($conversationCreatedNotification);
-            }
-
             $recipient->notify(
                 app(NewMessageNotificationContract::class)
                     ->setMessage($message)
@@ -105,12 +98,7 @@ class MessageService extends EntityService implements MessageServiceContract
             return;
         }
 
-        foreach ($message->conversation->members as $member) {
-            $member->notify(app(ConversationUpdatedNotificationContract::class, [
-                'conversation' => $message->conversation,
-                'recipientId' => $member->id,
-            ]));
-        }
+        $this->conversationService->sendUpdatedNotifications($message->conversation, $message->conversation->members);
     }
 
     public function read(int $toID): void

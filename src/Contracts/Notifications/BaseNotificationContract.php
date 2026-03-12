@@ -5,7 +5,7 @@ namespace RonasIT\Chat\Contracts\Notifications;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 
-abstract class BaseNotification extends Notification
+abstract class BaseNotificationContract extends Notification
 {
     abstract public function via($notifiable): array;
 

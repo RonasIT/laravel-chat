@@ -5,10 +5,14 @@ namespace RonasIT\Chat\Services;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use RonasIT\Chat\Contracts\Notifications\ConversationCreatedNotificationContractContract;
 use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract;
+use RonasIT\Chat\Contracts\Notifications\ConversationUpdatedNotificationContractContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Enums\Conversation\TypeEnum;
+use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Repositories\ConversationRepository;
 use RonasIT\Support\Services\EntityService;
 
@@ -79,5 +83,23 @@ class ConversationService extends EntityService implements ConversationServiceCo
     public function getPrivate(int $firstMemberId, int $secondMemberId): ?Model
     {
         return $this->getByTypeAndMembers(TypeEnum::Private, $firstMemberId, $secondMemberId);
+    }
+
+    public function sendCreatedNotifications(Conversation $conversation, Collection $recipients): void
+    {
+        $this->sendNotifications($conversation, $recipients, ConversationCreatedNotificationContractContract::class);
+    }
+
+    public function sendUpdatedNotifications(Conversation $conversation, Collection $recipients): void
+    {
+        $this->sendNotifications($conversation, $recipients, ConversationUpdatedNotificationContractContract::class);
+    }
+
+    protected function sendNotifications(Conversation $conversation, Collection $recipient, string $notificationClass): void
+    {
+        $recipient->each(fn (Model $recipient) => $recipient->notify(app($notificationClass, [
+            'conversation' => $conversation,
+            'recipientId' => $recipient->id,
+        ])));
     }
 }

@@ -53,8 +53,6 @@ class ConversationStaticTest extends TestCase
 
     public function testEverythingDisabledExceptDelete(): void
     {
-        
-
         Route::chat(ChatRouteActionEnum::ConversationDelete);
 
         $responseSearch = $this->actingAs(self::$sender)->getJson('/conversations');
@@ -258,8 +256,6 @@ class ConversationStaticTest extends TestCase
 
     public function testDeleteBySender()
     {
-        
-
         Route::chat(ChatRouteActionEnum::ConversationDelete);
 
         $response = $this->actingAs(self::$sender)->json('delete', '/conversations/1');
@@ -274,8 +270,6 @@ class ConversationStaticTest extends TestCase
 
     public function testDeleteByRecipient()
     {
-        
-
         Route::chat(ChatRouteActionEnum::ConversationDelete);
 
         $response = $this->actingAs(self::$recipient)->json('delete', '/conversations/1');
@@ -316,8 +310,6 @@ class ConversationStaticTest extends TestCase
 
     public function testDeleteGroupByCreator()
     {
-        
-
         Route::chat(ChatRouteActionEnum::ConversationDelete);
 
         $response = $this->actingAs(self::$sender)->json('delete', '/conversations/6');
