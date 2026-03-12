@@ -4,13 +4,13 @@ namespace RonasIT\Chat\Notifications;
 
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use RonasIT\Chat\Contracts\Notifications\ConversationUpdatedNotificationContractContract;
+use RonasIT\Chat\Contracts\Notifications\ConversationUpdatedNotificationContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Enums\BroadcastNotificationTypeEnum;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Notifications\Resources\ConversationResource;
 
-class ConversationUpdatedNotification extends ConversationUpdatedNotificationContractContract
+class ConversationUpdatedNotification extends ConversationUpdatedNotificationContract
 {
     public function __construct(
         protected readonly Conversation $conversation,
