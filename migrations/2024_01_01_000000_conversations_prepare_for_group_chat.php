@@ -9,8 +9,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        $usersTableName = app(config('chat.classes.user_model'))->getTable();
-        $mediaTableName = app(config('chat.classes.media_model'))->getTable();
+        $usersTableName = app(config('chat.classes.user.model'))->getTable();
+        $mediaTableName = app(config('chat.classes.media.model'))->getTable();
 
         Schema::create('conversation_member', function (Blueprint $table) use ($usersTableName) {
             $table->id();
@@ -66,7 +66,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        $usersTableName = app(config('chat.classes.user_model'))->getTable();
+        $usersTableName = app(config('chat.classes.user.model'))->getTable();
 
         Schema::table('conversations', function (Blueprint $table) use ($usersTableName) {
             $table

@@ -6,6 +6,8 @@
     "updated_at": "2024-01-01T00:00:00.000000Z",
     "sender": {
         "id": 2,
-        "email": "fidel.kutch@example.com"
+        "email": "fidel.kutch@example.com",
+        "name": "Fidel",
+        "avatar_id": null
     }
 }

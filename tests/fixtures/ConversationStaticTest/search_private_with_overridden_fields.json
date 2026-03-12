@@ -6,7 +6,14 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob"
+            "title": "Bob",
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            }
         },
         {
             "id": 2,
@@ -14,7 +21,14 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob"
+            "title": "Bob",
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            }
         },
         {
             "id": 3,
@@ -22,7 +36,14 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob"
+            "title": "Bob",
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            }
         },
         {
             "id": 4,
@@ -30,7 +51,14 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob"
+            "title": "Bob",
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            }
         },
         {
             "id": 5,
@@ -38,15 +66,14 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob"
-        },
-        {
-            "id": 6,
-            "last_updated_at": "2016-10-20 11:05:00",
-            "created_at": "2016-10-20T11:05:00.000000Z",
-            "updated_at": "2016-10-20T11:05:00.000000Z",
-            "type": "group",
-            "title": "Group Chat"
+            "title": "Bob",
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            }
         }
     ],
     "links": {
@@ -77,8 +104,8 @@
             }
         ],
         "path": "http:\/\/localhost\/conversations",
-        "per_page": 6,
-        "to": 6,
-        "total": 6
+        "per_page": 15,
+        "to": 5,
+        "total": 5
     }
 }
