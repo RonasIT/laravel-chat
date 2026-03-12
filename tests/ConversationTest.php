@@ -314,4 +314,15 @@ class ConversationTest extends TestCase
 
         $response->assertJson(['message' => 'Unauthenticated.']);
     }
+
+    public function testSearchWithOrderByNotAllowedByConfig()
+    {
+        $response = $this->actingAs(self::$sender)->json('get', '/conversations', [
+            'order_by' => 'invalid_attribute',
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJson(['message' => 'The selected order by is invalid.']);
+    }
 }

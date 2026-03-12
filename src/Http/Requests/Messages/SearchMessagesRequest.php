@@ -9,12 +9,14 @@ class SearchMessagesRequest extends BaseRequest implements SearchMessagesRequest
 {
     public function rules(): array
     {
+        $availableOrderBy = implode(',', config('chat.order_by.message', []));
+
         return [
             'page' => 'integer',
             'per_page' => 'integer',
             'all' => 'integer',
             'query' => 'nullable|string',
-            'order_by' => 'string',
+            'order_by' => "string|in:{$availableOrderBy}",
             'desc' => 'boolean',
             'conversation_id' => 'integer',
             'with' => 'array',

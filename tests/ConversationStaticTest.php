@@ -425,4 +425,17 @@ class ConversationStaticTest extends TestCase
 
         $response->assertJson(['message' => 'Not found.']);
     }
+
+    public function testSearchWithOrderByNotAllowedByConfig()
+    {
+        Route::chat(ChatRouteActionEnum::ConversationsSearch);
+
+        $response = $this->actingAs(self::$sender)->json('get', '/conversations', [
+            'order_by' => 'invalid_attribute',
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJson(['message' => 'The selected order by is invalid.']);
+    }
 }
