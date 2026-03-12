@@ -2,29 +2,30 @@
 
 namespace RonasIT\Chat\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
 use RonasIT\Chat\Contracts\Requests\PinMessageRequestContract;
 use RonasIT\Chat\Contracts\Requests\ReadMessagesRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchMessagesRequestContract;
+use RonasIT\Chat\Contracts\Resources\MessageResourceContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
+use RonasIT\Chat\Http\Resources\MessagesCollectionResource;
 
 class MessageController extends Controller
 {
-    public function create(CreateMessageRequestContract $request, MessageServiceContract $service): JsonResponse
+    public function create(CreateMessageRequestContract $request, MessageServiceContract $service): MessageResourceContract
     {
         $result = $service->create($request->onlyValidated());
 
-        return response()->json($result);
+        return app(MessageResourceContract::class, ['resource' => $result]);
     }
 
-    public function search(SearchMessagesRequestContract $request, MessageServiceContract $service): JsonResponse
+    public function search(SearchMessagesRequestContract $request, MessageServiceContract $service): MessagesCollectionResource
     {
         $result = $service->search($request->onlyValidated());
 
-        return response()->json($result);
+        return MessagesCollectionResource::make($result);
     }
 
     public function readUpTo(ReadMessagesRequestContract $request, MessageServiceContract $service, int $toID): Response

@@ -1,62 +1,62 @@
 {
-    "current_page": 2,
     "data": [
         {
             "id": 3,
             "last_updated_at": "2016-10-20 11:05:00",
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
-            "creator_id": null,
             "type": "private",
-            "title": null,
-            "cover_id": null
+            "title": null
         },
         {
             "id": 4,
             "last_updated_at": "2016-10-20 11:05:00",
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
-            "creator_id": null,
             "type": "private",
-            "title": null,
-            "cover_id": null
+            "title": null
         }
     ],
-    "first_page_url": "http:\/\/localhost\/conversations?page=1",
-    "from": 3,
-    "last_page": 3,
-    "last_page_url": "http:\/\/localhost\/conversations?page=3",
-    "links": [
-        {
-            "url": "http:\/\/localhost\/conversations?page=1",
-            "label": "&laquo; Previous",
-            "active": false
-        },
-        {
-            "url": "http:\/\/localhost\/conversations?page=1",
-            "label": "1",
-            "active": false
-        },
-        {
-            "url": "http:\/\/localhost\/conversations?page=2",
-            "label": "2",
-            "active": true
-        },
-        {
-            "url": "http:\/\/localhost\/conversations?page=3",
-            "label": "3",
-            "active": false
-        },
-        {
-            "url": "http:\/\/localhost\/conversations?page=3",
-            "label": "Next &raquo;",
-            "active": false
-        }
-    ],
-    "next_page_url": "http:\/\/localhost\/conversations?page=3",
-    "path": "http:\/\/localhost\/conversations",
-    "per_page": 2,
-    "prev_page_url": "http:\/\/localhost\/conversations?page=1",
-    "to": 4,
-    "total": 6
+    "links": {
+        "first": "http:\/\/localhost\/conversations?page=1",
+        "last": "http:\/\/localhost\/conversations?page=3",
+        "prev": "http:\/\/localhost\/conversations?page=1",
+        "next": "http:\/\/localhost\/conversations?page=3"
+    },
+    "meta": {
+        "current_page": 2,
+        "from": 3,
+        "last_page": 3,
+        "links": [
+            {
+                "url": "http:\/\/localhost\/conversations?page=1",
+                "label": "&laquo; Previous",
+                "active": false
+            },
+            {
+                "url": "http:\/\/localhost\/conversations?page=1",
+                "label": "1",
+                "active": false
+            },
+            {
+                "url": "http:\/\/localhost\/conversations?page=2",
+                "label": "2",
+                "active": true
+            },
+            {
+                "url": "http:\/\/localhost\/conversations?page=3",
+                "label": "3",
+                "active": false
+            },
+            {
+                "url": "http:\/\/localhost\/conversations?page=3",
+                "label": "Next &raquo;",
+                "active": false
+            }
+        ],
+        "path": "http:\/\/localhost\/conversations",
+        "per_page": 2,
+        "to": 4,
+        "total": 6
+    }
 }
