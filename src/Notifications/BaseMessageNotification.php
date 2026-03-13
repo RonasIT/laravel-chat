@@ -2,17 +2,14 @@
 
 namespace RonasIT\Chat\Notifications;
 
-use RonasIT\Chat\Contracts\Notifications\MessageNotificationContract;
 use RonasIT\Chat\Models\Message;
 
-abstract class BaseMessageNotification extends BaseNotification implements MessageNotificationContract
+abstract class BaseMessageNotification extends BaseNotification
 {
-    protected readonly Message $message;
-
-    public function setMessage(Message $message): self
-    {
-        $this->message = $message;
-
-        return $this;
+    public function __construct(
+        protected Message $message,
+        protected int $recipientId,
+    ) {
+        parent::__construct($recipientId);
     }
 }
