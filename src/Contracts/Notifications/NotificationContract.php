@@ -2,9 +2,11 @@
 
 namespace RonasIT\Chat\Contracts\Notifications;
 
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 
-interface NotificationContract
+interface NotificationContract extends ShouldBroadcast, ShouldQueue
 {
     public function setRecipientId(int $recipientId): self;
 
