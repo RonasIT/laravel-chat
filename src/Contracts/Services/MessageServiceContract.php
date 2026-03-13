@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use RonasIT\Chat\Models\Conversation;
+use RonasIT\Chat\Models\Message;
 
 interface MessageServiceContract
 {
@@ -18,4 +19,6 @@ interface MessageServiceContract
     public function read(int $toID): void;
 
     public function pin(int $id): void;
+
+    public function sendReadNotifications(Message $message, Collection $recipients): void;
 }
