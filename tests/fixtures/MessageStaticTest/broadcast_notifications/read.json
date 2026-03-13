@@ -34,6 +34,15 @@
                 },
                 "recipientId": 2,
                 "locale": null,
+                "connection": null,
+                "queue": null,
+                "delay": null,
+                "afterCommit": null,
+                "middleware": [],
+                "chained": [],
+                "chainConnection": null,
+                "chainQueue": null,
+                "chainCatchCallbacks": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.2"
@@ -93,6 +102,15 @@
                 },
                 "recipientId": 3,
                 "locale": null,
+                "connection": null,
+                "queue": null,
+                "delay": null,
+                "afterCommit": null,
+                "middleware": [],
+                "chained": [],
+                "chainConnection": null,
+                "chainQueue": null,
+                "chainCatchCallbacks": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.3"
