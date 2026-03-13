@@ -11,13 +11,9 @@ abstract class BaseNotification extends Notification implements NotificationCont
 {
     use Queueable;
 
-    protected readonly int $recipientId;
-
-    public function setRecipientId(int $recipientId): self
-    {
-        $this->recipientId = $recipientId;
-
-        return $this;
+    public function __construct(
+        protected int $recipientId,
+    ) {
     }
 
     public function broadcastOn(): array
