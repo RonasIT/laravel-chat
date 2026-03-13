@@ -1,8 +1,8 @@
 <?php
 
-namespace RonasIT\Chat\Notifications\Resources;
+namespace RonasIT\Chat\Notifications\Resources\Broadcast;
 
-abstract class NotificationResourceCollection extends NotificationResource
+abstract class BroadcastResourceCollection extends BroadcastResource
 {
     public string $collects;
 

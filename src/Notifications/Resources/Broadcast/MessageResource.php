@@ -1,8 +1,8 @@
 <?php
 
-namespace RonasIT\Chat\Notifications\Resources;
+namespace RonasIT\Chat\Notifications\Resources\Broadcast;
 
-class MessageResource extends NotificationResource
+class MessageResource extends BroadcastResource
 {
     public function toArray(): array
     {

@@ -6,7 +6,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use RonasIT\Chat\Contracts\Notifications\ConversationUpdatedNotificationContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Enums\BroadcastNotificationTypeEnum;
-use RonasIT\Chat\Notifications\Resources\ConversationResource;
+use RonasIT\Chat\Notifications\Resources\Broadcast\ConversationResource;
 
 class ConversationUpdatedNotification extends BaseConversationNotification implements ConversationUpdatedNotificationContract
 {
