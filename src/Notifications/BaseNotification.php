@@ -4,22 +4,16 @@ namespace RonasIT\Chat\Notifications;
 
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use RonasIT\Chat\Contracts\Notifications\NotificationContract;
 
-abstract class BaseNotification extends Notification implements NotificationContract, ShouldBroadcast, ShouldQueue
+abstract class BaseNotification extends Notification implements NotificationContract
 {
     use Queueable;
 
-    protected readonly int $recipientId;
-
-    public function setRecipientId(int $recipientId): self
-    {
-        $this->recipientId = $recipientId;
-
-        return $this;
+    public function __construct(
+        protected int $recipientId,
+    ) {
     }
 
     public function broadcastOn(): array
