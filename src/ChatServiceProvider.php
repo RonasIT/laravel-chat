@@ -4,6 +4,8 @@ namespace RonasIT\Chat;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use RonasIT\Chat\Contracts\Models\ConversationModelContract;
+use RonasIT\Chat\Contracts\Models\MessageModelContract;
 use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract;
 use RonasIT\Chat\Contracts\Notifications\NewMessageNotificationContract;
 use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
@@ -28,6 +30,8 @@ use RonasIT\Chat\Http\Requests\Messages\ReadMessagesRequest;
 use RonasIT\Chat\Http\Requests\Messages\SearchMessagesRequest;
 use RonasIT\Chat\Http\Resources\ConversationResource;
 use RonasIT\Chat\Http\Resources\MessageResource;
+use RonasIT\Chat\Models\Conversation;
+use RonasIT\Chat\Models\Message;
 use RonasIT\Chat\Notifications\ConversationDeletedNotification;
 use RonasIT\Chat\Notifications\NewMessageNotification;
 use RonasIT\Chat\Services\ConversationService;
@@ -68,6 +72,12 @@ class ChatServiceProvider extends ServiceProvider
 
         $this->app->bind(NewMessageNotificationContract::class, NewMessageNotification::class);
         $this->app->bind(ConversationDeletedNotificationContract::class, ConversationDeletedNotification::class);
+
+        $this->app->bind(ConversationModelContract::class, Conversation::class);
+        $this->app->bind(MessageModelContract::class, Message::class);
+
+        $this->app->alias(Conversation::class, ConversationModelContract::class);
+        $this->app->alias(Message::class, MessageModelContract::class);
 
         $this->app->bind(ConversationResourceContract::class, ConversationResource::class);
         $this->app->bind(MessageResourceContract::class, MessageResource::class);

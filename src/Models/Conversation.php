@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use RonasIT\Chat\Contracts\Models\ConversationModelContract;
+use RonasIT\Chat\Contracts\Models\MessageModelContract;
 use RonasIT\Chat\Enums\Conversation\TypeEnum;
 use RonasIT\Support\Traits\ModelTrait;
 
-class Conversation extends Model
+class Conversation extends Model implements ConversationModelContract
 {
     use ModelTrait;
 
@@ -30,12 +32,12 @@ class Conversation extends Model
 
     public function last_message(): HasOne
     {
-        return $this->hasOne(Message::class)->latest();
+        return $this->hasOne(app()->getAlias(MessageModelContract::class))->latest();
     }
 
     public function messages(): HasMany
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(app()->getAlias(MessageModelContract::class));
     }
 
     public function creator(): BelongsTo
@@ -71,7 +73,7 @@ class Conversation extends Model
     {
         return $this
             ->belongsToMany(
-                related: Message::class,
+                related: app()->getAlias(MessageModelContract::class),
                 table: 'pinned_messages',
                 foreignPivotKey: 'conversation_id',
                 relatedPivotKey: 'message_id',

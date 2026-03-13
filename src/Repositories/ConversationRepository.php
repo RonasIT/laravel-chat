@@ -3,20 +3,18 @@
 namespace RonasIT\Chat\Repositories;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use RonasIT\Chat\Contracts\Models\ConversationModelContract;
 use RonasIT\Chat\Enums\Conversation\TypeEnum;
-use RonasIT\Chat\Models\Conversation;
 use RonasIT\Support\Repositories\BaseRepository;
 
-/**
- * @property Conversation $model
- */
 class ConversationRepository extends BaseRepository
 {
     protected ?int $withUnreadCountMemberId = null;
 
     public function __construct()
     {
-        $this->setModel(Conversation::class);
+        $this->setModel(app()->getAlias(ConversationModelContract::class));
 
         $this->setAdditionalReservedFilters(
             'member_id',
@@ -24,7 +22,7 @@ class ConversationRepository extends BaseRepository
         );
     }
 
-    public function getByTypeAndMembers(TypeEnum $type, int ...$membersIDs): ?Conversation
+    public function getByTypeAndMembers(TypeEnum $type, int ...$membersIDs): ?Model
     {
         return $this
             ->getQuery(['type' => $type])
@@ -32,7 +30,7 @@ class ConversationRepository extends BaseRepository
             ->first();
     }
 
-    public function attachMembers(Conversation $conversation, array $memberIds): void
+    public function attachMembers(Model $conversation, array $memberIds): void
     {
         $conversation->members()->attach($memberIds);
     }
@@ -44,7 +42,7 @@ class ConversationRepository extends BaseRepository
         return $this;
     }
 
-    public function pinMessage(Conversation $conversation, int $messageId): void
+    public function pinMessage(Model $conversation, int $messageId): void
     {
         $conversation->pinned_messages()->syncWithoutDetaching([$messageId]);
     }
