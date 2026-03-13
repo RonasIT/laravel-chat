@@ -2,7 +2,9 @@
 
 namespace RonasIT\Chat\Notifications\Resources;
 
-class MessageResource extends NotificationResource
+use RonasIT\Chat\Contracts\Notifications\Resources\MessageNotificationResourceContract;
+
+class MessageResource extends NotificationResource implements MessageNotificationResourceContract
 {
     public function toArray(): array
     {

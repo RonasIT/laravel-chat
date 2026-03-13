@@ -5,14 +5,14 @@ namespace RonasIT\Chat\Notifications;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use RonasIT\Chat\Contracts\Notifications\MessageUpdatedNotificationContract;
 use RonasIT\Chat\Enums\BroadcastNotificationTypeEnum;
-use RonasIT\Chat\Notifications\Resources\MessageResource;
+use RonasIT\Chat\Contracts\Notifications\Resources\MessageNotificationResourceContract;
 
 class MessageUpdatedNotification extends BaseMessageNotification implements MessageUpdatedNotificationContract
 {
     public function toBroadcast(): BroadcastMessage
     {
         return new BroadcastMessage([
-            'message' => new MessageResource($this->message),
+            'message' => app(MessageNotificationResourceContract::class, ['resource' => $this->message]),
         ]);
     }
 

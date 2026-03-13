@@ -8,6 +8,6 @@ abstract class NotificationResourceCollection extends NotificationResource
 
     public function toArray(): array
     {
-        return $this->resource->mapInto($this->collects)->toArray();
+        return $this->resource->map(fn ($item) => app($this->collects, ['resource' => $item]))->toArray();
     }
 }
