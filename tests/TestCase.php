@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Notification;
 use Orchestra\Testbench\TestCase as BaseTest;
 use ReflectionClass;
 use RonasIT\Chat\ChatServiceProvider;
-use RonasIT\Chat\Models\Conversation;
-use RonasIT\Chat\Models\Message;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Media\Models\Media;
 use RonasIT\Support\Traits\FixturesTrait;
