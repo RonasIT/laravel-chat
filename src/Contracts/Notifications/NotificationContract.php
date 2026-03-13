@@ -2,19 +2,17 @@
 
 namespace RonasIT\Chat\Contracts\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Notification;
 
-abstract class NotificationContract extends Notification implements ShouldBroadcast, ShouldQueue
+interface NotificationContract
 {
-    use Queueable;
+    public function setRecipientId(int $recipientId): self;
 
-    abstract public function via($notifiable): array;
+    public function via($notifiable): array;
 
-    abstract public function toBroadcast(): BroadcastMessage;
+    public function broadcastType(): string;
 
-    abstract public function broadcastType(): string;
+    public function broadcastOn(): array;
+
+    public function toBroadcast(): BroadcastMessage;
 }

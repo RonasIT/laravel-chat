@@ -2,6 +2,6 @@
 
 namespace RonasIT\Chat\Contracts\Notifications;
 
-abstract class ConversationUpdatedNotificationContract extends NotificationContract
+interface ConversationUpdatedNotificationContract extends ConversationNotificationContract
 {
 }
