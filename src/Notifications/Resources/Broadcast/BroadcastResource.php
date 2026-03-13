@@ -22,8 +22,6 @@ abstract class BroadcastResource implements Arrayable, JsonSerializable, Potenti
         return $this->resource instanceof MissingValue;
     }
 
-    abstract public function toArray(): array;
-
     public function jsonSerialize(): array
     {
         return $this->filter($this->toArray());
