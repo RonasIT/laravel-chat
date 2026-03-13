@@ -97,9 +97,10 @@ class ConversationService extends EntityService implements ConversationServiceCo
 
     protected function sendNotifications(Conversation $conversation, Collection $recipient, string $notificationClass): void
     {
-        $recipient->each(fn (Model $recipient) => $recipient->notify(app($notificationClass, [
-            'conversation' => $conversation,
-            'recipientId' => $recipient->id,
-        ])));
+        $recipient->each(fn (Model $recipient) => $recipient->notify(
+            app($notificationClass)
+                ->setConversation($conversation)
+                ->setRecipientId($recipient->id),
+        ));
     }
 }
