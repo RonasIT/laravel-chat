@@ -7,7 +7,7 @@ use RonasIT\Chat\Models\Conversation;
 
 abstract class BaseConversationNotification extends BaseNotification implements ConversationNotificationContract
 {
-    protected Conversation $conversation;
+    protected readonly Conversation $conversation;
 
     public function setConversation(Conversation $conversation): self
     {
