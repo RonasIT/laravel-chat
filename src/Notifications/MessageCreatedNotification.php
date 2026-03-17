@@ -3,10 +3,11 @@
 namespace RonasIT\Chat\Notifications;
 
 use Illuminate\Notifications\Messages\BroadcastMessage;
+use RonasIT\Chat\Contracts\Notifications\MessageCreatedNotificationContract;
 use RonasIT\Chat\Contracts\Notifications\Resources\Broadcast\MessageResourceContract;
 use RonasIT\Chat\Enums\BroadcastNotificationTypeEnum;
 
-class MessageCreatedNotification extends BaseMessageNotification
+class MessageCreatedNotification extends BaseMessageNotification implements MessageCreatedNotificationContract
 {
     public function toBroadcast(): BroadcastMessage
     {
