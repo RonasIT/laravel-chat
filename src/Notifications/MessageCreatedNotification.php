@@ -11,6 +11,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use RonasIT\Chat\Contracts\Notifications\NewMessageNotificationContract;
+use RonasIT\Chat\Enums\BroadcastNotificationTypeEnum;
 
 class MessageCreatedNotification extends Notification implements NewMessageNotificationContract, ShouldBroadcast, ShouldQueue
 {
@@ -56,5 +57,10 @@ class MessageCreatedNotification extends Notification implements NewMessageNotif
             'sender_first_name' => $this->sender->first_name,
             'sender_last_name' => $this->sender->last_name,
         ]);
+    }
+
+    public function broadcastAs(): string
+    {
+        return BroadcastNotificationTypeEnum::MessageCreated->value;
     }
 }
