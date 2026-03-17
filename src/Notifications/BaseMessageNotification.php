@@ -7,8 +7,8 @@ use RonasIT\Chat\Models\Message;
 abstract class BaseMessageNotification extends BaseNotification
 {
     public function __construct(
-        protected Message $message,
-        protected int $recipientId,
+        protected readonly Message $message,
+        int $recipientId,
     ) {
         parent::__construct($recipientId);
     }

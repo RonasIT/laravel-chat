@@ -10,10 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
-use RonasIT\Chat\Contracts\Notifications\NewMessageNotificationContract;
+use RonasIT\Chat\Contracts\Notifications\MessageCreatedNotificationContract;
 use RonasIT\Chat\Enums\BroadcastNotificationTypeEnum;
 
-class MessageCreatedNotification extends Notification implements NewMessageNotificationContract, ShouldBroadcast, ShouldQueue
+class MessageCreatedNotification extends Notification implements MessageCreatedNotificationContract, ShouldBroadcast, ShouldQueue
 {
     use Queueable;
 

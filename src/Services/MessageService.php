@@ -9,11 +9,10 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use RonasIT\Chat\Contracts\Notifications\MessageCreatedNotificationContract;
 use RonasIT\Chat\Contracts\Notifications\MessageUpdatedNotificationContract;
-use RonasIT\Chat\Contracts\Notifications\NewMessageNotificationContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
-use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Models\Message;
 use RonasIT\Chat\Repositories\MessageRepository;
 use RonasIT\Support\Services\EntityService;
@@ -78,7 +77,7 @@ class MessageService extends EntityService implements MessageServiceContract
     {
         foreach ($recipients as $recipient) {
             $recipient->notify(
-                app(NewMessageNotificationContract::class)
+                app(MessageCreatedNotificationContract::class)
                     ->setMessage($message)
                     ->setRecipientId($recipient->id),
             );
@@ -94,7 +93,7 @@ class MessageService extends EntityService implements MessageServiceContract
 
     public function read(int $toID): void
     {
-        $lastReadMessage = $this->with('conversation.members')->find($toID);
+        $lastReadMessage = $this->find($toID);
 
         $unreadMessageIds = $this->getUnreadIdsByUser(
             conversationId: $lastReadMessage->conversation_id,
@@ -111,10 +110,10 @@ class MessageService extends EntityService implements MessageServiceContract
             'member_id' => Auth::id(),
         ], $unreadMessageIds));
 
-        $this->sendReadNotifications($lastReadMessage, $lastReadMessage->conversation->members);
+        $this->postUpdateHook($lastReadMessage);
     }
 
-    public function sendReadNotifications(Message $message, Collection $recipients): void
+    protected function sendUpdatedNotifications(Message $message, Collection $recipients): void
     {
         $this->sendNotifications($message, $recipients, MessageUpdatedNotificationContract::class);
     }
@@ -125,5 +124,12 @@ class MessageService extends EntityService implements MessageServiceContract
             'message' => $message,
             'recipientId' => $recipient->id,
         ])));
+    }
+
+    protected function postUpdateHook(Message $message): void
+    {
+        $message->load('conversation.members');
+
+        $this->sendUpdatedNotifications($message, $message->conversation->members);
     }
 }
