@@ -72,20 +72,7 @@ class ConversationService extends EntityService implements ConversationServiceCo
 
         $this->repository->delete($where);
 
-        $otherMembers = $conversation->members->filter(fn ($member) => $member->id !== Auth::id());
-
-        $this->notifyUser($conversation->toArray(), $otherMembers);
-    }
-
-    public function notifyUser($conversation, $recipients): void
-    {
-        foreach ($recipients as $recipient) {
-            $recipient->notify(
-                app(ConversationDeletedNotificationContract::class)
-                    ->setConversation($conversation)
-                    ->setRecipientId($recipient->id),
-            );
-        }
+        $this->postDeleteHook($conversation);
     }
 
     public function search(array $filters = []): LengthAwarePaginator
@@ -120,10 +107,15 @@ class ConversationService extends EntityService implements ConversationServiceCo
         $this->sendNotifications($conversation, $recipients, ConversationUpdatedNotificationContract::class);
     }
 
+    protected function sendDeletedNotifications(Conversation $conversation, Collection $recipients): void
+    {
+        $this->sendNotifications($conversation, $recipients, ConversationDeletedNotificationContract::class);
+    }
+
     protected function sendNotifications(Conversation $conversation, Collection $recipients, string $notificationClass): void
     {
         $recipients->each(fn (Model $recipient) => $recipient->notify(app($notificationClass, [
-            'conversation' => $conversation,
+            'conversationId' => $conversation->id,
             'recipientId' => $recipient->id,
         ])));
     }
@@ -143,5 +135,12 @@ class ConversationService extends EntityService implements ConversationServiceCo
         $conversation->load('members');
 
         $this->sendUpdatedNotifications($conversation, $conversation->members);
+    }
+
+    protected function postDeleteHook(Conversation $conversation): void
+    {
+        $recipients = $conversation->members->filter(fn ($member) => $member->id !== (int) Auth::id());
+
+        $this->sendDeletedNotifications($conversation, $recipients);
     }
 }

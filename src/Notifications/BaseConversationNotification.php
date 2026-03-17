@@ -2,12 +2,10 @@
 
 namespace RonasIT\Chat\Notifications;
 
-use RonasIT\Chat\Models\Conversation;
-
 abstract class BaseConversationNotification extends BaseNotification
 {
     public function __construct(
-        protected readonly Conversation $conversation,
+        protected readonly int $conversationId,
         int $recipientId,
     ) {
         parent::__construct($recipientId);
