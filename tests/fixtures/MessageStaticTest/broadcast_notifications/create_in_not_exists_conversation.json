@@ -27,7 +27,7 @@
                 "connection": null,
                 "queue": null,
                 "delay": null,
-                "afterCommit": null,
+                "afterCommit": true,
                 "middleware": [],
                 "chained": [],
                 "chainConnection": null,
@@ -39,7 +39,7 @@
                     }
                 ],
                 "broadcast_data": {
-                    "conversation": {
+                    "data": {
                         "id": 6,
                         "type": "private",
                         "title": null,
@@ -50,11 +50,15 @@
                             "text": "hello",
                             "is_read": false,
                             "created_at": "2024-01-01T00:00:00.000000Z",
-                            "updated_at": "2024-01-01T00:00:00.000000Z"
+                            "updated_at": "2024-01-01T00:00:00.000000Z",
+                            "sender": {
+                                "id": 2,
+                                "email": "fidel.kutch@example.com"
+                            }
                         }
                     }
                 },
-                "broadcast_type": "conversation.created"
+                "broadcast_as": "conversation.created"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
@@ -66,7 +70,7 @@
             "locale": null
         }
     ],
-    "RonasIT\\Chat\\Notifications\\NewMessageNotification": [
+    "RonasIT\\Chat\\Notifications\\MessageCreatedNotification": [
         {
             "notification": {
                 "sender": {
@@ -121,7 +125,7 @@
                     "sender_first_name": null,
                     "sender_last_name": null
                 },
-                "broadcast_type": "message.created"
+                "broadcast_as": "message.created"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
