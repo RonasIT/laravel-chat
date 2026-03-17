@@ -27,7 +27,7 @@
                 "connection": null,
                 "queue": null,
                 "delay": null,
-                "afterCommit": null,
+                "afterCommit": true,
                 "middleware": [],
                 "chained": [],
                 "chainConnection": null,
@@ -39,7 +39,7 @@
                     }
                 ],
                 "broadcast_data": {
-                    "conversation": {
+                    "data": {
                         "id": 2,
                         "type": "private",
                         "title": null,
@@ -50,7 +50,11 @@
                             "text": "hi",
                             "is_read": true,
                             "created_at": "2016-10-20T11:05:00.000000Z",
-                            "updated_at": "2016-10-20T11:05:00.000000Z"
+                            "updated_at": "2016-10-20T11:05:00.000000Z",
+                            "sender": {
+                                "id": 1,
+                                "email": "anisio.tier@example.com"
+                            }
                         },
                         "pinned_messages": [
                             {
@@ -65,7 +69,7 @@
                         "unread_messages_count": 0
                     }
                 },
-                "broadcast_type": "conversation.updated"
+                "broadcast_as": "conversation.updated"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
@@ -103,7 +107,7 @@
                 "connection": null,
                 "queue": null,
                 "delay": null,
-                "afterCommit": null,
+                "afterCommit": true,
                 "middleware": [],
                 "chained": [],
                 "chainConnection": null,
@@ -115,7 +119,7 @@
                     }
                 ],
                 "broadcast_data": {
-                    "conversation": {
+                    "data": {
                         "id": 2,
                         "type": "private",
                         "title": null,
@@ -126,7 +130,11 @@
                             "text": "hi",
                             "is_read": true,
                             "created_at": "2016-10-20T11:05:00.000000Z",
-                            "updated_at": "2016-10-20T11:05:00.000000Z"
+                            "updated_at": "2016-10-20T11:05:00.000000Z",
+                            "sender": {
+                                "id": 1,
+                                "email": "anisio.tier@example.com"
+                            }
                         },
                         "pinned_messages": [
                             {
@@ -141,7 +149,7 @@
                         "unread_messages_count": 0
                     }
                 },
-                "broadcast_type": "conversation.updated"
+                "broadcast_as": "conversation.updated"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"

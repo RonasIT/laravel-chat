@@ -1,8 +1,13 @@
 <?php
 
-namespace RonasIT\Chat\Notifications\Resources;
+namespace RonasIT\Chat\Notifications\Resources\Broadcast;
 
-class MessageResource extends NotificationResource
+use RonasIT\Chat\Models\Message;
+
+/**
+ * @property Message $resource
+ */
+class MessageResource extends BroadcastResource
 {
     public function toArray(): array
     {
@@ -12,6 +17,7 @@ class MessageResource extends NotificationResource
             'is_read' => $this->resource->is_read,
             'created_at' => $this->resource->created_at,
             'updated_at' => $this->resource->updated_at,
+            'sender' => $this->whenLoaded('sender'),
         ];
     }
 }

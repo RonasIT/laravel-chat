@@ -47,7 +47,7 @@ class ConversationDeletedNotification extends Notification implements Conversati
         return new BroadcastMessage(['conversation' => $this->conversation]);
     }
 
-    public function broadcastType(): string
+    public function broadcastAs(): string
     {
         return BroadcastNotificationTypeEnum::ConversationDeleted->value;
     }

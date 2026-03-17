@@ -1,6 +1,6 @@
 <?php
 
-namespace RonasIT\Chat\Notifications\Resources;
+namespace RonasIT\Chat\Notifications\Resources\Broadcast;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\MissingValue;
 use Illuminate\Http\Resources\PotentiallyMissing;
 use JsonSerializable;
 
-abstract class NotificationResource implements Arrayable, JsonSerializable, PotentiallyMissing
+abstract class BroadcastResource implements Arrayable, JsonSerializable, PotentiallyMissing
 {
     use ConditionallyLoadsAttributes;
 
@@ -21,8 +21,6 @@ abstract class NotificationResource implements Arrayable, JsonSerializable, Pote
     {
         return $this->resource instanceof MissingValue;
     }
-
-    abstract public function toArray(): array;
 
     public function jsonSerialize(): array
     {

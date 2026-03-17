@@ -68,7 +68,7 @@
                         ]
                     }
                 },
-                "broadcast_type": "conversation.deleted"
+                "broadcast_as": "conversation.deleted"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
@@ -147,7 +147,7 @@
                         ]
                     }
                 },
-                "broadcast_type": "conversation.deleted"
+                "broadcast_as": "conversation.deleted"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"

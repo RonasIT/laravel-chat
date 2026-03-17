@@ -1,8 +1,13 @@
 <?php
 
-namespace RonasIT\Chat\Notifications\Resources;
+namespace RonasIT\Chat\Notifications\Resources\Broadcast;
 
-class ConversationResource extends NotificationResource
+use RonasIT\Chat\Models\Conversation;
+
+/**
+ * @property Conversation $resource
+ */
+class ConversationResource extends BroadcastResource
 {
     public function toArray(): array
     {

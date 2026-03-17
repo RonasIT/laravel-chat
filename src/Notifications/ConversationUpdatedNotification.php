@@ -6,7 +6,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use RonasIT\Chat\Contracts\Notifications\ConversationUpdatedNotificationContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Enums\BroadcastNotificationTypeEnum;
-use RonasIT\Chat\Notifications\Resources\ConversationResource;
+use RonasIT\Chat\Notifications\Resources\Broadcast\ConversationResource;
 
 class ConversationUpdatedNotification extends BaseConversationNotification implements ConversationUpdatedNotificationContract
 {
@@ -14,7 +14,7 @@ class ConversationUpdatedNotification extends BaseConversationNotification imple
     {
         $conversation = app(ConversationServiceContract::class)
             ->with([
-                'last_message',
+                'last_message.sender',
                 'pinned_messages',
             ])
             ->withCount('members')
@@ -22,11 +22,11 @@ class ConversationUpdatedNotification extends BaseConversationNotification imple
             ->find($this->conversation->id);
 
         return new BroadcastMessage([
-            'conversation' => new ConversationResource($conversation),
+            'data' => new ConversationResource($conversation),
         ]);
     }
 
-    public function broadcastType(): string
+    public function broadcastAs(): string
     {
         return BroadcastNotificationTypeEnum::ConversationUpdated->value;
     }
