@@ -8,5 +8,4 @@ use JsonSerializable;
 
 interface BroadcastResourceContract extends Arrayable, JsonSerializable, PotentiallyMissing
 {
-    public function toArray(): array;
 }
