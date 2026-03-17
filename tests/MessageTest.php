@@ -324,4 +324,55 @@ class MessageTest extends TestCase
 
         self::$pinnedMessageState->assertNotChanged();
     }
+
+    public function testUnpin(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/unpin');
+
+        $response->assertNoContent();
+
+        self::$pinnedMessageState->assertChangesEqualsFixture('unpinned');
+    }
+
+    public function testUnpinNotPinned(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/2/unpin');
+
+        $response->assertNoContent();
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpinAsNonMember(): void
+    {
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/1/unpin');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpinNotFound(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/0/unpin');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Message does not exist']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpinNoAuth(): void
+    {
+        $response = $this->postJson('/messages/1/unpin');
+
+        $response->assertUnauthorized();
+
+        $response->assertJson(['message' => 'Unauthenticated.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
 }

@@ -371,6 +371,7 @@ class MessageStaticTest extends TestCase
         $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages');
         $responseRead = $this->actingAs(self::$firstUser)->postJson('/messages/1/read-to');
         $responsePin = $this->actingAs(self::$firstUser)->postJson('/messages/1/pin');
+        $responseUnpin = $this->actingAs(self::$firstUser)->postJson('/messages/1/unpin');
 
         $responsePin->assertNoContent();
 
@@ -381,6 +382,33 @@ class MessageStaticTest extends TestCase
         $responseSearchMessages->assertNotFound();
         $responseCreate->assertNotFound();
         $responseRead->assertNotFound();
+        $responseUnpin->assertNotFound();
+    }
+
+    public function testEverythingDisabledExceptUnpin(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageUnpin);
+
+        $responseSearch = $this->actingAs(self::$firstUser)->getJson('/conversations');
+        $responseGet = $this->actingAs(self::$firstUser)->getJson('/conversations/1');
+        $responseDelete = $this->actingAs(self::$firstUser)->deleteJson('/conversations/1');
+        $responseGetByUser = $this->actingAs(self::$firstUser)->getJson('/users/2/conversation');
+        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/messages');
+        $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages');
+        $responseRead = $this->actingAs(self::$firstUser)->postJson('/messages/1/read-to');
+        $responsePin = $this->actingAs(self::$firstUser)->postJson('/messages/1/pin');
+        $responseUnpin = $this->actingAs(self::$firstUser)->postJson('/messages/1/unpin');
+
+        $responseUnpin->assertNoContent();
+
+        $responseSearch->assertNotFound();
+        $responseGet->assertNotFound();
+        $responseDelete->assertNotFound();
+        $responseGetByUser->assertNotFound();
+        $responseSearchMessages->assertNotFound();
+        $responseCreate->assertNotFound();
+        $responseRead->assertNotFound();
+        $responsePin->assertNotFound();
     }
 
     public function testPin(): void
@@ -438,6 +466,65 @@ class MessageStaticTest extends TestCase
     public function testPinEndpointDisabled(): void
     {
         $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/pin');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Not found.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpin(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageUnpin);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/unpin');
+
+        $response->assertNoContent();
+
+        self::$pinnedMessageState->assertChangesEqualsFixture('unpinned');
+    }
+
+    public function testUnpinNotPinned(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageUnpin);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/2/unpin');
+
+        $response->assertNoContent();
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpinAsNonMember(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageUnpin);
+
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/1/unpin');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpinNotFound(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageUnpin);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/0/unpin');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Message does not exist']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpinEndpointDisabled(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/unpin');
 
         $response->assertNotFound();
 
