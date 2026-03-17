@@ -20,6 +20,7 @@ class Conversation extends Model
         'type',
         'title',
         'cover_id',
+        'last_updated_at',
     ];
 
     protected $hidden = ['pivot'];

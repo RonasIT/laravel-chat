@@ -39,6 +39,8 @@ class TestCase extends BaseTest
         }
 
         Carbon::setTestNow(Carbon::create(2024));
+
+        Notification::fake();
     }
 
     public function getFixturePath(string $fixtureName): string
@@ -104,11 +106,7 @@ class TestCase extends BaseTest
                         $notification['notification'] = $this->getObjectAttributes($notification['notification']);
                         $notification['notification']['broadcast_on'] = $broadcastNotification->broadcastOn();
                         $notification['notification']['broadcast_data'] = $broadcastNotification->toBroadcast()->data;
-
-                        if (method_exists($broadcastNotification, 'broadcastAs')) {
-                            $notification['notification']['broadcast_as'] = $broadcastNotification->broadcastAs();
-                        }
-
+                        $notification['notification']['broadcast_as'] = $broadcastNotification->broadcastAs();
                         unset($notification['notification']['id']);
 
                         $actualData[$notificationClassName][] = $notification;

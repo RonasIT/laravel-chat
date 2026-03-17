@@ -59,7 +59,8 @@
                             }
                         ]
                     }
-                }
+                },
+                "broadcast_as": "conversation.deleted"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
