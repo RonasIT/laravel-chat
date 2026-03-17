@@ -1,5 +1,5 @@
 {
-    "RonasIT\\Chat\\Notifications\\NewMessageNotification": [
+    "RonasIT\\Chat\\Notifications\\MessageCreatedNotification": [
         {
             "notification": {
                 "sender": {
@@ -53,7 +53,8 @@
                     },
                     "sender_first_name": null,
                     "sender_last_name": null
-                }
+                },
+                "broadcast_as": "message.created"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
