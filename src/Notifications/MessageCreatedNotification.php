@@ -59,7 +59,7 @@ class MessageCreatedNotification extends Notification implements NewMessageNotif
         ]);
     }
 
-    public function broadcastType(): string
+    public function broadcastAs(): string
     {
         return BroadcastNotificationTypeEnum::MessageCreated->value;
     }

@@ -10,7 +10,7 @@ interface NotificationContract extends ShouldBroadcast, ShouldQueue
 {
     public function via($notifiable): array;
 
-    public function broadcastType(): string;
+    public function broadcastAs(): string;
 
     public function broadcastOn(): array;
 

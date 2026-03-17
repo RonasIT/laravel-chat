@@ -16,7 +16,7 @@ class ConversationCreatedNotification extends BaseConversationNotification imple
         ]);
     }
 
-    public function broadcastType(): string
+    public function broadcastAs(): string
     {
         return BroadcastNotificationTypeEnum::ConversationCreated->value;
     }

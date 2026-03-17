@@ -69,7 +69,7 @@
                         "unread_messages_count": 0
                     }
                 },
-                "broadcast_type": "conversation.updated"
+                "broadcast_as": "conversation.updated"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
@@ -149,7 +149,7 @@
                         "unread_messages_count": 0
                     }
                 },
-                "broadcast_type": "conversation.updated"
+                "broadcast_as": "conversation.updated"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
