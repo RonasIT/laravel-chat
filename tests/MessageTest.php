@@ -338,7 +338,9 @@ class MessageTest extends TestCase
     {
         $response = $this->actingAs(self::$firstUser)->postJson('/messages/2/unpin');
 
-        $response->assertNoContent();
+        $response->assertConflict();
+
+        $response->assertJson(['message' => 'Message is not pinned.']);
 
         self::$pinnedMessageState->assertNotChanged();
     }

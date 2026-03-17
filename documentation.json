@@ -709,6 +709,17 @@
 							}
 						}
 					},
+					"409": {
+						"description": "Conflict",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object"
+								},
+								"example": {"message": "Message is not pinned"}
+							}
+						}
+					},
 					"401": {
 						"description": "Unauthorized",
 						"content": {

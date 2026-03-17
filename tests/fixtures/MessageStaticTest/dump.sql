@@ -42,4 +42,5 @@ INSERT INTO read_messages(id, message_id, member_id, created_at, updated_at) VAL
     (2, 2, 3, '2016-10-20 11:05:00', '2016-10-20 11:05:00');
 
 INSERT INTO pinned_messages(id, conversation_id, message_id, created_at, updated_at) VALUES
-    (1, 1, 1, '2016-10-20 11:05:00', '2016-10-20 11:05:00');
+    (1, 1, 1, '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
+    (2, 5, 7, '2016-10-20 11:05:00', '2016-10-20 11:05:00');
