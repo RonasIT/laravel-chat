@@ -32,8 +32,8 @@ use RonasIT\Chat\Http\Resources\ConversationResource;
 use RonasIT\Chat\Http\Resources\MessageResource;
 use RonasIT\Chat\Notifications\ConversationCreatedNotification;
 use RonasIT\Chat\Notifications\ConversationDeletedNotification;
-use RonasIT\Chat\Notifications\MessageCreatedNotification;
 use RonasIT\Chat\Notifications\ConversationUpdatedNotification;
+use RonasIT\Chat\Notifications\MessageCreatedNotification;
 use RonasIT\Chat\Services\ConversationService;
 use RonasIT\Chat\Services\MessageService;
 
