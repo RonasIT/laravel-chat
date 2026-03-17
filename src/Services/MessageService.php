@@ -84,7 +84,7 @@ class MessageService extends EntityService implements MessageServiceContract
 
     public function pin(int $id): void
     {
-        $message = $this->with('conversation.members')->find($id);
+        $message = $this->with('conversation')->find($id);
 
         $this->conversationService->pinMessage($message->conversation, $message->id);
     }
