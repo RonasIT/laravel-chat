@@ -1,12 +1,12 @@
 <?php
 
-namespace RonasIT\Chat\Contracts\Notifications\Resources;
+namespace RonasIT\Chat\Contracts\Notifications\Resources\Broadcast;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Resources\PotentiallyMissing;
 use JsonSerializable;
 
-interface NotificationResourceContract extends Arrayable, JsonSerializable, PotentiallyMissing
+interface BroadcastResourceContract extends Arrayable, JsonSerializable, PotentiallyMissing
 {
     public function toArray(): array;
 

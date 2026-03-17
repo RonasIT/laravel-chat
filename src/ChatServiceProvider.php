@@ -9,6 +9,8 @@ use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract
 use RonasIT\Chat\Contracts\Notifications\ConversationUpdatedNotificationContract;
 use RonasIT\Chat\Contracts\Notifications\MessageCreatedNotificationContract;
 use RonasIT\Chat\Contracts\Notifications\MessageUpdatedNotificationContract;
+use RonasIT\Chat\Contracts\Notifications\Resources\Broadcast\ConversationResourceContract as ConversationBroadcastResourceContract;
+use RonasIT\Chat\Contracts\Notifications\Resources\Broadcast\MessageResourceContract as MessageBroadcastResourceContract;
 use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
 use RonasIT\Chat\Contracts\Requests\DeleteConversationRequestContract;
 use RonasIT\Chat\Contracts\Requests\GetConversationByUserIdRequestContract;
@@ -36,6 +38,8 @@ use RonasIT\Chat\Notifications\ConversationDeletedNotification;
 use RonasIT\Chat\Notifications\ConversationUpdatedNotification;
 use RonasIT\Chat\Notifications\MessageCreatedNotification;
 use RonasIT\Chat\Notifications\MessageUpdatedNotification;
+use RonasIT\Chat\Notifications\Resources\Broadcast\ConversationResource as ConversationBroadcastResource;
+use RonasIT\Chat\Notifications\Resources\Broadcast\MessageResource as MessageBroadcastResource;
 use RonasIT\Chat\Services\ConversationService;
 use RonasIT\Chat\Services\MessageService;
 
@@ -83,5 +87,8 @@ class ChatServiceProvider extends ServiceProvider
 
         $this->app->alias(MessageResource::class, MessageResourceContract::class);
         $this->app->alias(ConversationResource::class, ConversationResourceContract::class);
+
+        $this->app->bind(ConversationBroadcastResourceContract::class, ConversationBroadcastResource::class);
+        $this->app->bind(MessageBroadcastResourceContract::class, MessageBroadcastResource::class);
     }
 }
