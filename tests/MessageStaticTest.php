@@ -318,6 +318,8 @@ class MessageStaticTest extends TestCase
         $response->assertNoContent();
 
         self::$readMessageState->assertChangesEqualsFixture('read');
+
+        $this->assertBroadcastNotificationSent('read');
     }
 
     public function testReadAlreadyRead(): void
@@ -329,6 +331,8 @@ class MessageStaticTest extends TestCase
         $response->assertNoContent();
 
         self::$readMessageState->assertNotChanged();
+
+        Notification::assertNothingSent();
     }
 
     public function testReadAsNonMember(): void

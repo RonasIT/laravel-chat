@@ -8,4 +8,5 @@ enum BroadcastNotificationTypeEnum: string
     case ConversationUpdated = 'conversation.updated';
     case ConversationDeleted = 'conversation.deleted';
     case MessageCreated = 'message.created';
+    case MessageUpdated = 'message.updated';
 }
