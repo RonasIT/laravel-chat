@@ -12,7 +12,7 @@ class ConversationCreatedNotification extends BaseConversationNotification imple
     public function toBroadcast(): BroadcastMessage
     {
         return new BroadcastMessage([
-            'conversation' => new ConversationResource($this->conversation->load('last_message')),
+            'data' => new ConversationResource($this->conversation->load('last_message.sender')),
         ]);
     }
 

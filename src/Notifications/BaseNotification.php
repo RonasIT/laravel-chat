@@ -12,8 +12,9 @@ abstract class BaseNotification extends Notification implements NotificationCont
     use Queueable;
 
     public function __construct(
-        protected int $recipientId,
+        protected readonly int $recipientId,
     ) {
+        $this->afterCommit();
     }
 
     public function broadcastOn(): array

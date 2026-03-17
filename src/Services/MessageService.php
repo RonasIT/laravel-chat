@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\DB;
 use RonasIT\Chat\Contracts\Notifications\NewMessageNotificationContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
-use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Repositories\MessageRepository;
 use RonasIT\Support\Services\EntityService;
 
@@ -46,17 +45,16 @@ class MessageService extends EntityService implements MessageServiceContract
                     'attachment_id' => Arr::get($data, 'attachment_id'),
                 ]);
 
-            $this->conversationService->update($conversation->id, ['last_updated_at' => Carbon::now()]);
+            $conversation = $this->conversationService
+                ->with('members')
+                ->update($conversation->id, ['last_updated_at' => Carbon::now()]);
 
             return [$message, $conversation];
         });
 
-        $recipients = $conversation
-            ->load('members')
-            ->members
-            ->filter(fn ($member) => $member->id !== $message->sender_id);
+        $recipients = $conversation->members->filter(fn ($member) => $member->id !== $message->sender_id);
 
-        $this->notifyUser($conversation, $message, $recipients);
+        $this->notifyUser($message, $recipients);
 
         return $message;
     }
@@ -73,12 +71,8 @@ class MessageService extends EntityService implements MessageServiceContract
             ->getSearchResults();
     }
 
-    public function notifyUser(Conversation $conversation, Model $message, Collection $recipients): void
+    public function notifyUser(Model $message, Collection $recipients): void
     {
-        if ($conversation->wasRecentlyCreated) {
-            $this->conversationService->sendCreatedNotifications($conversation, $recipients);
-        }
-
         foreach ($recipients as $recipient) {
             $recipient->notify(
                 app(NewMessageNotificationContract::class)
@@ -92,13 +86,7 @@ class MessageService extends EntityService implements MessageServiceContract
     {
         $message = $this->with('conversation.members')->find($id);
 
-        $result = $this->conversationService->pinMessage($message->conversation, $message->id);
-
-        if (empty($result['attached'])) {
-            return;
-        }
-
-        $this->conversationService->sendUpdatedNotifications($message->conversation, $message->conversation->members);
+        $this->conversationService->pinMessage($message->conversation, $message->id);
     }
 
     public function read(int $toID): void

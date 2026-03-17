@@ -2,6 +2,11 @@
 
 namespace RonasIT\Chat\Notifications\Resources\Broadcast;
 
+use RonasIT\Chat\Models\Conversation;
+
+/**
+ * @property Conversation $resource
+ */
 class ConversationResource extends BroadcastResource
 {
     public function toArray(): array

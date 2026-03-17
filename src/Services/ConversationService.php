@@ -7,6 +7,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use RonasIT\Chat\Contracts\Notifications\ConversationCreatedNotificationContract;
 use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract;
 use RonasIT\Chat\Contracts\Notifications\ConversationUpdatedNotificationContract;
@@ -33,12 +34,36 @@ class ConversationService extends EntityService implements ConversationServiceCo
         $conversation = $this->getPrivate($firstMemberId, $secondMemberId);
 
         if (empty($conversation)) {
-            $conversation = $this->create(['type' => TypeEnum::Private]);
-
-            $this->attachMembers($conversation, [$firstMemberId, $secondMemberId]);
+            $conversation = $this->create(['type' => TypeEnum::Private], [$firstMemberId, $secondMemberId]);
         }
 
         return $conversation;
+    }
+
+    public function create(array $data, array $members = []): Conversation
+    {
+        $conversation = DB::transaction(function () use ($data, $members) {
+            $conversation = $this->repository->create($data);
+
+            if (!empty($members)) {
+                $this->attachMembers($conversation, $members);
+            }
+
+            return $conversation;
+        });
+
+        $this->postCreateHook($conversation);
+
+        return $conversation;
+    }
+
+    public function pinMessage(Conversation $conversation, int $messageId): void
+    {
+        $result = $this->repository->pinMessage($conversation, $messageId);
+
+        if (!empty($result['attached'])) {
+            $this->postUpdateHook($conversation);
+        }
     }
 
     public function delete($where): void
@@ -85,12 +110,12 @@ class ConversationService extends EntityService implements ConversationServiceCo
         return $this->getByTypeAndMembers(TypeEnum::Private, $firstMemberId, $secondMemberId);
     }
 
-    public function sendCreatedNotifications(Conversation $conversation, Collection $recipients): void
+    protected function sendCreatedNotifications(Conversation $conversation, Collection $recipients): void
     {
         $this->sendNotifications($conversation, $recipients, ConversationCreatedNotificationContract::class);
     }
 
-    public function sendUpdatedNotifications(Conversation $conversation, Collection $recipients): void
+    protected function sendUpdatedNotifications(Conversation $conversation, Collection $recipients): void
     {
         $this->sendNotifications($conversation, $recipients, ConversationUpdatedNotificationContract::class);
     }
@@ -101,5 +126,22 @@ class ConversationService extends EntityService implements ConversationServiceCo
             'conversation' => $conversation,
             'recipientId' => $recipient->id,
         ])));
+    }
+
+    protected function postCreateHook(Conversation $conversation): void
+    {
+        $recipients = $conversation
+            ->load('members')
+            ->members
+            ->filter(fn ($member) => $member->id !== (int) Auth::id());
+
+        $this->sendCreatedNotifications($conversation, $recipients);
+    }
+
+    protected function postUpdateHook(Conversation $conversation): void
+    {
+        $conversation->load('members');
+
+        $this->sendUpdatedNotifications($conversation, $conversation->members);
     }
 }

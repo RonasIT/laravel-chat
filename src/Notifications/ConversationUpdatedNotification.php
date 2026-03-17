@@ -14,7 +14,7 @@ class ConversationUpdatedNotification extends BaseConversationNotification imple
     {
         $conversation = app(ConversationServiceContract::class)
             ->with([
-                'last_message',
+                'last_message.sender',
                 'pinned_messages',
             ])
             ->withCount('members')
@@ -22,7 +22,7 @@ class ConversationUpdatedNotification extends BaseConversationNotification imple
             ->find($this->conversation->id);
 
         return new BroadcastMessage([
-            'conversation' => new ConversationResource($conversation),
+            'data' => new ConversationResource($conversation),
         ]);
     }
 
