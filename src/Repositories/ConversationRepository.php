@@ -51,9 +51,9 @@ class ConversationRepository extends BaseRepository
             ->syncWithoutDetaching([$messageId]);
     }
 
-    public function unpinMessage(Conversation $conversation, int $messageId): void
+    public function unpinMessage(Conversation $conversation, int $messageId): int
     {
-        $conversation
+        return $conversation
             ->pinned_messages()
             ->detach([$messageId]);
     }

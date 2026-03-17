@@ -483,6 +483,8 @@ class MessageStaticTest extends TestCase
         $response->assertNoContent();
 
         self::$pinnedMessageState->assertChangesEqualsFixture('unpinned');
+
+        $this->assertBroadcastNotificationSent('unpin');
     }
 
     public function testUnpinNotPinned(): void
@@ -496,6 +498,8 @@ class MessageStaticTest extends TestCase
         $response->assertJson(['message' => 'Message is not pinned.']);
 
         self::$pinnedMessageState->assertNotChanged();
+
+        Notification::assertNothingSent();
     }
 
     public function testUnpinAsNonMember(): void
