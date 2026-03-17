@@ -49,6 +49,13 @@ class ConversationRepository extends BaseRepository
         return $conversation->pinned_messages()->syncWithoutDetaching([$messageId]);
     }
 
+    public function unpinMessage(Conversation $conversation, int $messageId): void
+    {
+        $conversation
+            ->pinned_messages()
+            ->detach([$messageId]);
+    }
+
     protected function getQuery($where = []): Builder
     {
         $query = parent::getQuery($where);

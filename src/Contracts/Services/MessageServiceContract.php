@@ -14,4 +14,6 @@ interface MessageServiceContract
     public function read(int $toID): void;
 
     public function pin(int $id): void;
+
+    public function unpin(int $id): void;
 }
