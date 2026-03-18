@@ -100,4 +100,12 @@ class Conversation extends Model
     {
         return $this->getAttribute('type') === TypeEnum::Private;
     }
+
+    public function hasPinnedMessage(int $messageId): bool
+    {
+        return $this
+            ->pinned_messages()
+            ->whereKey($messageId)
+            ->exists();
+    }
 }

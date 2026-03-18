@@ -716,7 +716,7 @@
 								"schema": {
 									"type": "object"
 								},
-								"example": {"message": "Message is not pinned"}
+								"example": {"message": "Message is not pinned."}
 							}
 						}
 					},
