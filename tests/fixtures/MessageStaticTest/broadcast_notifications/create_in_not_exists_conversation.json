@@ -75,7 +75,9 @@
             "notification": {
                 "sender": {
                     "id": 2,
-                    "email": "fidel.kutch@example.com"
+                    "email": "fidel.kutch@example.com",
+                    "name": "Fidel",
+                    "avatar_id": null
                 },
                 "message": {
                     "id": 8,
@@ -88,7 +90,9 @@
                     "is_read": false,
                     "sender": {
                         "id": 2,
-                        "email": "fidel.kutch@example.com"
+                        "email": "fidel.kutch@example.com",
+                        "name": "Fidel",
+                        "avatar_id": null
                     }
                 },
                 "recipientId": 5,
@@ -119,7 +123,9 @@
                         "is_read": false,
                         "sender": {
                             "id": 2,
-                            "email": "fidel.kutch@example.com"
+                            "email": "fidel.kutch@example.com",
+                            "name": "Fidel",
+                            "avatar_id": null
                         }
                     },
                     "sender_first_name": null,
@@ -132,7 +138,9 @@
             ],
             "notifiable": {
                 "id": 5,
-                "email": "william.bob@example.com"
+                "email": "william.bob@example.com",
+                "name": "William",
+                "avatar_id": null
             },
             "locale": null
         }

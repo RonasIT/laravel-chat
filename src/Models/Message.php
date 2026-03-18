@@ -36,12 +36,12 @@ class Message extends Model
 
     public function sender(): BelongsTo
     {
-        return $this->belongsTo(config('chat.classes.user_model'));
+        return $this->belongsTo(config('chat.classes.user.model'));
     }
 
     public function attachment(): BelongsTo
     {
-        return $this->belongsTo(config('chat.classes.media_model'), 'attachment_id');
+        return $this->belongsTo(config('chat.classes.media.model'), 'attachment_id');
     }
 
     public function scopeWithIsRead(Builder $query): Builder

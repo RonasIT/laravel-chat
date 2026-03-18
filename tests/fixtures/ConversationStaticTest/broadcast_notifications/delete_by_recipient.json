@@ -14,11 +14,15 @@
                     "members": [
                         {
                             "id": 1,
-                            "email": "anisio.tier@example.com"
+                            "email": "anisio.tier@example.com",
+                            "name": "Alice",
+                            "avatar_id": null
                         },
                         {
                             "id": 2,
-                            "email": "fidel.kutch@example.com"
+                            "email": "fidel.kutch@example.com",
+                            "name": "Bob",
+                            "avatar_id": 2
                         }
                     ]
                 },
@@ -51,11 +55,15 @@
                         "members": [
                             {
                                 "id": 1,
-                                "email": "anisio.tier@example.com"
+                                "email": "anisio.tier@example.com",
+                                "name": "Alice",
+                                "avatar_id": null
                             },
                             {
                                 "id": 2,
-                                "email": "fidel.kutch@example.com"
+                                "email": "fidel.kutch@example.com",
+                                "name": "Bob",
+                                "avatar_id": 2
                             }
                         ]
                     }
@@ -67,7 +75,9 @@
             ],
             "notifiable": {
                 "id": 1,
-                "email": "anisio.tier@example.com"
+                "email": "anisio.tier@example.com",
+                "name": "Alice",
+                "avatar_id": null
             },
             "locale": null
         }

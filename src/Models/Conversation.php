@@ -3,6 +3,7 @@
 namespace RonasIT\Chat\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -41,13 +42,13 @@ class Conversation extends Model
 
     public function creator(): BelongsTo
     {
-        return $this->belongsTo(config('chat.classes.user_model'));
+        return $this->belongsTo(config('chat.classes.user.model'));
     }
 
     public function members(): BelongsToMany
     {
         return $this->belongsToMany(
-            related: config('chat.classes.user_model'),
+            related: config('chat.classes.user.model'),
             table: 'conversation_member',
             foreignPivotKey: 'conversation_id',
             relatedPivotKey: 'member_id',
@@ -56,7 +57,48 @@ class Conversation extends Model
 
     public function cover(): BelongsTo
     {
-        return $this->belongsTo(config('chat.classes.media_model'), 'cover_id');
+        return $this->belongsTo(config('chat.classes.media.model'), 'cover_id');
+    }
+
+    protected function title(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value): ?string {
+                if ($this->isPrivate() && array_key_exists('overriden_title', $this->attributes)) {
+                    return $this->attributes['overriden_title'];
+                }
+
+                return $value;
+            },
+        );
+    }
+
+    protected function coverId(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value): ?int {
+                if ($this->isPrivate() && array_key_exists('overriden_cover_id', $this->attributes)) {
+                    return $this->attributes['overriden_cover_id'];
+                }
+
+                return $value;
+            },
+        );
+    }
+
+    public function scopeWithOverridenTitleAndCover(Builder $query, int $memberId): Builder
+    {
+        $constraint = fn (Builder $query) => $query->where('member_id', '!=', $memberId);
+
+        if ($titleColumn = config('chat.classes.user.columns.name')) {
+            $query->withAggregate(['members as overriden_title' => $constraint], $titleColumn);
+        }
+
+        if ($avatarColumn = config('chat.classes.user.columns.avatar_id')) {
+            $query->withAggregate(['members as overriden_cover_id' => $constraint], $avatarColumn);
+        }
+
+        return $query;
     }
 
     public function scopeWithUnreadMessagesCount(Builder $query, int $memberId): Builder

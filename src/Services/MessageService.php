@@ -68,6 +68,7 @@ class MessageService extends EntityService implements MessageServiceContract
         }
 
         return $this
+            ->withConversationOverridenTitleAndCover(Arr::get($filters, 'member_id'))
             ->searchQuery($filters)
             ->filterBy('conversation.members.member_id', 'member_id')
             ->getSearchResults();

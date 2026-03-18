@@ -4,7 +4,9 @@
             "notification": {
                 "sender": {
                     "id": 1,
-                    "email": "anisio.tier@example.com"
+                    "email": "anisio.tier@example.com",
+                    "name": "Anisio",
+                    "avatar_id": null
                 },
                 "message": {
                     "id": 8,
@@ -17,7 +19,9 @@
                     "is_read": false,
                     "sender": {
                         "id": 1,
-                        "email": "anisio.tier@example.com"
+                        "email": "anisio.tier@example.com",
+                        "name": "Anisio",
+                        "avatar_id": null
                     }
                 },
                 "recipientId": 2,
@@ -48,7 +52,9 @@
                         "is_read": false,
                         "sender": {
                             "id": 1,
-                            "email": "anisio.tier@example.com"
+                            "email": "anisio.tier@example.com",
+                            "name": "Anisio",
+                            "avatar_id": null
                         }
                     },
                     "sender_first_name": null,
@@ -61,7 +67,9 @@
             ],
             "notifiable": {
                 "id": 2,
-                "email": "fidel.kutch@example.com"
+                "email": "fidel.kutch@example.com",
+                "name": "Fidel",
+                "avatar_id": null
             },
             "locale": null
         }
