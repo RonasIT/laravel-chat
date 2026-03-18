@@ -122,7 +122,7 @@ class MessageService extends EntityService implements MessageServiceContract
     protected function sendNotifications(Message $message, Collection $recipients, string $notificationClass): void
     {
         $recipients->each(fn (Model $recipient) => $recipient->notify(app($notificationClass, [
-            'message' => $message,
+            'messageId' => $message->id,
             'recipientId' => $recipient->id,
         ])));
     }
