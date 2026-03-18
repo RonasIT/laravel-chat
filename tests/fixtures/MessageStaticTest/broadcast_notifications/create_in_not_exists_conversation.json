@@ -52,6 +52,116 @@
             "locale": null
         }
     ],
+    "RonasIT\\Chat\\Notifications\\ConversationUpdatedNotification": [
+        {
+            "notification": {
+                "conversationId": 6,
+                "recipientId": 5,
+                "locale": null,
+                "connection": null,
+                "queue": null,
+                "delay": null,
+                "afterCommit": true,
+                "middleware": [],
+                "chained": [],
+                "chainConnection": null,
+                "chainQueue": null,
+                "chainCatchCallbacks": null,
+                "broadcast_on": [
+                    {
+                        "name": "private-chat.5"
+                    }
+                ],
+                "broadcast_data": {
+                    "data": {
+                        "id": 6,
+                        "type": "private",
+                        "title": null,
+                        "last_updated_at": "2024-01-01 00:00:00",
+                        "created_at": "2024-01-01T00:00:00.000000Z",
+                        "last_message": {
+                            "id": 8,
+                            "text": "hello",
+                            "conversation_id": 6,
+                            "is_read": false,
+                            "created_at": "2024-01-01T00:00:00.000000Z",
+                            "updated_at": "2024-01-01T00:00:00.000000Z",
+                            "sender": {
+                                "id": 2,
+                                "email": "fidel.kutch@example.com"
+                            }
+                        },
+                        "pinned_messages": [],
+                        "members_count": 2,
+                        "unread_messages_count": 1
+                    }
+                },
+                "broadcast_as": "conversation.updated"
+            },
+            "channels": [
+                "Illuminate\\Notifications\\Channels\\BroadcastChannel"
+            ],
+            "notifiable": {
+                "id": 5,
+                "email": "william.bob@example.com"
+            },
+            "locale": null
+        },
+        {
+            "notification": {
+                "conversationId": 6,
+                "recipientId": 2,
+                "locale": null,
+                "connection": null,
+                "queue": null,
+                "delay": null,
+                "afterCommit": true,
+                "middleware": [],
+                "chained": [],
+                "chainConnection": null,
+                "chainQueue": null,
+                "chainCatchCallbacks": null,
+                "broadcast_on": [
+                    {
+                        "name": "private-chat.2"
+                    }
+                ],
+                "broadcast_data": {
+                    "data": {
+                        "id": 6,
+                        "type": "private",
+                        "title": null,
+                        "last_updated_at": "2024-01-01 00:00:00",
+                        "created_at": "2024-01-01T00:00:00.000000Z",
+                        "last_message": {
+                            "id": 8,
+                            "text": "hello",
+                            "conversation_id": 6,
+                            "is_read": false,
+                            "created_at": "2024-01-01T00:00:00.000000Z",
+                            "updated_at": "2024-01-01T00:00:00.000000Z",
+                            "sender": {
+                                "id": 2,
+                                "email": "fidel.kutch@example.com"
+                            }
+                        },
+                        "pinned_messages": [],
+                        "members_count": 2,
+                        "unread_messages_count": 0
+                    }
+                },
+                "broadcast_as": "conversation.updated"
+            },
+            "channels": [
+                "Illuminate\\Notifications\\Channels\\BroadcastChannel"
+            ],
+            "notifiable": {
+                "id": 2,
+                "email": "fidel.kutch@example.com"
+            },
+            "locale": null
+        }
+    ],
     "RonasIT\\Chat\\Notifications\\MessageCreatedNotification": [
         {
             "notification": {
