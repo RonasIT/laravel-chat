@@ -2,13 +2,11 @@
 
 namespace RonasIT\Chat\Notifications\Resources\Broadcast;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Resources\ConditionallyLoadsAttributes;
 use Illuminate\Http\Resources\MissingValue;
-use Illuminate\Http\Resources\PotentiallyMissing;
-use JsonSerializable;
+use RonasIT\Chat\Contracts\Notifications\Resources\Broadcast\BroadcastResourceContract;
 
-abstract class BroadcastResource implements Arrayable, JsonSerializable, PotentiallyMissing
+abstract class BroadcastResource implements BroadcastResourceContract
 {
     use ConditionallyLoadsAttributes;
 

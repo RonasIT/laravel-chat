@@ -4,9 +4,9 @@ namespace RonasIT\Chat\Notifications;
 
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use RonasIT\Chat\Contracts\Notifications\ConversationUpdatedNotificationContract;
+use RonasIT\Chat\Contracts\Notifications\Resources\Broadcast\ConversationResourceContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Enums\BroadcastNotificationTypeEnum;
-use RonasIT\Chat\Notifications\Resources\Broadcast\ConversationResource;
 
 class ConversationUpdatedNotification extends BaseConversationNotification implements ConversationUpdatedNotificationContract
 {
@@ -22,7 +22,9 @@ class ConversationUpdatedNotification extends BaseConversationNotification imple
             ->find($this->conversation->id);
 
         return new BroadcastMessage([
-            'data' => new ConversationResource($conversation),
+            'data' => app(ConversationResourceContract::class, [
+                'resource' => $conversation,
+            ]),
         ]);
     }
 

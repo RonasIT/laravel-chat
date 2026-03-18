@@ -8,6 +8,6 @@ abstract class BroadcastResourceCollection extends BroadcastResource
 
     public function toArray(): array
     {
-        return $this->resource->mapInto($this->collects)->toArray();
+        return $this->resource->map(fn ($item) => app($this->collects, ['resource' => $item]))->toArray();
     }
 }
