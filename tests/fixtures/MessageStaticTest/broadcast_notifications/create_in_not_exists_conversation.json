@@ -48,6 +48,7 @@
                         "last_message": {
                             "id": 8,
                             "text": "hello",
+                            "conversation_id": 6,
                             "is_read": false,
                             "created_at": "2024-01-01T00:00:00.000000Z",
                             "updated_at": "2024-01-01T00:00:00.000000Z",
@@ -73,10 +74,6 @@
     "RonasIT\\Chat\\Notifications\\MessageCreatedNotification": [
         {
             "notification": {
-                "sender": {
-                    "id": 2,
-                    "email": "fidel.kutch@example.com"
-                },
                 "message": {
                     "id": 8,
                     "conversation_id": 6,
@@ -96,7 +93,7 @@
                 "connection": null,
                 "queue": null,
                 "delay": null,
-                "afterCommit": null,
+                "afterCommit": true,
                 "middleware": [],
                 "chained": [],
                 "chainConnection": null,
@@ -108,22 +105,18 @@
                     }
                 ],
                 "broadcast_data": {
-                    "message": {
+                    "data": {
                         "id": 8,
-                        "conversation_id": 6,
-                        "sender_id": 2,
                         "text": "hello",
+                        "conversation_id": 6,
+                        "is_read": false,
                         "created_at": "2024-01-01T00:00:00.000000Z",
                         "updated_at": "2024-01-01T00:00:00.000000Z",
-                        "attachment_id": null,
-                        "is_read": false,
                         "sender": {
                             "id": 2,
                             "email": "fidel.kutch@example.com"
                         }
-                    },
-                    "sender_first_name": null,
-                    "sender_last_name": null
+                    }
                 },
                 "broadcast_as": "message.created"
             },

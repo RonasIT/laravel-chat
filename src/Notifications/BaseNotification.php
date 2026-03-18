@@ -5,8 +5,10 @@ namespace RonasIT\Chat\Notifications;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Queue\Attributes\WithoutRelations;
 use RonasIT\Chat\Contracts\Notifications\NotificationContract;
 
+#[WithoutRelations]
 abstract class BaseNotification extends Notification implements NotificationContract
 {
     use Queueable;
