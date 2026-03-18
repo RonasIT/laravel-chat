@@ -57,7 +57,7 @@ class ConversationService extends EntityService implements ConversationServiceCo
         return $conversation;
     }
 
-    public function update(array|int $where, array $data): Conversation
+    public function update(array|int $where, array $data): ?Conversation
     {
         $updated = $this->repository->update($where, $data);
 
