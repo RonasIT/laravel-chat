@@ -15,6 +15,7 @@ return [
 
     'custom' => [
         'recipient_same_as_sender' => 'The recipient id must not be the same as the message sender id.',
+        'message_not_pinned' => 'Message is not pinned.',
     ],
 
     'exceptions' => [

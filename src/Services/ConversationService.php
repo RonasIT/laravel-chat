@@ -66,6 +66,15 @@ class ConversationService extends EntityService implements ConversationServiceCo
         }
     }
 
+    public function unpinMessage(Conversation $conversation, int $messageId): void
+    {
+        $unpinnedCount = $this->repository->unpinMessage($conversation, $messageId);
+
+        if ($unpinnedCount > 0) {
+            $this->postUpdateHook($conversation);
+        }
+    }
+
     public function delete($where): void
     {
         $conversation = $this->with('members')->first($where);

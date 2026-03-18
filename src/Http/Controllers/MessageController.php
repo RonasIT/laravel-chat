@@ -8,6 +8,7 @@ use RonasIT\Chat\Contracts\Requests\CreateMessageRequestContract;
 use RonasIT\Chat\Contracts\Requests\PinMessageRequestContract;
 use RonasIT\Chat\Contracts\Requests\ReadMessagesRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchMessagesRequestContract;
+use RonasIT\Chat\Contracts\Requests\UnpinMessageRequestContract;
 use RonasIT\Chat\Contracts\Resources\MessageResourceContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
 use RonasIT\Chat\Http\Resources\MessagesCollectionResource;
@@ -38,6 +39,13 @@ class MessageController extends Controller
     public function pin(PinMessageRequestContract $request, MessageServiceContract $service, int $id): Response
     {
         $service->pin($id);
+
+        return response()->noContent();
+    }
+
+    public function unpin(UnpinMessageRequestContract $request, MessageServiceContract $service, int $id): Response
+    {
+        $service->unpin($id);
 
         return response()->noContent();
     }

@@ -19,6 +19,7 @@ use RonasIT\Chat\Contracts\Requests\PinMessageRequestContract;
 use RonasIT\Chat\Contracts\Requests\ReadMessagesRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchConversationsRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchMessagesRequestContract;
+use RonasIT\Chat\Contracts\Requests\UnpinMessageRequestContract;
 use RonasIT\Chat\Contracts\Resources\ConversationResourceContract;
 use RonasIT\Chat\Contracts\Resources\MessageResourceContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
@@ -31,6 +32,7 @@ use RonasIT\Chat\Http\Requests\Messages\CreateMessageRequest;
 use RonasIT\Chat\Http\Requests\Messages\PinMessageRequest;
 use RonasIT\Chat\Http\Requests\Messages\ReadMessagesRequest;
 use RonasIT\Chat\Http\Requests\Messages\SearchMessagesRequest;
+use RonasIT\Chat\Http\Requests\Messages\UnpinMessageRequest;
 use RonasIT\Chat\Http\Resources\ConversationResource;
 use RonasIT\Chat\Http\Resources\MessageResource;
 use RonasIT\Chat\Notifications\ConversationCreatedNotification;
@@ -66,6 +68,7 @@ class ChatServiceProvider extends ServiceProvider
     {
         $this->app->bind(CreateMessageRequestContract::class, CreateMessageRequest::class);
         $this->app->bind(PinMessageRequestContract::class, PinMessageRequest::class);
+        $this->app->bind(UnpinMessageRequestContract::class, UnpinMessageRequest::class);
         $this->app->bind(ReadMessagesRequestContract::class, ReadMessagesRequest::class);
         $this->app->bind(GetConversationRequestContract::class, GetConversationRequest::class);
         $this->app->bind(GetConversationByUserIdRequestContract::class, GetConversationByUserIdRequest::class);

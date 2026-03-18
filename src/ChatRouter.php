@@ -26,6 +26,7 @@ class ChatRouter
                 'message_create' => true,
                 'messages_read' => true,
                 'message_pin' => true,
+                'message_unpin' => true,
             ];
 
             if (!empty($options)) {
@@ -46,6 +47,7 @@ class ChatRouter
                 when($defaultOptions['message_create'], fn () => $this->post('messages', 'create')->name('messages.create'));
                 when($defaultOptions['messages_read'], fn () => $this->post('messages/{id}/read-to', 'readUpTo')->name('messages.read'));
                 when($defaultOptions['message_pin'], fn () => $this->post('messages/{id}/pin', 'pin')->name('messages.pin'));
+                when($defaultOptions['message_unpin'], fn () => $this->post('messages/{id}/unpin', 'unpin')->name('messages.unpin'));
             });
         };
     }
