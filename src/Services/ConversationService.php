@@ -57,6 +57,17 @@ class ConversationService extends EntityService implements ConversationServiceCo
         return $conversation;
     }
 
+    public function update(array|int $where, array $data): Conversation
+    {
+        $updated = $this->repository->update($where, $data);
+
+        if (!is_null($updated)) {
+            $this->postUpdateHook($updated);
+        }
+
+        return $updated;
+    }
+
     public function pinMessage(Conversation $conversation, int $messageId): void
     {
         $result = $this->repository->pinMessage($conversation, $messageId);
