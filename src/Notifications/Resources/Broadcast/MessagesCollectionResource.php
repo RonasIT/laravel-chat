@@ -2,7 +2,7 @@
 
 namespace RonasIT\Chat\Notifications\Resources\Broadcast;
 
-use RonasIT\Chat\Contracts\Resources\MessageResourceContract;
+use RonasIT\Chat\Contracts\Notifications\Resources\Broadcast\MessageResourceContract;
 
 class MessagesCollectionResource extends BroadcastResourceCollection
 {
