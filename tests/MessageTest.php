@@ -226,6 +226,17 @@ class MessageTest extends TestCase
         $response->assertJson(['message' => 'Unauthenticated.']);
     }
 
+    public function testSearchWithOrderByNotAllowedByConfig()
+    {
+        $response = $this->actingAs(self::$firstUser)->json('get', '/messages', [
+            'order_by' => 'invalid_attribute',
+        ]);
+
+        $response->assertUnprocessable();
+
+        $response->assertJson(['message' => 'The selected order by is invalid.']);
+    }
+
     public function testRead(): void
     {
         $response = $this->actingAs(self::$secondUser)->postJson('/messages/7/read-to');

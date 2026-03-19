@@ -9,12 +9,14 @@ class SearchConversationsRequest extends BaseConversationRequest implements Sear
 {
     public function rules(): array
     {
+        $availableOrderBy = implode(',', config('chat.order_by.conversation', []));
+
         return [
             'page' => 'integer',
             'per_page' => 'integer',
             'all' => 'integer',
             'query' => 'nullable|string',
-            'order_by' => 'string',
+            'order_by' => "string|in:{$availableOrderBy}",
             'desc' => 'boolean',
             'type' => 'string|in:' . TypeEnum::toString(),
             'with_unread_messages_count' => 'boolean',
