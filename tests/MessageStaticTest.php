@@ -67,8 +67,6 @@ class MessageStaticTest extends TestCase
     {
         Route::chat(ChatRouteActionEnum::MessageCreate);
 
-        Notification::fake();
-
         $data = $this->getJsonFixture('create_message_request');
 
         $responseSearch = $this->actingAs(self::$firstUser)->getJson('/conversations');
@@ -92,8 +90,6 @@ class MessageStaticTest extends TestCase
 
     public function testCreateInExistsConversation(): void
     {
-        Notification::fake();
-
         Route::chat(ChatRouteActionEnum::MessageCreate);
 
         $data = $this->getJsonFixture('create_message_request');
@@ -106,15 +102,13 @@ class MessageStaticTest extends TestCase
 
         $this->assertEqualsFixture('create_message_response', $response->json());
 
-        self::$conversationState->assertNotChanged();
+        self::$conversationState->assertChangesEqualsFixture('created');
         self::$messageState->assertChangesEqualsFixture('created');
         self::$conversationMemberState->assertNotChanged();
     }
 
     public function testCreateInNotExistsConversation(): void
     {
-        Notification::fake();
-
         Route::chat(ChatRouteActionEnum::MessageCreate);
 
         $data = $this->getJsonFixture('create_message_in_exists_conversation_request');
@@ -127,7 +121,7 @@ class MessageStaticTest extends TestCase
 
         $this->assertEqualsFixture('create_message_in_exists_conversation_response', $response->json());
 
-        self::$conversationState->assertChangesEqualsFixture('created');
+        self::$conversationState->assertChangesEqualsFixture('created_with_new_conversation');
         self::$messageState->assertChangesEqualsFixture('created_with_new_conversation');
         self::$conversationMemberState->assertChangesEqualsFixture('created');
     }
@@ -151,8 +145,6 @@ class MessageStaticTest extends TestCase
 
     public function testCreateWithAttachment(): void
     {
-        Notification::fake();
-
         Route::chat(ChatRouteActionEnum::MessageCreate);
 
         $data = $this->getJsonFixture('create_message_with_attachment_request');
@@ -165,14 +157,12 @@ class MessageStaticTest extends TestCase
 
         $this->assertEqualsFixture('create_message_with_attachment_response', $response->json());
 
-        self::$conversationState->assertNotChanged();
+        self::$conversationState->assertChangesEqualsFixture('created_with_attachment');
         self::$messageState->assertChangesEqualsFixture('created_with_attachment');
     }
 
     public function testCreateWithConversationId(): void
     {
-        Notification::fake();
-
         Route::chat(ChatRouteActionEnum::MessageCreate);
 
         $data = $this->getJsonFixture('create_message_with_conversation_id_request');
@@ -185,7 +175,7 @@ class MessageStaticTest extends TestCase
 
         $this->assertEqualsFixture('create_message_with_conversation_id_response', $response->json());
 
-        self::$conversationState->assertNotChanged();
+        self::$conversationState->assertChangesEqualsFixture('created_with_conversation_id');
         self::$messageState->assertChangesEqualsFixture('created_with_conversation_id');
         self::$conversationMemberState->assertNotChanged();
     }
@@ -328,6 +318,8 @@ class MessageStaticTest extends TestCase
         $response->assertNoContent();
 
         self::$readMessageState->assertChangesEqualsFixture('read');
+
+        $this->assertBroadcastNotificationSent('read');
     }
 
     public function testReadAlreadyRead(): void
@@ -339,6 +331,8 @@ class MessageStaticTest extends TestCase
         $response->assertNoContent();
 
         self::$readMessageState->assertNotChanged();
+
+        Notification::assertNothingSent();
     }
 
     public function testReadAsNonMember(): void
@@ -377,6 +371,7 @@ class MessageStaticTest extends TestCase
         $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages');
         $responseRead = $this->actingAs(self::$firstUser)->postJson('/messages/1/read-to');
         $responsePin = $this->actingAs(self::$firstUser)->postJson('/messages/1/pin');
+        $responseUnpin = $this->actingAs(self::$firstUser)->postJson('/messages/1/unpin');
 
         $responsePin->assertNoContent();
 
@@ -387,6 +382,33 @@ class MessageStaticTest extends TestCase
         $responseSearchMessages->assertNotFound();
         $responseCreate->assertNotFound();
         $responseRead->assertNotFound();
+        $responseUnpin->assertNotFound();
+    }
+
+    public function testEverythingDisabledExceptUnpin(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageUnpin);
+
+        $responseSearch = $this->actingAs(self::$firstUser)->getJson('/conversations');
+        $responseGet = $this->actingAs(self::$firstUser)->getJson('/conversations/1');
+        $responseDelete = $this->actingAs(self::$firstUser)->deleteJson('/conversations/1');
+        $responseGetByUser = $this->actingAs(self::$firstUser)->getJson('/users/2/conversation');
+        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/messages');
+        $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages');
+        $responseRead = $this->actingAs(self::$firstUser)->postJson('/messages/1/read-to');
+        $responsePin = $this->actingAs(self::$firstUser)->postJson('/messages/1/pin');
+        $responseUnpin = $this->actingAs(self::$firstUser)->postJson('/messages/1/unpin');
+
+        $responseUnpin->assertNoContent();
+
+        $responseSearch->assertNotFound();
+        $responseGet->assertNotFound();
+        $responseDelete->assertNotFound();
+        $responseGetByUser->assertNotFound();
+        $responseSearchMessages->assertNotFound();
+        $responseCreate->assertNotFound();
+        $responseRead->assertNotFound();
+        $responsePin->assertNotFound();
     }
 
     public function testPin(): void
@@ -398,6 +420,8 @@ class MessageStaticTest extends TestCase
         $response->assertNoContent();
 
         self::$pinnedMessageState->assertChangesEqualsFixture('pinned');
+
+        $this->assertBroadcastNotificationSent('pin');
     }
 
     public function testPinAlreadyPinned(): void
@@ -409,6 +433,8 @@ class MessageStaticTest extends TestCase
         $response->assertNoContent();
 
         self::$pinnedMessageState->assertNotChanged();
+
+        Notification::assertNothingSent();
     }
 
     public function testPinAsNonMember(): void
@@ -440,6 +466,71 @@ class MessageStaticTest extends TestCase
     public function testPinEndpointDisabled(): void
     {
         $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/pin');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Not found.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpin(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageUnpin);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/unpin');
+
+        $response->assertNoContent();
+
+        self::$pinnedMessageState->assertChangesEqualsFixture('unpinned');
+
+        $this->assertBroadcastNotificationSent('unpin');
+    }
+
+    public function testUnpinNotPinned(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageUnpin);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/2/unpin');
+
+        $response->assertConflict();
+
+        $response->assertJson(['message' => 'Message is not pinned.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+
+        Notification::assertNothingSent();
+    }
+
+    public function testUnpinAsNonMember(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageUnpin);
+
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/1/unpin');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpinNotFound(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageUnpin);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/0/unpin');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Message does not exist']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpinEndpointDisabled(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/unpin');
 
         $response->assertNotFound();
 

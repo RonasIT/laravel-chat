@@ -15,7 +15,5 @@ interface ConversationServiceContract
 
     public function delete($where): void;
 
-    public function notifyUser($conversation, $recipients): void;
-
     public function retrieveById(int $id): ?Model;
 }

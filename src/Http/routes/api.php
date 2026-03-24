@@ -15,4 +15,5 @@ Route::group(['middleware' => ['auth', CheckManuallyRegisteredRoutesMiddleware::
     Route::post('messages', [MessageController::class, 'create']);
     Route::post('messages/{id}/read-to', [MessageController::class, 'readUpTo']);
     Route::post('messages/{id}/pin', [MessageController::class, 'pin']);
+    Route::post('messages/{id}/unpin', [MessageController::class, 'unpin']);
 });

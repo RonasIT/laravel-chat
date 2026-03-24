@@ -2,7 +2,6 @@
 
 namespace RonasIT\Chat\Tests;
 
-use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RonasIT\Chat\ChatRouter;
 use RonasIT\Chat\Models\Conversation;
@@ -160,8 +159,6 @@ class ConversationTest extends TestCase
 
     public function testDeleteBySender()
     {
-        Notification::fake();
-
         $response = $this->actingAs(self::$sender)->json('delete', '/conversations/1');
 
         $response->assertNoContent();
@@ -174,8 +171,6 @@ class ConversationTest extends TestCase
 
     public function testDeleteByRecipient()
     {
-        Notification::fake();
-
         $response = $this->actingAs(self::$recipient)->json('delete', '/conversations/1');
 
         $this->assertBroadcastNotificationSent('delete_by_recipient');
@@ -221,8 +216,6 @@ class ConversationTest extends TestCase
 
     public function testDeleteGroupByCreator()
     {
-        Notification::fake();
-
         $response = $this->actingAs(self::$sender)->json('delete', '/conversations/6');
 
         $response->assertNoContent();

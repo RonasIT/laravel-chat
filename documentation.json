@@ -667,6 +667,78 @@
 				"summary": "pin message"
 			}
 		},
+		"\/messages\/{id}\/unpin": {
+			"post": {
+				"tags": ["messages"],
+				"consumes": ["application\/json"],
+				"produces": ["text\/plain", "application\/json"],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"description": "",
+						"required": true,
+						"schema": {"type": "string"}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Operation successfully done"
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"$ref": "#\/components\/schemas\/forbiddenResponseObject"
+								},
+								"example": {"message": "This action is unauthorized."}
+							}
+						}
+					},
+					"404": {
+						"description": "This entity not found",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"$ref": "#\/components\/schemas\/notFoundResponseObject"
+								},
+								"example": {"message": "Message does not exist"}
+							}
+						}
+					},
+					"409": {
+						"description": "Conflict",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object"
+								},
+								"example": {"message": "Message is not pinned."}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"$ref": "#\/components\/schemas\/unauthorizedResponseObject"
+								},
+								"example": {"message": "Unauthenticated."}
+							}
+						}
+					}
+				},
+				"security": [],
+				"description": "",
+				"deprecated": false,
+				"summary": "unpin message"
+			}
+		},
 		"\/messages\/{id}\/read-to": {
 			"post": {
 				"tags": ["messages"],

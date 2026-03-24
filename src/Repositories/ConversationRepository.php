@@ -52,9 +52,18 @@ class ConversationRepository extends BaseRepository
         return $this;
     }
 
-    public function pinMessage(Conversation $conversation, int $messageId): void
+    public function pinMessage(Conversation $conversation, int $messageId): array
     {
-        $conversation->pinned_messages()->syncWithoutDetaching([$messageId]);
+        return $conversation
+            ->pinned_messages()
+            ->syncWithoutDetaching([$messageId]);
+    }
+
+    public function unpinMessage(Conversation $conversation, int $messageId): int
+    {
+        return $conversation
+            ->pinned_messages()
+            ->detach([$messageId]);
     }
 
     protected function getQuery($where = []): Builder
