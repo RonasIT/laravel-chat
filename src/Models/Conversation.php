@@ -64,8 +64,8 @@ class Conversation extends Model
     {
         return Attribute::make(
             get: function ($value): ?string {
-                if ($this->isPrivate() && array_key_exists('overriden_title', $this->attributes)) {
-                    return $this->attributes['overriden_title'];
+                if ($this->isPrivate() && array_key_exists('overridden_title', $this->attributes)) {
+                    return $this->attributes['overridden_title'];
                 }
 
                 return $value;
@@ -77,8 +77,8 @@ class Conversation extends Model
     {
         return Attribute::make(
             get: function ($value): ?int {
-                if ($this->isPrivate() && array_key_exists('overriden_cover_id', $this->attributes)) {
-                    return $this->attributes['overriden_cover_id'];
+                if ($this->isPrivate() && array_key_exists('overridden_cover_id', $this->attributes)) {
+                    return $this->attributes['overridden_cover_id'];
                 }
 
                 return $value;
@@ -86,16 +86,16 @@ class Conversation extends Model
         );
     }
 
-    public function scopeWithOverridenTitleAndCover(Builder $query, int $memberId): Builder
+    public function scopeWithOverriddenTitleAndCover(Builder $query, int $memberId): Builder
     {
         $constraint = fn (Builder $query) => $query->where('member_id', '!=', $memberId);
 
         if ($titleColumn = config('chat.classes.user.columns.name')) {
-            $query->withAggregate(['members as overriden_title' => $constraint], $titleColumn);
+            $query->withAggregate(['members as overridden_title' => $constraint], $titleColumn);
         }
 
         if ($avatarColumn = config('chat.classes.user.columns.avatar_id')) {
-            $query->withAggregate(['members as overriden_cover_id' => $constraint], $avatarColumn);
+            $query->withAggregate(['members as overridden_cover_id' => $constraint], $avatarColumn);
         }
 
         return $query;

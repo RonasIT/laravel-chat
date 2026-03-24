@@ -11,7 +11,7 @@ use RonasIT\Support\Repositories\BaseRepository;
  */
 class MessageRepository extends BaseRepository
 {
-    protected ?int $withConversationOverridenTitleAndCoverMemberId = null;
+    protected ?int $withConversationOverriddenTitleAndCoverMemberId = null;
 
     public function __construct()
     {
@@ -34,9 +34,9 @@ class MessageRepository extends BaseRepository
             ->toArray();
     }
 
-    public function withConversationOverridenTitleAndCover(?int $memberId): self
+    public function withConversationOverriddenTitleAndCover(?int $memberId): self
     {
-        $this->withConversationOverridenTitleAndCoverMemberId = $memberId;
+        $this->withConversationOverriddenTitleAndCoverMemberId = $memberId;
 
         return $this;
     }
@@ -45,13 +45,13 @@ class MessageRepository extends BaseRepository
     {
         $query = parent::getQuery($where);
 
-        if (!is_null($this->withConversationOverridenTitleAndCoverMemberId)) {
+        if (!is_null($this->withConversationOverriddenTitleAndCoverMemberId)) {
             if (in_array('conversation', $this->attachedRelations)) {
-                $memberId = $this->withConversationOverridenTitleAndCoverMemberId;
-                $query->with(['conversation' => fn ($query) => $query->withOverridenTitleAndCover($memberId)]);
+                $memberId = $this->withConversationOverriddenTitleAndCoverMemberId;
+                $query->with(['conversation' => fn ($query) => $query->withOverriddenTitleAndCover($memberId)]);
             }
 
-            $this->withConversationOverridenTitleAndCoverMemberId = null;
+            $this->withConversationOverriddenTitleAndCoverMemberId = null;
         }
 
         return $query;
