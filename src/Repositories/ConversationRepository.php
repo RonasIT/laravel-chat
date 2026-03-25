@@ -3,7 +3,6 @@
 namespace RonasIT\Chat\Repositories;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use RonasIT\Chat\Contracts\Models\ConversationModelContract;
 use RonasIT\Chat\Enums\Conversation\TypeEnum;
 use RonasIT\Support\Repositories\BaseRepository;
@@ -22,7 +21,7 @@ class ConversationRepository extends BaseRepository
         );
     }
 
-    public function getByTypeAndMembers(TypeEnum $type, int ...$membersIDs): ?Model
+    public function getByTypeAndMembers(TypeEnum $type, int ...$membersIDs): ?ConversationModelContract
     {
         return $this
             ->getQuery(['type' => $type])
@@ -30,7 +29,7 @@ class ConversationRepository extends BaseRepository
             ->first();
     }
 
-    public function attachMembers(Model $conversation, array $memberIds): void
+    public function attachMembers(ConversationModelContract $conversation, array $memberIds): void
     {
         $conversation->members()->attach($memberIds);
     }
@@ -42,7 +41,7 @@ class ConversationRepository extends BaseRepository
         return $this;
     }
 
-    public function pinMessage(Model $conversation, int $messageId): void
+    public function pinMessage(ConversationModelContract $conversation, int $messageId): void
     {
         $conversation->pinned_messages()->syncWithoutDetaching([$messageId]);
     }
