@@ -13,4 +13,3 @@ class CustomMessage extends Message
         return $value . '_custom';
     }
 }
-
