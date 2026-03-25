@@ -2,47 +2,21 @@
 
 namespace RonasIT\Chat\Notifications;
 
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Notification;
 use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract;
+use RonasIT\Chat\Enums\BroadcastNotificationTypeEnum;
 
-class ConversationDeletedNotification extends Notification implements ConversationDeletedNotificationContract, ShouldBroadcast, ShouldQueue
+class ConversationDeletedNotification extends BaseConversationNotification implements ConversationDeletedNotificationContract
 {
-    use Queueable;
-
-    protected array $conversation;
-    protected int $recipientId;
-
-    public function setConversation(array $conversation): self
-    {
-        $this->conversation = $conversation;
-
-        return $this;
-    }
-
-    public function setRecipientId(int $id): self
-    {
-        $this->recipientId = $id;
-
-        return $this;
-    }
-
-    public function broadcastOn(): array
-    {
-        return [new PrivateChannel("chat.{$this->recipientId}")];
-    }
-
-    public function via($notifiable): array
-    {
-        return config('chat.default_channels');
-    }
-
     public function toBroadcast(): BroadcastMessage
     {
-        return new BroadcastMessage(['conversation' => $this->conversation]);
+        return new BroadcastMessage(['data' => [
+            'id' => $this->conversationId,
+        ]]);
+    }
+
+    public function broadcastAs(): string
+    {
+        return BroadcastNotificationTypeEnum::ConversationDeleted->value;
     }
 }

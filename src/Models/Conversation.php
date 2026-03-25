@@ -22,6 +22,7 @@ class Conversation extends Model implements ConversationModelContract
         'type',
         'title',
         'cover_id',
+        'last_updated_at',
     ];
 
     protected $hidden = ['pivot'];
@@ -100,5 +101,13 @@ class Conversation extends Model implements ConversationModelContract
     public function isPrivate(): bool
     {
         return $this->getAttribute('type') === TypeEnum::Private;
+    }
+
+    public function hasPinnedMessage(int $messageId): bool
+    {
+        return $this
+            ->pinned_messages()
+            ->whereKey($messageId)
+            ->exists();
     }
 }

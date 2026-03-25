@@ -43,8 +43,6 @@ class MessageTest extends TestCase
 
     public function testCreateInExistsConversation(): void
     {
-        Notification::fake();
-
         $data = $this->getJsonFixture('create_message_request');
 
         $response = $this->actingAs(self::$firstUser)->json('post', '/messages', $data);
@@ -55,15 +53,13 @@ class MessageTest extends TestCase
 
         $this->assertEqualsFixture('create_message_response', $response->json());
 
-        self::$conversationState->assertNotChanged();
+        self::$conversationState->assertChangesEqualsFixture('created');
         self::$messageState->assertChangesEqualsFixture('created');
         self::$conversationMemberState->assertNotChanged();
     }
 
     public function testCreateInNotExistsConversation(): void
     {
-        Notification::fake();
-
         $data = $this->getJsonFixture('create_message_in_exists_conversation_request');
 
         $response = $this->actingAs(self::$secondUser)->json('post', '/messages', $data);
@@ -74,7 +70,7 @@ class MessageTest extends TestCase
 
         $this->assertEqualsFixture('create_message_in_exists_conversation_response', $response->json());
 
-        self::$conversationState->assertChangesEqualsFixture('created');
+        self::$conversationState->assertChangesEqualsFixture('created_with_new_conversation');
         self::$messageState->assertChangesEqualsFixture('created_with_new_conversation');
         self::$conversationMemberState->assertChangesEqualsFixture('created');
     }
@@ -96,8 +92,6 @@ class MessageTest extends TestCase
 
     public function testCreateWithAttachment(): void
     {
-        Notification::fake();
-
         $data = $this->getJsonFixture('create_message_with_attachment_request');
 
         $response = $this->actingAs(self::$firstUser)->json('post', '/messages', $data);
@@ -108,15 +102,13 @@ class MessageTest extends TestCase
 
         $this->assertEqualsFixture('create_message_with_attachment_response', $response->json());
 
-        self::$conversationState->assertNotChanged();
+        self::$conversationState->assertChangesEqualsFixture('created_with_attachment');
 
         self::$messageState->assertChangesEqualsFixture('created_with_attachment');
     }
 
     public function testCreateWithConversationId(): void
     {
-        Notification::fake();
-
         $data = $this->getJsonFixture('create_message_with_conversation_id_request');
 
         $response = $this->actingAs(self::$firstUser)->json('post', '/messages', $data);
@@ -127,7 +119,7 @@ class MessageTest extends TestCase
 
         $this->assertEqualsFixture('create_message_with_conversation_id_response', $response->json());
 
-        self::$conversationState->assertNotChanged();
+        self::$conversationState->assertChangesEqualsFixture('created_with_conversation_id');
 
         self::$messageState->assertChangesEqualsFixture('created_with_conversation_id');
         self::$conversationMemberState->assertNotChanged();
@@ -241,6 +233,8 @@ class MessageTest extends TestCase
         $response->assertNoContent();
 
         self::$readMessageState->assertChangesEqualsFixture('read');
+
+        $this->assertBroadcastNotificationSent('read');
     }
 
     public function testReadAlreadyRead(): void
@@ -250,6 +244,8 @@ class MessageTest extends TestCase
         $response->assertNoContent();
 
         self::$readMessageState->assertNotChanged();
+
+        Notification::assertNothingSent();
     }
 
     public function testReadAsNonMember(): void
@@ -281,6 +277,8 @@ class MessageTest extends TestCase
         $response->assertNoContent();
 
         self::$pinnedMessageState->assertChangesEqualsFixture('pinned');
+
+        $this->assertBroadcastNotificationSent('pin');
     }
 
     public function testPinAlreadyPinned(): void
@@ -290,6 +288,8 @@ class MessageTest extends TestCase
         $response->assertNoContent();
 
         self::$pinnedMessageState->assertNotChanged();
+
+        Notification::assertNothingSent();
     }
 
     public function testPinAsNonMember(): void
@@ -317,6 +317,63 @@ class MessageTest extends TestCase
     public function testPinNoAuth(): void
     {
         $response = $this->postJson('/messages/1/pin');
+
+        $response->assertUnauthorized();
+
+        $response->assertJson(['message' => 'Unauthenticated.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpin(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/unpin');
+
+        $response->assertNoContent();
+
+        self::$pinnedMessageState->assertChangesEqualsFixture('unpinned');
+
+        $this->assertBroadcastNotificationSent('unpin');
+    }
+
+    public function testUnpinNotPinned(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/2/unpin');
+
+        $response->assertConflict();
+
+        $response->assertJson(['message' => 'Message is not pinned.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+
+        Notification::assertNothingSent();
+    }
+
+    public function testUnpinAsNonMember(): void
+    {
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/1/unpin');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpinNotFound(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/0/unpin');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Message does not exist']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpinNoAuth(): void
+    {
+        $response = $this->postJson('/messages/1/unpin');
 
         $response->assertUnauthorized();
 

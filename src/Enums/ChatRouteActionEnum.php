@@ -13,4 +13,5 @@ enum ChatRouteActionEnum: string
     case MessageCreate = 'message_create';
     case MessagesRead = 'messages_read';
     case MessagePin = 'message_pin';
+    case MessageUnpin = 'message_unpin';
 }

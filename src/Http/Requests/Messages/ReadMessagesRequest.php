@@ -3,18 +3,9 @@
 namespace RonasIT\Chat\Http\Requests\Messages;
 
 use RonasIT\Chat\Contracts\Requests\ReadMessagesRequestContract;
-use RonasIT\Chat\Contracts\Services\MessageServiceContract;
-use RonasIT\Chat\Models\Message;
 
 class ReadMessagesRequest extends BaseMessageRequest implements ReadMessagesRequestContract
 {
-    protected ?Message $message;
-
-    public function authorize(): bool
-    {
-        return $this->message->conversation->hasMember($this->user());
-    }
-
     public function validateResolved(): void
     {
         $this->init();
@@ -22,10 +13,5 @@ class ReadMessagesRequest extends BaseMessageRequest implements ReadMessagesRequ
         $this->checkMessageExists();
 
         parent::validateResolved();
-    }
-
-    protected function init(): void
-    {
-        $this->message = app(MessageServiceContract::class)->with('conversation')->find($this->route('id'));
     }
 }

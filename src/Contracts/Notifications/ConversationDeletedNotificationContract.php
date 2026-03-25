@@ -2,15 +2,6 @@
 
 namespace RonasIT\Chat\Contracts\Notifications;
 
-use Illuminate\Notifications\Messages\BroadcastMessage;
-
-interface ConversationDeletedNotificationContract
+interface ConversationDeletedNotificationContract extends NotificationContract
 {
-    public function via($notifiable): array;
-
-    public function toBroadcast(): BroadcastMessage;
-
-    public function setConversation(array $conversation): self;
-
-    public function setRecipientId(int $id): self;
 }

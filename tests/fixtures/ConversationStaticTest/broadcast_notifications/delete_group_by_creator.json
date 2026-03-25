@@ -2,36 +2,13 @@
     "RonasIT\\Chat\\Notifications\\ConversationDeletedNotification": [
         {
             "notification": {
-                "conversation": {
-                    "id": 6,
-                    "last_updated_at": "2016-10-20 11:05:00",
-                    "created_at": "2016-10-20T11:05:00.000000Z",
-                    "updated_at": "2016-10-20T11:05:00.000000Z",
-                    "creator_id": 1,
-                    "type": "group",
-                    "title": "Group Chat",
-                    "cover_id": 1,
-                    "members": [
-                        {
-                            "id": 1,
-                            "email": "anisio.tier@example.com"
-                        },
-                        {
-                            "id": 2,
-                            "email": "fidel.kutch@example.com"
-                        },
-                        {
-                            "id": 3,
-                            "email": "alien.west@example.com"
-                        }
-                    ]
-                },
+                "conversationId": 6,
                 "recipientId": 2,
                 "locale": null,
                 "connection": null,
                 "queue": null,
                 "delay": null,
-                "afterCommit": null,
+                "afterCommit": true,
                 "middleware": [],
                 "chained": [],
                 "chainConnection": null,
@@ -43,31 +20,11 @@
                     }
                 ],
                 "broadcast_data": {
-                    "conversation": {
-                        "id": 6,
-                        "last_updated_at": "2016-10-20 11:05:00",
-                        "created_at": "2016-10-20T11:05:00.000000Z",
-                        "updated_at": "2016-10-20T11:05:00.000000Z",
-                        "creator_id": 1,
-                        "type": "group",
-                        "title": "Group Chat",
-                        "cover_id": 1,
-                        "members": [
-                            {
-                                "id": 1,
-                                "email": "anisio.tier@example.com"
-                            },
-                            {
-                                "id": 2,
-                                "email": "fidel.kutch@example.com"
-                            },
-                            {
-                                "id": 3,
-                                "email": "alien.west@example.com"
-                            }
-                        ]
+                    "data": {
+                        "id": 6
                     }
-                }
+                },
+                "broadcast_as": "conversation.deleted"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
@@ -80,36 +37,13 @@
         },
         {
             "notification": {
-                "conversation": {
-                    "id": 6,
-                    "last_updated_at": "2016-10-20 11:05:00",
-                    "created_at": "2016-10-20T11:05:00.000000Z",
-                    "updated_at": "2016-10-20T11:05:00.000000Z",
-                    "creator_id": 1,
-                    "type": "group",
-                    "title": "Group Chat",
-                    "cover_id": 1,
-                    "members": [
-                        {
-                            "id": 1,
-                            "email": "anisio.tier@example.com"
-                        },
-                        {
-                            "id": 2,
-                            "email": "fidel.kutch@example.com"
-                        },
-                        {
-                            "id": 3,
-                            "email": "alien.west@example.com"
-                        }
-                    ]
-                },
+                "conversationId": 6,
                 "recipientId": 3,
                 "locale": null,
                 "connection": null,
                 "queue": null,
                 "delay": null,
-                "afterCommit": null,
+                "afterCommit": true,
                 "middleware": [],
                 "chained": [],
                 "chainConnection": null,
@@ -121,31 +55,11 @@
                     }
                 ],
                 "broadcast_data": {
-                    "conversation": {
-                        "id": 6,
-                        "last_updated_at": "2016-10-20 11:05:00",
-                        "created_at": "2016-10-20T11:05:00.000000Z",
-                        "updated_at": "2016-10-20T11:05:00.000000Z",
-                        "creator_id": 1,
-                        "type": "group",
-                        "title": "Group Chat",
-                        "cover_id": 1,
-                        "members": [
-                            {
-                                "id": 1,
-                                "email": "anisio.tier@example.com"
-                            },
-                            {
-                                "id": 2,
-                                "email": "fidel.kutch@example.com"
-                            },
-                            {
-                                "id": 3,
-                                "email": "alien.west@example.com"
-                            }
-                        ]
+                    "data": {
+                        "id": 6
                     }
-                }
+                },
+                "broadcast_as": "conversation.deleted"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
