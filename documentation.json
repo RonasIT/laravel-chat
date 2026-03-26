@@ -540,9 +540,15 @@
 		},
 		"\/messages": {
 			"post": {
-				"tags": ["messages"],
-				"consumes": ["application\/json"],
-				"produces": ["application\/json"],
+				"tags": [
+					"messages"
+				],
+				"consumes": [
+					"application\/json"
+				],
+				"produces": [
+					"application\/json"
+				],
 				"parameters": [],
 				"responses": {
 					"200": {
@@ -577,7 +583,9 @@
 									"type": "object",
 									"$ref": "#\/components\/schemas\/badRequestResponseObject"
 								},
-								"example": {"message": "The recipient id must not be the same as the message sender id."}
+								"example": {
+									"message": "The recipient id must not be the same as the message sender id."
+								}
 							}
 						}
 					},
@@ -589,7 +597,9 @@
 									"type": "object",
 									"$ref": "#\/components\/schemas\/unauthorizedResponseObject"
 								},
-								"example": {"message": "Unauthenticated."}
+								"example": {
+									"message": "Unauthenticated."
+								}
 							}
 						}
 					}
@@ -601,13 +611,16 @@
 				"requestBody": {
 					"content": {
 						"application\/json": {
-							"schema": {"$ref": "#\/components\/schemas\/messagesObject"}
+							"schema": {
+								"$ref": "#\/components\/schemas\/messagesObject"
+							}
 						}
 					},
 					"description": "",
 					"required": true
 				}
-			},
+			}
+		},
 		"\/messages\/{id}\/pin": {
 			"post": {
 				"tags": ["messages"],
