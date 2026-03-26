@@ -530,6 +530,30 @@
 								"example": {"message": "Unauthenticated."}
 							}
 						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"$ref": "#\/components\/schemas\/forbiddenResponseObject"
+								},
+								"example": {"message": "This action is unauthorized."}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"$ref": "#\/components\/schemas\/notFoundResponseObject"
+								},
+								"example": {"message": "Conversation does not exist"}
+							}
+						}
 					}
 				},
 				"security": [],

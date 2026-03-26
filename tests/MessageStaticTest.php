@@ -283,6 +283,28 @@ class MessageStaticTest extends TestCase
         $response->assertJson(['message' => 'Not found.']);
     }
 
+    public function testSearchAsConversationNonMember(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessagesSearch);
+
+        $response = $this->actingAs(self::$someAuthUser)->getJson('/conversations/1/messages');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
+    }
+
+    public function testSearchConversationNotFound(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessagesSearch);
+
+        $response = $this->actingAs(self::$firstUser)->getJson('/conversations/0/messages');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Conversation does not exist']);
+    }
+
     public function testEverythingDisabledExceptRead(): void
     {
         Route::chat(ChatRouteActionEnum::MessagesRead);

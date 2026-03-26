@@ -222,6 +222,24 @@ class MessageTest extends TestCase
         $response->assertJson(['message' => 'Unauthenticated.']);
     }
 
+    public function testSearchAsConversationNonMember(): void
+    {
+        $response = $this->actingAs(self::$someAuthUser)->getJson('/conversations/1/messages');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
+    }
+
+    public function testSearchConversationNotFound(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->getJson('/conversations/0/messages');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Conversation does not exist']);
+    }
+
     public function testRead(): void
     {
         $response = $this->actingAs(self::$secondUser)->postJson('/messages/7/read-to');
