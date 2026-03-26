@@ -43,7 +43,7 @@ class ChatRouter
             });
 
             $this->controller(MessageController::class)->group(function () use ($defaultOptions) {
-                when($defaultOptions['messages_search'], fn () => $this->get('messages', 'search')->name('messages.search'));
+                when($defaultOptions['messages_search'], fn () => $this->get('conversations/{conversationId}/messages', 'search')->name('messages.search'));
                 when($defaultOptions['message_create'], fn () => $this->post('messages', 'create')->name('messages.create'));
                 when($defaultOptions['messages_read'], fn () => $this->post('messages/{id}/read-to', 'readUpTo')->name('messages.read'));
                 when($defaultOptions['message_pin'], fn () => $this->post('messages/{id}/pin', 'pin')->name('messages.pin'));

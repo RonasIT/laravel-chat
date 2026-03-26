@@ -39,7 +39,7 @@ class ConversationStaticTest extends TestCase
         $responseGet = $this->actingAs(self::$sender)->getJson('/conversations/1');
         $responseDelete = $this->actingAs(self::$sender)->deleteJson('/conversations/1');
         $responseGetByUser = $this->actingAs(self::$sender)->getJson('/users/2/conversation');
-        $responseSearchMessages = $this->actingAs(self::$sender)->getJson('/messages');
+        $responseSearchMessages = $this->actingAs(self::$sender)->getJson('/conversations/1/messages');
         $responseCreate = $this->actingAs(self::$sender)->postJson('/messages');
 
         $responseSearch->assertOk();
@@ -59,7 +59,7 @@ class ConversationStaticTest extends TestCase
         $responseGet = $this->actingAs(self::$sender)->getJson('/conversations/1');
         $responseDelete = $this->actingAs(self::$sender)->deleteJson('/conversations/1');
         $responseGetByUser = $this->actingAs(self::$sender)->getJson('/users/2/conversation');
-        $responseSearchMessages = $this->actingAs(self::$sender)->getJson('/messages');
+        $responseSearchMessages = $this->actingAs(self::$sender)->getJson('/conversations/1/messages');
         $responseCreate = $this->actingAs(self::$sender)->postJson('/messages');
 
         $responseDelete->assertNoContent();
@@ -79,7 +79,7 @@ class ConversationStaticTest extends TestCase
         $responseGet = $this->actingAs(self::$sender)->getJson('/conversations/1');
         $responseDelete = $this->actingAs(self::$sender)->deleteJson('/conversations/1');
         $responseGetByUser = $this->actingAs(self::$sender)->getJson('/users/2/conversation');
-        $responseSearchMessages = $this->actingAs(self::$sender)->getJson('/messages');
+        $responseSearchMessages = $this->actingAs(self::$sender)->getJson('/conversations/1/messages');
         $responseCreate = $this->actingAs(self::$sender)->postJson('/messages');
 
         $responseGet->assertOk();
@@ -99,7 +99,7 @@ class ConversationStaticTest extends TestCase
         $responseGet = $this->actingAs(self::$sender)->getJson('/conversations/1');
         $responseDelete = $this->actingAs(self::$sender)->deleteJson('/conversations/1');
         $responseGetByUser = $this->actingAs(self::$sender)->getJson('/users/2/conversation');
-        $responseSearchMessages = $this->actingAs(self::$sender)->getJson('/messages');
+        $responseSearchMessages = $this->actingAs(self::$sender)->getJson('/conversations/1/messages');
         $responseCreate = $this->actingAs(self::$sender)->postJson('/messages');
 
         $responseGetByUser->assertOk();
