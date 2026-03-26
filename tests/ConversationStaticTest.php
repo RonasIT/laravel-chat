@@ -182,6 +182,15 @@ class ConversationStaticTest extends TestCase
         $response->assertJson(['message' => 'Conversation does not exist']);
     }
 
+    public function testGetWithInvalidId(): void
+    {
+        Route::chat(ChatRouteActionEnum::ConversationGet);
+
+        $response = $this->actingAs(self::$sender)->json('get', '/conversations/abc');
+
+        $response->assertNotFound();
+    }
+
     public function testGetEndpointDisabled()
     {
         $response = $this->actingAs(self::$sender)->json('get', '/conversations/1');
@@ -245,6 +254,15 @@ class ConversationStaticTest extends TestCase
         $response->assertNoContent();
     }
 
+    public function testGetBetweenUsersWithInvalidUserId(): void
+    {
+        Route::chat(ChatRouteActionEnum::ConversationGetByUser);
+
+        $response = $this->actingAs(self::$sender)->json('get', '/users/abc/conversation');
+
+        $response->assertNotFound();
+    }
+
     public function testGetByUserEndpointDisabled()
     {
         $response = $this->actingAs(self::$sender)->json('get', 'users/2/conversation');
@@ -304,6 +322,17 @@ class ConversationStaticTest extends TestCase
         $response->assertNotFound();
 
         $response->assertJson(['message' => 'Conversation does not exist']);
+
+        self::$conversationState->assertNotChanged();
+    }
+
+    public function testDeleteWithInvalidId(): void
+    {
+        Route::chat(ChatRouteActionEnum::ConversationDelete);
+
+        $response = $this->actingAs(self::$sender)->json('delete', '/conversations/abc');
+
+        $response->assertNotFound();
 
         self::$conversationState->assertNotChanged();
     }
