@@ -36,7 +36,9 @@ class Conversation extends Model
 
     public function messages(): HasMany
     {
-        return $this->hasMany(Message::class);
+        return $this
+            ->hasMany(Message::class)
+            ->orderBy('id');
     }
 
     public function creator(): BelongsTo
@@ -46,12 +48,14 @@ class Conversation extends Model
 
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(
-            related: config('chat.classes.user_model'),
-            table: 'conversation_member',
-            foreignPivotKey: 'conversation_id',
-            relatedPivotKey: 'member_id',
-        );
+        return $this
+            ->belongsToMany(
+                related: config('chat.classes.user_model'),
+                table: 'conversation_member',
+                foreignPivotKey: 'conversation_id',
+                relatedPivotKey: 'member_id',
+            )
+            ->orderByPivot('id');
     }
 
     public function cover(): BelongsTo
