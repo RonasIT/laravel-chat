@@ -7,7 +7,6 @@ interface RequestContract
     /**
      * Get the validated data from the request.
      *
-     * @param  array  $keys
      *
      * @return array;
      */
