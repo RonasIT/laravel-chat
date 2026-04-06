@@ -5,6 +5,9 @@ namespace RonasIT\Chat\Repositories;
 use RonasIT\Chat\Contracts\Models\MessageModelContract;
 use RonasIT\Support\Repositories\BaseRepository;
 
+/**
+ * @property MessageModelContract $model
+ */
 class MessageRepository extends BaseRepository
 {
     public function __construct()

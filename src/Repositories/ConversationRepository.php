@@ -7,6 +7,9 @@ use RonasIT\Chat\Contracts\Models\ConversationModelContract;
 use RonasIT\Chat\Enums\Conversation\TypeEnum;
 use RonasIT\Support\Repositories\BaseRepository;
 
+/**
+ * @property ConversationModelContract $model
+ */
 class ConversationRepository extends BaseRepository
 {
     protected ?int $withUnreadCountMemberId = null;
