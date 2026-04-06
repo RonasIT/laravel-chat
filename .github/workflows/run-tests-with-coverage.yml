@@ -27,7 +27,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:18.3
+        image: postgres
         env:
           POSTGRES_DB: forge
           POSTGRES_USER: forge
