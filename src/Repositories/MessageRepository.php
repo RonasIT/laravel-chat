@@ -3,11 +3,11 @@
 namespace RonasIT\Chat\Repositories;
 
 use Illuminate\Database\Eloquent\Builder;
-use RonasIT\Chat\Models\Message;
+use RonasIT\Chat\Contracts\Models\MessageModelContract;
 use RonasIT\Support\Repositories\BaseRepository;
 
 /**
- * @property Message $model
+ * @property MessageModelContract $model
  */
 class MessageRepository extends BaseRepository
 {
@@ -15,7 +15,7 @@ class MessageRepository extends BaseRepository
 
     public function __construct()
     {
-        $this->setModel(Message::class);
+        $this->setModel(app()->getAlias(MessageModelContract::class));
 
         $this->setAdditionalReservedFilters('member_id');
     }
