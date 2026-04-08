@@ -515,6 +515,19 @@ class MessageStaticTest extends TestCase
         self::$pinnedMessageState->assertNotChanged();
     }
 
+    public function testUnpinAsNonMemberNotPinned(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageUnpin);
+
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/3/unpin');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
     public function testUnpinNotFound(): void
     {
         Route::chat(ChatRouteActionEnum::MessageUnpin);
