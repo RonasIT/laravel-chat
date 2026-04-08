@@ -7,15 +7,18 @@ on:
     branches: [ "master" ]
 
 jobs:
-  tests-with-coverage:
+  tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: [ "8.3", "8.4" ]
+        php-version: [ "8.3", "8.4", "8.5" ]
         laravel-version: [ "12.*", "13.*" ]
         phpunit-version: [ "11.*", "12.*", "13.*" ]
         exclude:
           - php-version: "8.3"
+            phpunit-version: "13.*"
+          - php-version: "8.5"
+            laravel-version: "13.*"
             phpunit-version: "13.*"
     env:
       DB_CONNECTION: pgsql
@@ -45,7 +48,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          coverage: xdebug
           tools: composer
         env:
           POSTGRES_HOST: postgres
@@ -74,12 +76,73 @@ jobs:
         run: composer require "laravel/framework:${{ matrix.laravel-version }}" -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Install PHPUnit version
         run: composer require --dev "phpunit/phpunit:${{ matrix.phpunit-version }}" orchestra/testbench -W -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Execute unit tests via PHPUnit
+        run: vendor/bin/phpunit
+
+  tests-with-coverage:
+    runs-on: ubuntu-latest
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: forge
+      DB_USERNAME: forge
+      DB_PASSWORD: secret
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: forge
+          POSTGRES_USER: forge
+          POSTGRES_PASSWORD: secret
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          coverage: xdebug
+          tools: composer
+        env:
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up PostgreSQL
+        run: |
+          sudo apt-get update 
+          sudo apt-get install -y postgresql-client
+          psql --version
+      - name: Wait for PostgreSQL
+        run: |
+          echo "Waiting for PostgreSQL to be ready..."
+          for i in {1..30}; do
+            if pg_isready -h 127.0.0.1 -p 5432 -U forge -d forge; then
+              echo "PostgreSQL is ready"
+              exit 0
+            fi
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+          echo "PostgreSQL failed to start"
+          exit 1
+      - name: Install Laravel version
+        run: composer require "laravel/framework:13.*" -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Install PHPUnit version
+        run: composer require --dev "phpunit/phpunit:13.*" orchestra/testbench -W -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Format code style via Pint
         run: vendor/bin/pint --test
       - name: Execute unit tests via PHPUnit with coverage
         run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
       - name: Export coverage report
-        if: ${{ matrix.php-version == '8.4' && matrix.laravel-version == '13.*' && matrix.phpunit-version == '13.*' }}
         uses: actions/upload-artifact@v4
         with:
           name: clover.xml
