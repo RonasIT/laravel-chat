@@ -106,15 +106,25 @@ class ConversationService extends EntityService implements ConversationServiceCo
             : null;
 
         return $this
+            ->withOverriddenTitleAndCover(Arr::get($filters, 'member_id'))
             ->withUnreadCountMemberId($forMemberId)
             ->searchQuery($filters)
             ->filterBy('members.member_id', 'member_id')
             ->getSearchResults();
     }
 
+    public function retrieveById(int $id): ?Model
+    {
+        return $this
+            ->withOverriddenTitleAndCover(Auth::id())
+            ->repository->find($id);
+    }
+
     public function getPrivate(int $firstMemberId, int $secondMemberId): ?Model
     {
-        return $this->getByTypeAndMembers(TypeEnum::Private, $firstMemberId, $secondMemberId);
+        return $this
+            ->withOverriddenTitleAndCover($firstMemberId)
+            ->getByTypeAndMembers(TypeEnum::Private, $firstMemberId, $secondMemberId);
     }
 
     protected function sendCreatedNotifications(Conversation $conversation, Collection $recipients): void

@@ -35,7 +35,9 @@
                             "updated_at": "2024-01-01T00:00:00.000000Z",
                             "sender": {
                                 "id": 1,
-                                "email": "anisio.tier@example.com"
+                                "email": "anisio.tier@example.com",
+                                "name": "Anisio",
+                                "avatar_id": null
                             }
                         },
                         "pinned_messages": [
@@ -59,7 +61,9 @@
             ],
             "notifiable": {
                 "id": 1,
-                "email": "anisio.tier@example.com"
+                "email": "anisio.tier@example.com",
+                "name": "Anisio",
+                "avatar_id": null
             },
             "locale": null
         },
@@ -98,7 +102,9 @@
                             "updated_at": "2024-01-01T00:00:00.000000Z",
                             "sender": {
                                 "id": 1,
-                                "email": "anisio.tier@example.com"
+                                "email": "anisio.tier@example.com",
+                                "name": "Anisio",
+                                "avatar_id": null
                             }
                         },
                         "pinned_messages": [
@@ -122,7 +128,9 @@
             ],
             "notifiable": {
                 "id": 2,
-                "email": "fidel.kutch@example.com"
+                "email": "fidel.kutch@example.com",
+                "name": "Fidel",
+                "avatar_id": null
             },
             "locale": null
         }
@@ -157,7 +165,9 @@
                         "updated_at": "2024-01-01T00:00:00.000000Z",
                         "sender": {
                             "id": 1,
-                            "email": "anisio.tier@example.com"
+                            "email": "anisio.tier@example.com",
+                            "name": "Anisio",
+                            "avatar_id": null
                         }
                     }
                 },
@@ -168,7 +178,9 @@
             ],
             "notifiable": {
                 "id": 2,
-                "email": "fidel.kutch@example.com"
+                "email": "fidel.kutch@example.com",
+                "name": "Fidel",
+                "avatar_id": null
             },
             "locale": null
         }

@@ -31,7 +31,9 @@
             ],
             "notifiable": {
                 "id": 2,
-                "email": "fidel.kutch@example.com"
+                "email": "fidel.kutch@example.com",
+                "name": "Bob",
+                "avatar_id": 2
             },
             "locale": null
         },
@@ -66,7 +68,9 @@
             ],
             "notifiable": {
                 "id": 3,
-                "email": "alien.west@example.com"
+                "email": "alien.west@example.com",
+                "name": "Charlie",
+                "avatar_id": null
             },
             "locale": null
         }

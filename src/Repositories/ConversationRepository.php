@@ -12,6 +12,7 @@ use RonasIT\Support\Repositories\BaseRepository;
  */
 class ConversationRepository extends BaseRepository
 {
+    protected ?int $withOverriddenTitleAndCoverMemberId = null;
     protected ?int $withUnreadCountMemberId = null;
 
     public function __construct()
@@ -35,6 +36,13 @@ class ConversationRepository extends BaseRepository
     public function attachMembers(ConversationModelContract $conversation, array $memberIds): void
     {
         $conversation->members()->attach($memberIds);
+    }
+
+    public function withOverriddenTitleAndCover(?int $memberId): self
+    {
+        $this->withOverriddenTitleAndCoverMemberId = $memberId;
+
+        return $this;
     }
 
     public function withUnreadCountMemberId(?int $memberId): self
@@ -61,6 +69,12 @@ class ConversationRepository extends BaseRepository
     protected function getQuery($where = []): Builder
     {
         $query = parent::getQuery($where);
+
+        if (!is_null($this->withOverriddenTitleAndCoverMemberId)) {
+            $query->withOverriddenTitleAndCover($this->withOverriddenTitleAndCoverMemberId);
+
+            $this->withOverriddenTitleAndCoverMemberId = null;
+        }
 
         if (!is_null($this->withUnreadCountMemberId)) {
             $query->withUnreadMessagesCount($this->withUnreadCountMemberId);

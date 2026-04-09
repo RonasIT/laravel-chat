@@ -2,6 +2,7 @@
 
 namespace RonasIT\Chat\Repositories;
 
+use Illuminate\Database\Eloquent\Builder;
 use RonasIT\Chat\Contracts\Models\MessageModelContract;
 use RonasIT\Support\Repositories\BaseRepository;
 
@@ -10,6 +11,8 @@ use RonasIT\Support\Repositories\BaseRepository;
  */
 class MessageRepository extends BaseRepository
 {
+    protected ?int $withConversationOverriddenTitleAndCoverMemberId = null;
+
     public function __construct()
     {
         $this->setModel(app()->getAlias(MessageModelContract::class));
@@ -29,5 +32,28 @@ class MessageRepository extends BaseRepository
             ->get()
             ->pluck('id')
             ->toArray();
+    }
+
+    public function withConversationOverriddenTitleAndCover(?int $memberId): self
+    {
+        $this->withConversationOverriddenTitleAndCoverMemberId = $memberId;
+
+        return $this;
+    }
+
+    protected function getQuery($where = []): Builder
+    {
+        $query = parent::getQuery($where);
+
+        if (!is_null($this->withConversationOverriddenTitleAndCoverMemberId)) {
+            if (in_array('conversation', $this->attachedRelations)) {
+                $memberId = $this->withConversationOverriddenTitleAndCoverMemberId;
+                $query->with(['conversation' => fn ($query) => $query->withOverriddenTitleAndCover($memberId)]);
+            }
+
+            $this->withConversationOverriddenTitleAndCoverMemberId = null;
+        }
+
+        return $query;
     }
 }

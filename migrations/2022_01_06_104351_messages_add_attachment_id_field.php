@@ -8,7 +8,7 @@ class MessagesAddAttachmentIdField extends Migration
 {
     public function up(): void
     {
-        $mediaTableName = app(config('chat.classes.media_model'))->getTable();
+        $mediaTableName = app(config('chat.classes.media.model'))->getTable();
 
         Schema::table('messages', function (Blueprint $table) use ($mediaTableName) {
             $table->integer('attachment_id')->nullable();

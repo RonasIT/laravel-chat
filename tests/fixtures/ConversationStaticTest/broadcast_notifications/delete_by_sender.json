@@ -31,7 +31,9 @@
             ],
             "notifiable": {
                 "id": 2,
-                "email": "fidel.kutch@example.com"
+                "email": "fidel.kutch@example.com",
+                "name": "Bob",
+                "avatar_id": 2
             },
             "locale": null
         }

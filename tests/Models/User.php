@@ -18,6 +18,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'avatar_id',
     ];
 
     protected $hidden = ['pivot'];

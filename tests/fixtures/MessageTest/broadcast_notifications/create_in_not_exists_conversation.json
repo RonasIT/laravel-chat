@@ -35,7 +35,9 @@
                             "updated_at": "2024-01-01T00:00:00.000000Z",
                             "sender": {
                                 "id": 2,
-                                "email": "fidel.kutch@example.com"
+                                "email": "fidel.kutch@example.com",
+                                "name": "Fidel",
+                                "avatar_id": null
                             }
                         }
                     }
@@ -47,7 +49,9 @@
             ],
             "notifiable": {
                 "id": 5,
-                "email": "william.bob@example.com"
+                "email": "william.bob@example.com",
+                "name": "William",
+                "avatar_id": null
             },
             "locale": null
         }
@@ -88,7 +92,9 @@
                             "updated_at": "2024-01-01T00:00:00.000000Z",
                             "sender": {
                                 "id": 2,
-                                "email": "fidel.kutch@example.com"
+                                "email": "fidel.kutch@example.com",
+                                "name": "Fidel",
+                                "avatar_id": null
                             }
                         },
                         "pinned_messages": [],
@@ -103,7 +109,9 @@
             ],
             "notifiable": {
                 "id": 5,
-                "email": "william.bob@example.com"
+                "email": "william.bob@example.com",
+                "name": "William",
+                "avatar_id": null
             },
             "locale": null
         },
@@ -142,7 +150,9 @@
                             "updated_at": "2024-01-01T00:00:00.000000Z",
                             "sender": {
                                 "id": 2,
-                                "email": "fidel.kutch@example.com"
+                                "email": "fidel.kutch@example.com",
+                                "name": "Fidel",
+                                "avatar_id": null
                             }
                         },
                         "pinned_messages": [],
@@ -157,7 +167,9 @@
             ],
             "notifiable": {
                 "id": 2,
-                "email": "fidel.kutch@example.com"
+                "email": "fidel.kutch@example.com",
+                "name": "Fidel",
+                "avatar_id": null
             },
             "locale": null
         }
@@ -192,7 +204,9 @@
                         "updated_at": "2024-01-01T00:00:00.000000Z",
                         "sender": {
                             "id": 2,
-                            "email": "fidel.kutch@example.com"
+                            "email": "fidel.kutch@example.com",
+                            "name": "Fidel",
+                            "avatar_id": null
                         }
                     }
                 },
@@ -203,7 +217,9 @@
             ],
             "notifiable": {
                 "id": 5,
-                "email": "william.bob@example.com"
+                "email": "william.bob@example.com",
+                "name": "William",
+                "avatar_id": null
             },
             "locale": null
         }
