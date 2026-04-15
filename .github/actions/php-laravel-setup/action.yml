@@ -49,8 +49,8 @@ runs:
       shell: bash
       env:
         LARAVEL_VERSION: ${{ inputs.laravel-version }}
-      run: composer require "laravel/framework:$LARAVEL_VERSION" -q --no-update
+      run: composer require "laravel/framework:$LARAVEL_VERSION" --no-update
 
     - name: Install dependencies
       shell: bash
-      run: composer update -W -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: composer update -W --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
