@@ -102,6 +102,13 @@ class ConversationTest extends TestCase
         $response->assertJson(['message' => 'Conversation does not exist']);
     }
 
+    public function testGetWithInvalidId(): void
+    {
+        $response = $this->actingAs(self::$sender)->json('get', '/conversations/abc');
+
+        $response->assertNotFound();
+    }
+
     public function testGetBetweenUsersIdBySender()
     {
         $response = $this->actingAs(self::$sender)->json('get', 'users/2/conversation');
@@ -146,6 +153,13 @@ class ConversationTest extends TestCase
         $response = $this->actingAs(self::$sender)->json('get', 'users/3/conversation');
 
         $response->assertNoContent();
+    }
+
+    public function testGetBetweenUsersWithInvalidUserId(): void
+    {
+        $response = $this->actingAs(self::$sender)->json('get', '/users/abc/conversation');
+
+        $response->assertNotFound();
     }
 
     public function testGetBetweenAuthAndNoAuthUsers()
@@ -210,6 +224,15 @@ class ConversationTest extends TestCase
         $response->assertNotFound();
 
         $response->assertJson(['message' => 'Conversation does not exist']);
+
+        self::$conversationState->assertNotChanged();
+    }
+
+    public function testDeleteWithInvalidId(): void
+    {
+        $response = $this->actingAs(self::$sender)->json('delete', '/conversations/abc');
+
+        $response->assertNotFound();
 
         self::$conversationState->assertNotChanged();
     }
