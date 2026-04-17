@@ -4,7 +4,6 @@
             "notification": {
                 "conversationId": 1,
                 "recipientId": 1,
-                "locale": null,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
@@ -16,6 +15,7 @@
                 "chainConnection": null,
                 "chainQueue": null,
                 "chainCatchCallbacks": null,
+                "locale": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.1"
@@ -26,15 +26,15 @@
                         "id": 1,
                         "type": "private",
                         "title": null,
-                        "last_updated_at": "2016-10-20 11:05:00",
+                        "last_updated_at": "2016-10-20 14:00:00",
                         "created_at": "2016-10-20T11:05:00.000000Z",
                         "last_message": {
                             "id": 1,
                             "text": "hi",
                             "conversation_id": 1,
                             "is_read": false,
-                            "created_at": "2016-10-20T11:05:00.000000Z",
-                            "updated_at": "2016-10-20T11:05:00.000000Z",
+                            "created_at": "2016-10-20T14:00:00.000000Z",
+                            "updated_at": "2016-10-20T14:00:00.000000Z",
                             "sender": {
                                 "id": 1,
                                 "email": "anisio.tier@example.com"
@@ -60,7 +60,6 @@
             "notification": {
                 "conversationId": 1,
                 "recipientId": 2,
-                "locale": null,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
@@ -72,6 +71,7 @@
                 "chainConnection": null,
                 "chainQueue": null,
                 "chainCatchCallbacks": null,
+                "locale": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.2"
@@ -82,15 +82,15 @@
                         "id": 1,
                         "type": "private",
                         "title": null,
-                        "last_updated_at": "2016-10-20 11:05:00",
+                        "last_updated_at": "2016-10-20 14:00:00",
                         "created_at": "2016-10-20T11:05:00.000000Z",
                         "last_message": {
                             "id": 1,
                             "text": "hi",
                             "conversation_id": 1,
                             "is_read": false,
-                            "created_at": "2016-10-20T11:05:00.000000Z",
-                            "updated_at": "2016-10-20T11:05:00.000000Z",
+                            "created_at": "2016-10-20T14:00:00.000000Z",
+                            "updated_at": "2016-10-20T14:00:00.000000Z",
                             "sender": {
                                 "id": 1,
                                 "email": "anisio.tier@example.com"
