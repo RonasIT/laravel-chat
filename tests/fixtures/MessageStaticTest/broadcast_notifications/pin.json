@@ -4,7 +4,6 @@
             "notification": {
                 "conversationId": 2,
                 "recipientId": 1,
-                "locale": null,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
@@ -16,6 +15,7 @@
                 "chainConnection": null,
                 "chainQueue": null,
                 "chainCatchCallbacks": null,
+                "locale": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.1"
@@ -26,15 +26,15 @@
                         "id": 2,
                         "type": "private",
                         "title": null,
-                        "last_updated_at": "2016-10-20 11:05:00",
+                        "last_updated_at": "2016-10-20 13:00:00",
                         "created_at": "2016-10-20T11:05:00.000000Z",
                         "last_message": {
                             "id": 2,
                             "text": "hi",
                             "conversation_id": 2,
                             "is_read": true,
-                            "created_at": "2016-10-20T11:05:00.000000Z",
-                            "updated_at": "2016-10-20T11:05:00.000000Z",
+                            "created_at": "2016-10-20T11:00:00.000000Z",
+                            "updated_at": "2016-10-20T11:00:00.000000Z",
                             "sender": {
                                 "id": 1,
                                 "email": "anisio.tier@example.com"
@@ -46,8 +46,8 @@
                                 "text": "hi",
                                 "conversation_id": 2,
                                 "is_read": true,
-                                "created_at": "2016-10-20T11:05:00.000000Z",
-                                "updated_at": "2016-10-20T11:05:00.000000Z"
+                                "created_at": "2016-10-20T11:00:00.000000Z",
+                                "updated_at": "2016-10-20T11:00:00.000000Z"
                             }
                         ],
                         "members_count": 2,
@@ -69,7 +69,6 @@
             "notification": {
                 "conversationId": 2,
                 "recipientId": 3,
-                "locale": null,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
@@ -81,6 +80,7 @@
                 "chainConnection": null,
                 "chainQueue": null,
                 "chainCatchCallbacks": null,
+                "locale": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.3"
@@ -91,15 +91,15 @@
                         "id": 2,
                         "type": "private",
                         "title": null,
-                        "last_updated_at": "2016-10-20 11:05:00",
+                        "last_updated_at": "2016-10-20 13:00:00",
                         "created_at": "2016-10-20T11:05:00.000000Z",
                         "last_message": {
                             "id": 2,
                             "text": "hi",
                             "conversation_id": 2,
                             "is_read": true,
-                            "created_at": "2016-10-20T11:05:00.000000Z",
-                            "updated_at": "2016-10-20T11:05:00.000000Z",
+                            "created_at": "2016-10-20T11:00:00.000000Z",
+                            "updated_at": "2016-10-20T11:00:00.000000Z",
                             "sender": {
                                 "id": 1,
                                 "email": "anisio.tier@example.com"
@@ -111,8 +111,8 @@
                                 "text": "hi",
                                 "conversation_id": 2,
                                 "is_read": true,
-                                "created_at": "2016-10-20T11:05:00.000000Z",
-                                "updated_at": "2016-10-20T11:05:00.000000Z"
+                                "created_at": "2016-10-20T11:00:00.000000Z",
+                                "updated_at": "2016-10-20T11:00:00.000000Z"
                             }
                         ],
                         "members_count": 2,
