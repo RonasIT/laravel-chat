@@ -275,6 +275,13 @@ class ConversationTest extends TestCase
                 'fixture' => 'search_by_order_by_desc',
             ],
             [
+                'filter' => [
+                    'order_by' => 'last_updated_at',
+                    'desc' => true,
+                ],
+                'fixture' => 'search_order_by_last_updated_at',
+            ],
+            [
                 'filter' => ['with_unread_messages_count' => true],
                 'fixture' => 'search_with_unread_messages_count',
             ],

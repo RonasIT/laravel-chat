@@ -204,6 +204,13 @@ class MessageTest extends TestCase
                 ],
                 'fixture' => 'search_by_order_by_desc',
             ],
+            [
+                'filter' => [
+                    'order_by' => 'created_at',
+                    'desc' => true,
+                ],
+                'fixture' => 'search_order_by_created_at',
+            ],
         ];
     }
 
