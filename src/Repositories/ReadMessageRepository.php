@@ -3,6 +3,7 @@
 namespace RonasIT\Chat\Repositories;
 
 use RonasIT\Chat\Models\ReadMessage;
+use RonasIT\Support\Repositories\BaseRepository;
 
 /**
  * @property ReadMessage $model
