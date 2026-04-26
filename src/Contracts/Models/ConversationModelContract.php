@@ -32,4 +32,6 @@ interface ConversationModelContract
     public function isGroup(): bool;
 
     public function isPrivate(): bool;
+
+    public static function getFields(): array;
 }
