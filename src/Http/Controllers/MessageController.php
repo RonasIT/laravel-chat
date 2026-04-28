@@ -22,9 +22,9 @@ class MessageController extends Controller
         return app(MessageResourceContract::class, ['resource' => $result]);
     }
 
-    public function search(SearchMessagesRequestContract $request, MessageServiceContract $service): MessagesCollectionResource
+    public function search(SearchMessagesRequestContract $request, MessageServiceContract $service, int $conversationId): MessagesCollectionResource
     {
-        $result = $service->search($request->onlyValidated());
+        $result = $service->search(array_merge($request->onlyValidated(), ['conversation_id' => $conversationId]));
 
         return MessagesCollectionResource::make($result);
     }

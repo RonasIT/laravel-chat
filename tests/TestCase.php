@@ -117,6 +117,8 @@ class TestCase extends BaseTest
 
         $preparedActualData = json_decode(json_encode($actualData), true);
 
-        $this->assertEqualsFixture("broadcast_notifications/{$fixtureName}", $preparedActualData, $exportMode);
+        $appVersion = (int) app()->version();
+
+        $this->assertEqualsFixture("broadcast_notifications/v{$appVersion}/{$fixtureName}", $preparedActualData, $exportMode);
     }
 }

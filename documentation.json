@@ -404,81 +404,19 @@
 				"summary": "search conversations"
 			}
 		},
-		"\/messages": {
-			"post": {
-				"tags": ["messages"],
-				"consumes": ["application\/json"],
-				"produces": ["application\/json"],
-				"parameters": [],
-				"responses": {
-					"200": {
-						"description": "Operation successfully done",
-						"content": {
-							"application\/json": {
-								"schema": {
-									"type": "object",
-									"$ref": "#\/components\/schemas\/postMessages200ResponseObject"
-								},
-								"example": {
-									"id": 8,
-									"conversation_id": 1,
-									"sender_id": 1,
-									"text": "hello",
-									"attachment_id": null,
-									"created_at": "2024-01-01T00:00:00.000000Z",
-									"updated_at": "2024-01-01T00:00:00.000000Z",
-									"sender": {
-										"id": 1,
-										"email": "admin@example.com"
-									}
-								}
-							}
-						}
-					},
-					"422": {
-						"description": "Unprocessable Entity",
-						"content": {
-							"application\/json": {
-								"schema": {
-									"type": "object",
-									"$ref": "#\/components\/schemas\/badRequestResponseObject"
-								},
-								"example": {"message": "The recipient id must not be the same as the message sender id."}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized",
-						"content": {
-							"application\/json": {
-								"schema": {
-									"type": "object",
-									"$ref": "#\/components\/schemas\/unauthorizedResponseObject"
-								},
-								"example": {"message": "Unauthenticated."}
-							}
-						}
-					}
-				},
-				"security": [],
-				"description": "",
-				"deprecated": false,
-				"summary": "create message",
-				"requestBody": {
-					"content": {
-						"application\/json": {
-							"schema": {"$ref": "#\/components\/schemas\/messagesObject"}
-						}
-					},
-					"description": "",
-					"required": true
-				}
-			},
+		"\/conversations\/{conversationId}\/messages": {
 			"get": {
 				"tags": ["messages"],
 				"consumes": ["application\/json"],
 				"produces": ["application\/json"],
 				"parameters": [
+					{
+						"in": "path",
+						"name": "conversationId",
+						"description": "",
+						"required": true,
+						"schema": {"type": "integer"}
+					},
 					{
 						"in": "query",
 						"name": "page",
@@ -517,12 +455,6 @@
 					},
 					{
 						"in": "query",
-						"name": "conversation_id",
-						"description": "integer",
-						"schema": {"type": "integer"}
-					},
-					{
-						"in": "query",
 						"name": "with",
 						"description": "array",
 						"schema": {"type": "object"}
@@ -558,28 +490,28 @@
 											"updated_at": "2016-10-20T11:05:00.000000Z"
 										},
 										{
-											"id": 3,
-											"conversation_id": 3,
-											"sender_id": 3,
-											"text": "New message",
+											"id": 2,
+											"conversation_id": 1,
+											"sender_id": 2,
+											"text": "Reply message",
 											"is_read": true,
 											"attachment_id": null,
-											"created_at": "2017-10-20T11:05:00.000000Z",
-											"updated_at": "2016-10-20T11:05:00.000000Z"
+											"created_at": "2016-10-20T11:06:00.000000Z",
+											"updated_at": "2016-10-20T11:06:00.000000Z"
 										}
 									],
-									"first_page_url": "http:\/\/localhost\/messages?page=1",
+									"first_page_url": "http:\/\/localhost\/conversations\/1\/messages?page=1",
 									"from": 1,
 									"last_page": 1,
-									"last_page_url": "http:\/\/localhost\/messages?page=1",
+									"last_page_url": "http:\/\/localhost\/conversations\/1\/messages?page=1",
 									"links": [
 										{"url": null, "label": "&laquo; Previous", "active": false},
-										{"url": "http:\/\/localhost\/messages?page=1", "label": "1", "active": true},
+										{"url": "http:\/\/localhost\/conversations\/1\/messages?page=1", "label": "1", "active": true},
 										{"url": null, "label": "Next &raquo;", "active": false}
 									],
 									"next_page_url": null,
-									"path": "http:\/\/localhost\/messages",
-									"per_page": 10,
+									"path": "http:\/\/localhost\/conversations\/1\/messages",
+									"per_page": 15,
 									"prev_page_url": null,
 									"to": 2,
 									"total": 2
@@ -598,12 +530,119 @@
 								"example": {"message": "Unauthenticated."}
 							}
 						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"$ref": "#\/components\/schemas\/forbiddenResponseObject"
+								},
+								"example": {"message": "This action is unauthorized."}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"$ref": "#\/components\/schemas\/notFoundResponseObject"
+								},
+								"example": {"message": "Conversation does not exist"}
+							}
+						}
 					}
 				},
 				"security": [],
 				"description": "",
 				"deprecated": false,
 				"summary": "search messages"
+			}
+		},
+		"\/messages": {
+			"post": {
+				"tags": [
+					"messages"
+				],
+				"consumes": [
+					"application\/json"
+				],
+				"produces": [
+					"application\/json"
+				],
+				"parameters": [],
+				"responses": {
+					"200": {
+						"description": "Operation successfully done",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"$ref": "#\/components\/schemas\/postMessages200ResponseObject"
+								},
+								"example": {
+									"id": 8,
+									"conversation_id": 1,
+									"sender_id": 1,
+									"text": "hello",
+									"attachment_id": null,
+									"created_at": "2024-01-01T00:00:00.000000Z",
+									"updated_at": "2024-01-01T00:00:00.000000Z",
+									"sender": {
+										"id": 1,
+										"email": "admin@example.com"
+									}
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "Unprocessable Entity",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"$ref": "#\/components\/schemas\/badRequestResponseObject"
+								},
+								"example": {
+									"message": "The recipient id must not be the same as the message sender id."
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application\/json": {
+								"schema": {
+									"type": "object",
+									"$ref": "#\/components\/schemas\/unauthorizedResponseObject"
+								},
+								"example": {
+									"message": "Unauthenticated."
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"description": "",
+				"deprecated": false,
+				"summary": "create message",
+				"requestBody": {
+					"content": {
+						"application\/json": {
+							"schema": {
+								"$ref": "#\/components\/schemas\/messagesObject"
+							}
+						}
+					},
+					"description": "",
+					"required": true
+				}
 			}
 		},
 		"\/messages\/{id}\/pin": {

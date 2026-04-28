@@ -187,10 +187,6 @@ class MessageTest extends TestCase
                 'fixture' => 'search_with_relations',
             ],
             [
-                'filter' => ['conversation_id' => 1],
-                'fixture' => 'search_by_conversation_id',
-            ],
-            [
                 'filter' => [
                     'page' => 2,
                     'per_page' => 2,
@@ -210,7 +206,7 @@ class MessageTest extends TestCase
     #[DataProvider('getSearchFilters')]
     public function testSearch(array $filter, string $fixture)
     {
-        $response = $this->actingAs(self::$firstUser)->json('get', '/messages', $filter);
+        $response = $this->actingAs(self::$firstUser)->json('get', '/conversations/1/messages', $filter);
 
         $response->assertOk();
 
@@ -219,11 +215,29 @@ class MessageTest extends TestCase
 
     public function testSearchNoAuth()
     {
-        $response = $this->getJson('/messages');
+        $response = $this->getJson('/conversations/1/messages');
 
         $response->assertUnauthorized();
 
         $response->assertJson(['message' => 'Unauthenticated.']);
+    }
+
+    public function testSearchAsConversationNonMember(): void
+    {
+        $response = $this->actingAs(self::$someAuthUser)->getJson('/conversations/1/messages');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
+    }
+
+    public function testSearchConversationNotFound(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->getJson('/conversations/0/messages');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Conversation does not exist']);
     }
 
     public function testRead(): void

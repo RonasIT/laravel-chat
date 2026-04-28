@@ -48,7 +48,7 @@ class MessageStaticTest extends TestCase
         $responseGet = $this->actingAs(self::$firstUser)->getJson('/conversations/1');
         $responseDelete = $this->actingAs(self::$firstUser)->deleteJson('/conversations/1');
         $responseGetByUser = $this->actingAs(self::$firstUser)->getJson('/users/2/conversation');
-        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/messages');
+        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/conversations/1/messages');
         $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages');
         $responseRead = $this->actingAs(self::$firstUser)->postJson('/messages/1/read-to');
 
@@ -73,7 +73,7 @@ class MessageStaticTest extends TestCase
         $responseGet = $this->actingAs(self::$firstUser)->getJson('/conversations/1');
         $responseDelete = $this->actingAs(self::$firstUser)->deleteJson('/conversations/1');
         $responseGetByUser = $this->actingAs(self::$firstUser)->getJson('/users/2/conversation');
-        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/messages');
+        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/conversations/1/messages');
         $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages', $data);
         $responseRead = $this->actingAs(self::$firstUser)->postJson('/messages/1/read-to');
 
@@ -246,10 +246,6 @@ class MessageStaticTest extends TestCase
                 'fixture' => 'search_with_relations',
             ],
             [
-                'filter' => ['conversation_id' => 1],
-                'fixture' => 'search_by_conversation_id',
-            ],
-            [
                 'filter' => [
                     'page' => 2,
                     'per_page' => 2,
@@ -271,7 +267,7 @@ class MessageStaticTest extends TestCase
     {
         Route::chat(ChatRouteActionEnum::MessagesSearch);
 
-        $response = $this->actingAs(self::$firstUser)->json('get', '/messages', $filter);
+        $response = $this->actingAs(self::$firstUser)->json('get', '/conversations/1/messages', $filter);
 
         $response->assertOk();
 
@@ -280,11 +276,33 @@ class MessageStaticTest extends TestCase
 
     public function testSearchEndpointDisabled()
     {
-        $response = $this->actingAs(self::$firstUser)->json('get', '/messages');
+        $response = $this->actingAs(self::$firstUser)->json('get', '/conversations/1/messages');
 
         $response->assertNotFound();
 
         $response->assertJson(['message' => 'Not found.']);
+    }
+
+    public function testSearchAsConversationNonMember(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessagesSearch);
+
+        $response = $this->actingAs(self::$someAuthUser)->getJson('/conversations/1/messages');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
+    }
+
+    public function testSearchConversationNotFound(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessagesSearch);
+
+        $response = $this->actingAs(self::$firstUser)->getJson('/conversations/0/messages');
+
+        $response->assertNotFound();
+
+        $response->assertJson(['message' => 'Conversation does not exist']);
     }
 
     public function testEverythingDisabledExceptRead(): void
@@ -295,7 +313,7 @@ class MessageStaticTest extends TestCase
         $responseGet = $this->actingAs(self::$firstUser)->getJson('/conversations/1');
         $responseDelete = $this->actingAs(self::$firstUser)->deleteJson('/conversations/1');
         $responseGetByUser = $this->actingAs(self::$firstUser)->getJson('/users/2/conversation');
-        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/messages');
+        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/conversations/1/messages');
         $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages');
         $responseRead = $this->actingAs(self::$secondUser)->postJson('/messages/1/read-to');
 
@@ -367,7 +385,7 @@ class MessageStaticTest extends TestCase
         $responseGet = $this->actingAs(self::$firstUser)->getJson('/conversations/1');
         $responseDelete = $this->actingAs(self::$firstUser)->deleteJson('/conversations/1');
         $responseGetByUser = $this->actingAs(self::$firstUser)->getJson('/users/2/conversation');
-        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/messages');
+        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/conversations/1/messages');
         $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages');
         $responseRead = $this->actingAs(self::$firstUser)->postJson('/messages/1/read-to');
         $responsePin = $this->actingAs(self::$firstUser)->postJson('/messages/1/pin');
@@ -393,7 +411,7 @@ class MessageStaticTest extends TestCase
         $responseGet = $this->actingAs(self::$firstUser)->getJson('/conversations/1');
         $responseDelete = $this->actingAs(self::$firstUser)->deleteJson('/conversations/1');
         $responseGetByUser = $this->actingAs(self::$firstUser)->getJson('/users/2/conversation');
-        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/messages');
+        $responseSearchMessages = $this->actingAs(self::$firstUser)->getJson('/conversations/1/messages');
         $responseCreate = $this->actingAs(self::$firstUser)->postJson('/messages');
         $responseRead = $this->actingAs(self::$firstUser)->postJson('/messages/1/read-to');
         $responsePin = $this->actingAs(self::$firstUser)->postJson('/messages/1/pin');

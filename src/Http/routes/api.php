@@ -11,7 +11,7 @@ Route::group(['middleware' => ['auth', CheckManuallyRegisteredRoutesMiddleware::
     Route::delete('conversations/{id}', [ConversationController::class, 'delete']);
     Route::get('users/{userId}/conversation', [ConversationController::class, 'getByUserId']);
 
-    Route::get('messages', [MessageController::class, 'search']);
+    Route::get('conversations/{conversationId}/messages', [MessageController::class, 'search']);
     Route::post('messages', [MessageController::class, 'create']);
     Route::post('messages/{id}/read-to', [MessageController::class, 'readUpTo']);
     Route::post('messages/{id}/pin', [MessageController::class, 'pin']);

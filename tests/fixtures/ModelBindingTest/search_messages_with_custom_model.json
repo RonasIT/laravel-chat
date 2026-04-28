@@ -20,18 +20,11 @@
             "is_read": false,
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z"
-        },
-        {
-            "id": 4,
-            "text": "hi_custom",
-            "is_read": false,
-            "created_at": "2016-10-20T11:05:00.000000Z",
-            "updated_at": "2016-10-20T11:05:00.000000Z"
         }
     ],
     "links": {
-        "first": "http:\/\/localhost\/messages?page=1",
-        "last": "http:\/\/localhost\/messages?page=1",
+        "first": "http:\/\/localhost\/conversations\/1\/messages?page=1",
+        "last": "http:\/\/localhost\/conversations\/1\/messages?page=1",
         "prev": null,
         "next": null
     },
@@ -47,7 +40,7 @@
                 "active": false
             },
             {
-                "url": "http:\/\/localhost\/messages?page=1",
+                "url": "http:\/\/localhost\/conversations\/1\/messages?page=1",
                 "label": "1",
                 "page": 1,
                 "active": true
@@ -59,9 +52,9 @@
                 "active": false
             }
         ],
-        "path": "http:\/\/localhost\/messages",
+        "path": "http:\/\/localhost\/conversations\/1\/messages",
         "per_page": 15,
-        "to": 4,
-        "total": 4
+        "to": 3,
+        "total": 3
     }
 }
