@@ -7,6 +7,7 @@ use Dotenv\Dotenv;
 use Illuminate\Notifications\Channels\BroadcastChannel;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 use Orchestra\Testbench\TestCase as BaseTest;
 use ReflectionClass;
 use RonasIT\Chat\ChatServiceProvider;
@@ -117,6 +118,8 @@ class TestCase extends BaseTest
 
         $preparedActualData = json_decode(json_encode($actualData), true);
 
-        $this->assertEqualsFixture("broadcast_notifications/{$fixtureName}", $preparedActualData, $exportMode);
+        $appVersion = (int) app()->version();
+
+        $this->assertEqualsFixture("broadcast_notifications/{$appVersion}/{$fixtureName}", $preparedActualData, $exportMode);
     }
 }
