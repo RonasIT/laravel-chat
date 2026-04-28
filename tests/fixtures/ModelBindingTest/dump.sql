@@ -30,6 +30,6 @@ INSERT INTO conversation_member(conversation_id, member_id) VALUES
 
 INSERT INTO messages(id, sender_id, conversation_id, text, attachment_id, updated_at, created_at) VALUES
     (1, 1, 1, 'hi', 1, '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
-    (2, 1, 2, 'hi', null, '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
-    (3, 1, 3, 'hi', null, '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
+    (2, 1, 1, 'hi', null, '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
+    (3, 1, 1, 'hi', null, '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
     (4, 1, 4, 'hi', null, '2016-10-20 11:05:00', '2016-10-20 11:05:00');

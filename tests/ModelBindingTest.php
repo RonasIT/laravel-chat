@@ -40,7 +40,7 @@ class ModelBindingTest extends TestCase
 
     public function testSearchMessagesWithCustomModel(): void
     {
-        $response = $this->actingAs(self::$firstUser)->json('get', '/messages');
+        $response = $this->actingAs(self::$firstUser)->getJson('/conversations/1/messages');
 
         $response->assertOk();
 
