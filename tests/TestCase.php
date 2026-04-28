@@ -119,6 +119,6 @@ class TestCase extends BaseTest
 
         $appVersion = (int) app()->version();
 
-        $this->assertEqualsFixture("broadcast_notifications/{$appVersion}/{$fixtureName}", $preparedActualData, $exportMode);
+        $this->assertEqualsFixture("broadcast_notifications/v{$appVersion}/{$fixtureName}", $preparedActualData, $exportMode);
     }
 }
