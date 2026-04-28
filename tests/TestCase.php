@@ -7,7 +7,6 @@ use Dotenv\Dotenv;
 use Illuminate\Notifications\Channels\BroadcastChannel;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Str;
 use Orchestra\Testbench\TestCase as BaseTest;
 use ReflectionClass;
 use RonasIT\Chat\ChatServiceProvider;
