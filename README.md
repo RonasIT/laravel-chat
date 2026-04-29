@@ -34,12 +34,7 @@ composer require ronasit/laravel-chat
 php artisan vendor:publish --provider=RonasIT\\Chat\\ChatServiceProvider
 ```
 
-3. For Laravel <= 5.5 add `ronasit\Chat\ChatServiceProvider::class` to the `app.providers` list in config.
-4. Set your project's User model to the `chat.classes.user_model` config.
-5. All routes are registered by default, you can change the route registration by calling `Route::chat()` in your routes file (e.g. `routes/api.php`).
-   - feel free to call `Route::chat()` helper inside any route wrappers like `group`, `prefix`, etc. to wrap package routes;
-   - calling `Route::chat()` without args will add all package route inside the calling helper place;
-   - calling `Route::chat()` with any args will add only routes with chosen actions;
+3. Set your project's User model to the `chat.classes.user_model` config.
 
 ## Integration with [LaravelSwagger](https://github.com/RonasIT/laravel-swagger)
 
@@ -49,26 +44,43 @@ This package includes an OpenAPI documentation file. To include it in your proje
 
 ## API Endpoints
 
+All routes are registered by default, you can change the route registration by calling `Route::chat()` in your routes file (e.g. `routes/api.php`).
+- feel free to call `Route::chat()` helper inside any route wrappers like `group`, `prefix`, etc. to wrap package routes;
+- calling `Route::chat()` without args will add all package routes inside the calling helper place;
+- calling `Route::chat()` with `ChatRouteActionEnum` cases as arguments will register **only** the specified routes — all others are automatically disabled:
+
+```php
+// routes/api.php
+use RonasIT\Chat\Enums\ChatRouteActionEnum;
+
+Route::middleware('auth')->group(function () {
+    Route::chat(
+        ChatRouteActionEnum::ConversationsSearch,
+        ChatRouteActionEnum::MessageCreate,
+    );
+});
+```
+
 All endpoints require authentication. The routes are protected by the `auth` middleware.
 
 ### Conversations
 
-| Method | URL | Action | Description |
-|--------|-----|--------|-------------|
-| `GET` | `/conversations` | `conversations_search` | List all conversations the authenticated user is a member of. |
-| `GET` | `/conversations/{id}` | `conversation_get` | Retrieve a single conversation by its ID. |
-| `DELETE` | `/conversations/{id}` | `conversation_delete` | Delete a conversation. |
-| `GET` | `/users/{userId}/conversation` | `conversation_get_by_user` | Get the private conversation between the authenticated user and the specified user. |
+| Method | URL | Description |
+|--------|-----|-------------|
+| `GET` | `/conversations` | List all conversations the authenticated user is a member of. |
+| `GET` | `/conversations/{id}` | Retrieve a single conversation by its ID. |
+| `DELETE` | `/conversations/{id}` | Delete a conversation. |
+| `GET` | `/users/{userId}/conversation` | Get the private conversation between the authenticated user and the specified user. |
 
 ### Messages
 
-| Method | URL | Action | Description |
-|--------|-----|--------|-------------|
-| `GET` | `/messages` | `messages_search` | List messages for a given conversation. |
-| `POST` | `/messages` | `message_create` | Create a new message. |
-| `POST` | `/messages/{id}/read-to` | `messages_read` | Mark all messages up to the specified message ID as read. |
-| `POST` | `/messages/{id}/pin` | `message_pin` | Pin a message to its conversation. |
-| `POST` | `/messages/{id}/unpin` | `message_unpin` | Unpin a message from its conversation. |
+| Method | URL | Description |
+|--------|-----|-------------|
+| `GET` | `/messages` | List of messages related to the current user's conversations. |
+| `POST` | `/messages` | Create a new message. |
+| `POST` | `/messages/{id}/read-to` | Mark all messages in the target message's conversation as read up to the specified message ID. |
+| `POST` | `/messages/{id}/pin` | Pin a message to its conversation. |
+| `POST` | `/messages/{id}/unpin` | Unpin a message from its conversation. |
 
 ## Broadcast Events
 
@@ -76,7 +88,7 @@ The package uses Laravel's broadcasting system to notify conversation members in
 
 ### Channel Authorization
 
-A user may only listen on their own private channel `chat.{userId}`. The channel is authorized when the authenticated user's ID matches `{userId}`.
+A user may listen on only his own private channel `chat.{userId}`. The channel is authorized when the authenticated user's ID matches `{userId}`.
 
 ### Events
 
@@ -109,6 +121,7 @@ Sent to **all conversation members** when a conversation is modified.
 
 This event is triggered when:
 - A conversation's properties (e.g., title, cover) are updated.
+- A new message is created (the conversation's `last_updated_at` is updated as a side effect).
 - A message is pinned or unpinned in the conversation.
 
 **Payload:**
