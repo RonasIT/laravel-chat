@@ -3,8 +3,7 @@
         {
             "notification": {
                 "conversationId": 1,
-                "recipientId": 2,
-                "locale": null,
+                "recipientId": 1,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
@@ -16,9 +15,10 @@
                 "chainConnection": null,
                 "chainQueue": null,
                 "chainCatchCallbacks": null,
+                "locale": null,
                 "broadcast_on": [
                     {
-                        "name": "private-chat.2"
+                        "name": "private-chat.1"
                     }
                 ],
                 "broadcast_data": {
@@ -32,8 +32,8 @@
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
             ],
             "notifiable": {
-                "id": 2,
-                "email": "fidel.kutch@example.com"
+                "id": 1,
+                "email": "anisio.tier@example.com"
             },
             "locale": null
         }

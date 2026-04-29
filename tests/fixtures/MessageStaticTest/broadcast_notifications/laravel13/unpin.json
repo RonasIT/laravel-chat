@@ -1,0 +1,118 @@
+{
+    "RonasIT\\Chat\\Notifications\\ConversationUpdatedNotification": [
+        {
+            "notification": {
+                "conversationId": 1,
+                "recipientId": 1,
+                "connection": null,
+                "queue": null,
+                "messageGroup": null,
+                "deduplicator": null,
+                "debounceOwner": "",
+                "delay": null,
+                "afterCommit": true,
+                "middleware": [],
+                "chained": [],
+                "chainConnection": null,
+                "chainQueue": null,
+                "chainCatchCallbacks": null,
+                "locale": null,
+                "broadcast_on": [
+                    {
+                        "name": "private-chat.1"
+                    }
+                ],
+                "broadcast_data": {
+                    "data": {
+                        "id": 1,
+                        "type": "private",
+                        "title": null,
+                        "last_updated_at": "2016-10-20 11:05:00",
+                        "created_at": "2016-10-20T11:05:00.000000Z",
+                        "last_message": {
+                            "id": 1,
+                            "text": "hi",
+                            "conversation_id": 1,
+                            "is_read": false,
+                            "created_at": "2016-10-20T11:05:00.000000Z",
+                            "updated_at": "2016-10-20T11:05:00.000000Z",
+                            "sender": {
+                                "id": 1,
+                                "email": "anisio.tier@example.com"
+                            }
+                        },
+                        "pinned_messages": [],
+                        "members_count": 2,
+                        "unread_messages_count": 0
+                    }
+                },
+                "broadcast_as": "conversation.updated"
+            },
+            "channels": [
+                "Illuminate\\Notifications\\Channels\\BroadcastChannel"
+            ],
+            "notifiable": {
+                "id": 1,
+                "email": "anisio.tier@example.com"
+            },
+            "locale": null
+        },
+        {
+            "notification": {
+                "conversationId": 1,
+                "recipientId": 2,
+                "connection": null,
+                "queue": null,
+                "messageGroup": null,
+                "deduplicator": null,
+                "debounceOwner": "",
+                "delay": null,
+                "afterCommit": true,
+                "middleware": [],
+                "chained": [],
+                "chainConnection": null,
+                "chainQueue": null,
+                "chainCatchCallbacks": null,
+                "locale": null,
+                "broadcast_on": [
+                    {
+                        "name": "private-chat.2"
+                    }
+                ],
+                "broadcast_data": {
+                    "data": {
+                        "id": 1,
+                        "type": "private",
+                        "title": null,
+                        "last_updated_at": "2016-10-20 11:05:00",
+                        "created_at": "2016-10-20T11:05:00.000000Z",
+                        "last_message": {
+                            "id": 1,
+                            "text": "hi",
+                            "conversation_id": 1,
+                            "is_read": false,
+                            "created_at": "2016-10-20T11:05:00.000000Z",
+                            "updated_at": "2016-10-20T11:05:00.000000Z",
+                            "sender": {
+                                "id": 1,
+                                "email": "anisio.tier@example.com"
+                            }
+                        },
+                        "pinned_messages": [],
+                        "members_count": 2,
+                        "unread_messages_count": 1
+                    }
+                },
+                "broadcast_as": "conversation.updated"
+            },
+            "channels": [
+                "Illuminate\\Notifications\\Channels\\BroadcastChannel"
+            ],
+            "notifiable": {
+                "id": 2,
+                "email": "fidel.kutch@example.com"
+            },
+            "locale": null
+        }
+    ]
+}

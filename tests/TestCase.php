@@ -50,6 +50,18 @@ class TestCase extends BaseTest
         return str_replace('vendor/orchestra/testbench-core/laravel/', '', $path);
     }
 
+    public function assertEqualsVersionedFixture(string $fixture, $data, bool $exportMode = false): void
+    {
+        $majorVersion = (int) app()->version();
+
+        $directory = dirname($fixture);
+        $filename = basename($fixture);
+
+        $versionedFixture = "{$directory}/laravel{$majorVersion}/{$filename}";
+
+        $this->assertEqualsFixture($versionedFixture, $data, $exportMode);
+    }
+
     protected function getEnvironmentSetUp($app): void
     {
         Dotenv::createImmutable(__DIR__ . '/..', '.env.testing')->load();
@@ -117,6 +129,6 @@ class TestCase extends BaseTest
 
         $preparedActualData = json_decode(json_encode($actualData), true);
 
-        $this->assertEqualsFixture("broadcast_notifications/{$fixtureName}", $preparedActualData, $exportMode);
+        $this->assertEqualsVersionedFixture("broadcast_notifications/{$fixtureName}", $preparedActualData, $exportMode);
     }
 }
