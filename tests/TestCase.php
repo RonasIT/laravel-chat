@@ -50,6 +50,36 @@ class TestCase extends BaseTest
         return str_replace('vendor/orchestra/testbench-core/laravel/', '', $path);
     }
 
+    public function assertEqualsVersionedFixture(string $fixture, $data, bool $exportMode = false, bool $versionedExport = false): void
+    {
+        $majorVersion = (int) app()->version();
+        $directory = dirname($fixture);
+        $filename = basename($fixture);
+        $prefix = $directory === '.' ? '' : "{$directory}/";
+
+        if ($versionedExport) {
+            $finalFixture = "{$prefix}laravel{$majorVersion}/{$filename}";
+        } else {
+            $fixtureDir = dirname($this->getFixturePath($fixture));
+            $targetFilename = $this->prepareFixtureName($filename);
+            $bestVersion = null;
+
+            foreach (glob("{$fixtureDir}/laravel*/{$targetFilename}") as $file) {
+                if (preg_match('/laravel(\d+)/', $file, $matches)) {
+                    $currentVersion = (int) $matches[1];
+
+                    if ($currentVersion >= $majorVersion && (is_null($bestVersion) || $currentVersion < $bestVersion)) {
+                        $bestVersion = $currentVersion;
+                    }
+                }
+            }
+
+            $finalFixture = $bestVersion ? "{$prefix}laravel{$bestVersion}/{$filename}" : $fixture;
+        }
+
+        $this->assertEqualsFixture($finalFixture, $data, $exportMode);
+    }
+
     protected function getEnvironmentSetUp($app): void
     {
         Dotenv::createImmutable(__DIR__ . '/..', '.env.testing')->load();
@@ -117,6 +147,6 @@ class TestCase extends BaseTest
 
         $preparedActualData = json_decode(json_encode($actualData), true);
 
-        $this->assertEqualsFixture("broadcast_notifications/{$fixtureName}", $preparedActualData, $exportMode);
+        $this->assertEqualsVersionedFixture("broadcast_notifications/{$fixtureName}", $preparedActualData, $exportMode);
     }
 }
