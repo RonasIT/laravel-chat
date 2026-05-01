@@ -50,16 +50,34 @@ class TestCase extends BaseTest
         return str_replace('vendor/orchestra/testbench-core/laravel/', '', $path);
     }
 
-    public function assertEqualsVersionedFixture(string $fixture, $data, bool $exportMode = false): void
+    public function assertEqualsVersionedFixture(string $fixture, $data, bool $exportMode = false, bool $versionedExport = false): void
     {
         $majorVersion = (int) app()->version();
-
         $directory = dirname($fixture);
         $filename = basename($fixture);
+        $prefix = $directory === '.' ? '' : "{$directory}/";
 
-        $versionedFixture = "{$directory}/laravel{$majorVersion}/{$filename}";
+        if ($versionedExport) {
+            $finalFixture = "{$prefix}laravel{$majorVersion}/{$filename}";
+        } else {
+            $fixtureDir = dirname($this->getFixturePath($fixture));
+            $targetFilename = $this->prepareFixtureName($filename);
+            $bestVersion = null;
 
-        $this->assertEqualsFixture($versionedFixture, $data, $exportMode);
+            foreach (glob("{$fixtureDir}/laravel*/{$targetFilename}") as $file) {
+                if (preg_match('/laravel(\d+)/', $file, $matches)) {
+                    $currentVersion = (int) $matches[1];
+
+                    if ($currentVersion <= $majorVersion && (is_null($bestVersion) || $currentVersion > $bestVersion)) {
+                        $bestVersion = $currentVersion;
+                    }
+                }
+            }
+
+            $finalFixture = $bestVersion ? "{$prefix}laravel{$bestVersion}/{$filename}" : $fixture;
+        }
+
+        $this->assertEqualsFixture($finalFixture, $data, $exportMode);
     }
 
     protected function getEnvironmentSetUp($app): void
