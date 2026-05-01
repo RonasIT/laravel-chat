@@ -6,7 +6,7 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob",
+            "title": "Bob Lewis",
             "messages": [
                 {
                     "id": 1,
@@ -29,14 +29,14 @@
                     "id": 1,
                     "email": "anisio.tier@example.com",
                     "first_name": "Alice",
-                    "last_name": null,
+                    "last_name": "Doe",
                     "avatar_id": null
                 },
                 {
                     "id": 2,
                     "email": "fidel.kutch@example.com",
                     "first_name": "Bob",
-                    "last_name": null,
+                    "last_name": "Lewis",
                     "avatar_id": 2
                 }
             ],
@@ -49,7 +49,7 @@
             },
             "cover": {
                 "id": 2,
-                "link": "http://localhost/bob_avatar.jpg",
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
                 "name": "bob_avatar",
                 "is_public": true,
                 "meta": []
@@ -78,7 +78,7 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob",
+            "title": "Bob Lewis",
             "messages": [],
             "creator": null,
             "members": [
@@ -86,21 +86,21 @@
                     "id": 1,
                     "email": "anisio.tier@example.com",
                     "first_name": "Alice",
-                    "last_name": null,
+                    "last_name": "Doe",
                     "avatar_id": null
                 },
                 {
                     "id": 2,
                     "email": "fidel.kutch@example.com",
                     "first_name": "Bob",
-                    "last_name": null,
+                    "last_name": "Lewis",
                     "avatar_id": 2
                 }
             ],
             "last_message": null,
             "cover": {
                 "id": 2,
-                "link": "http://localhost/bob_avatar.jpg",
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
                 "name": "bob_avatar",
                 "is_public": true,
                 "meta": []
@@ -114,7 +114,7 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob",
+            "title": "Bob Lewis",
             "messages": [],
             "creator": null,
             "members": [
@@ -122,21 +122,21 @@
                     "id": 1,
                     "email": "anisio.tier@example.com",
                     "first_name": "Alice",
-                    "last_name": null,
+                    "last_name": "Doe",
                     "avatar_id": null
                 },
                 {
                     "id": 2,
                     "email": "fidel.kutch@example.com",
                     "first_name": "Bob",
-                    "last_name": null,
+                    "last_name": "Lewis",
                     "avatar_id": 2
                 }
             ],
             "last_message": null,
             "cover": {
                 "id": 2,
-                "link": "http://localhost/bob_avatar.jpg",
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
                 "name": "bob_avatar",
                 "is_public": true,
                 "meta": []
@@ -150,7 +150,7 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob",
+            "title": "Bob Lewis",
             "messages": [],
             "creator": null,
             "members": [
@@ -158,21 +158,21 @@
                     "id": 1,
                     "email": "anisio.tier@example.com",
                     "first_name": "Alice",
-                    "last_name": null,
+                    "last_name": "Doe",
                     "avatar_id": null
                 },
                 {
                     "id": 2,
                     "email": "fidel.kutch@example.com",
                     "first_name": "Bob",
-                    "last_name": null,
+                    "last_name": "Lewis",
                     "avatar_id": 2
                 }
             ],
             "last_message": null,
             "cover": {
                 "id": 2,
-                "link": "http://localhost/bob_avatar.jpg",
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
                 "name": "bob_avatar",
                 "is_public": true,
                 "meta": []
@@ -186,7 +186,7 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob",
+            "title": "Bob Lewis",
             "messages": [],
             "creator": null,
             "members": [
@@ -194,21 +194,21 @@
                     "id": 1,
                     "email": "anisio.tier@example.com",
                     "first_name": "Alice",
-                    "last_name": null,
+                    "last_name": "Doe",
                     "avatar_id": null
                 },
                 {
                     "id": 2,
                     "email": "fidel.kutch@example.com",
                     "first_name": "Bob",
-                    "last_name": null,
+                    "last_name": "Lewis",
                     "avatar_id": 2
                 }
             ],
             "last_message": null,
             "cover": {
                 "id": 2,
-                "link": "http://localhost/bob_avatar.jpg",
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
                 "name": "bob_avatar",
                 "is_public": true,
                 "meta": []
@@ -228,7 +228,7 @@
                 "id": 1,
                 "email": "anisio.tier@example.com",
                 "first_name": "Alice",
-                "last_name": null,
+                "last_name": "Doe",
                 "avatar_id": null
             },
             "members": [
@@ -236,14 +236,14 @@
                     "id": 1,
                     "email": "anisio.tier@example.com",
                     "first_name": "Alice",
-                    "last_name": null,
+                    "last_name": "Doe",
                     "avatar_id": null
                 },
                 {
                     "id": 2,
                     "email": "fidel.kutch@example.com",
                     "first_name": "Bob",
-                    "last_name": null,
+                    "last_name": "Lewis",
                     "avatar_id": 2
                 },
                 {
@@ -257,7 +257,7 @@
             "last_message": null,
             "cover": {
                 "id": 1,
-                "link": "http://localhost/group_chat_cover.jpg",
+                "link": "http:\/\/localhost\/group_chat_cover.jpg",
                 "name": "group_chat_cover",
                 "is_public": true,
                 "meta": []
@@ -267,8 +267,8 @@
         }
     ],
     "links": {
-        "first": "http://localhost/conversations?page=1",
-        "last": "http://localhost/conversations?page=1",
+        "first": "http:\/\/localhost\/conversations?page=1",
+        "last": "http:\/\/localhost\/conversations?page=1",
         "prev": null,
         "next": null
     },
@@ -283,7 +283,7 @@
                 "active": false
             },
             {
-                "url": "http://localhost/conversations?page=1",
+                "url": "http:\/\/localhost\/conversations?page=1",
                 "label": "1",
                 "active": true
             },
@@ -293,7 +293,7 @@
                 "active": false
             }
         ],
-        "path": "http://localhost/conversations",
+        "path": "http:\/\/localhost\/conversations",
         "per_page": 15,
         "to": 6,
         "total": 6

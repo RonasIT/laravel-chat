@@ -1,6 +1,6 @@
 INSERT INTO users(id, email, first_name, last_name, avatar_id) VALUES
-    (1, 'anisio.tier@example.com', 'Alice', null, null),
-    (2, 'fidel.kutch@example.com', 'Bob', null, 2),
+    (1, 'anisio.tier@example.com', 'Alice', 'Doe', null),
+    (2, 'fidel.kutch@example.com', 'Bob', 'Lewis', 2),
     (3, 'alien.west@example.com', 'Charlie', null, null);
 
 INSERT INTO media(id, name, owner_id, is_public, link, preview_id, meta, created_at, updated_at) VALUES

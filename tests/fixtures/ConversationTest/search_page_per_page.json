@@ -6,7 +6,7 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob"
+            "title": "Bob Lewis"
         },
         {
             "id": 4,
@@ -14,14 +14,14 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob"
+            "title": "Bob Lewis"
         }
     ],
     "links": {
-        "first": "http://localhost/conversations?page=1",
-        "last": "http://localhost/conversations?page=3",
-        "prev": "http://localhost/conversations?page=1",
-        "next": "http://localhost/conversations?page=3"
+        "first": "http:\/\/localhost\/conversations?page=1",
+        "last": "http:\/\/localhost\/conversations?page=3",
+        "prev": "http:\/\/localhost\/conversations?page=1",
+        "next": "http:\/\/localhost\/conversations?page=3"
     },
     "meta": {
         "current_page": 2,
@@ -29,32 +29,32 @@
         "last_page": 3,
         "links": [
             {
-                "url": "http://localhost/conversations?page=1",
+                "url": "http:\/\/localhost\/conversations?page=1",
                 "label": "&laquo; Previous",
                 "active": false
             },
             {
-                "url": "http://localhost/conversations?page=1",
+                "url": "http:\/\/localhost\/conversations?page=1",
                 "label": "1",
                 "active": false
             },
             {
-                "url": "http://localhost/conversations?page=2",
+                "url": "http:\/\/localhost\/conversations?page=2",
                 "label": "2",
                 "active": true
             },
             {
-                "url": "http://localhost/conversations?page=3",
+                "url": "http:\/\/localhost\/conversations?page=3",
                 "label": "3",
                 "active": false
             },
             {
-                "url": "http://localhost/conversations?page=3",
+                "url": "http:\/\/localhost\/conversations?page=3",
                 "label": "Next &raquo;",
                 "active": false
             }
         ],
-        "path": "http://localhost/conversations",
+        "path": "http:\/\/localhost\/conversations",
         "per_page": 2,
         "to": 4,
         "total": 6
