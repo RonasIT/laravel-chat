@@ -19,4 +19,6 @@ interface MessageModelContract
     public function scopeWithIsRead(Builder $query): Builder;
 
     public function getIsReadAttribute();
+
+    public static function getFields(): array;
 }
