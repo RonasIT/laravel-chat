@@ -1,14 +1,13 @@
 {
-    "RonasIT\\Chat\\Notifications\\MessageUpdatedNotification": [
+    "RonasIT\\Chat\\Notifications\\ConversationDeletedNotification": [
         {
             "notification": {
-                "messageId": 7,
+                "conversationId": 6,
                 "recipientId": 2,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
                 "deduplicator": null,
-                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -24,19 +23,10 @@
                 ],
                 "broadcast_data": {
                     "data": {
-                        "id": 7,
-                        "text": "hi",
-                        "conversation_id": 5,
-                        "is_read": true,
-                        "created_at": "2016-10-20T11:05:00.000000Z",
-                        "updated_at": "2016-10-20T11:05:00.000000Z",
-                        "sender": {
-                            "id": 3,
-                            "email": "alien.west@example.com"
-                        }
+                        "id": 6
                     }
                 },
-                "broadcast_as": "message.updated"
+                "broadcast_as": "conversation.deleted"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
@@ -49,13 +39,12 @@
         },
         {
             "notification": {
-                "messageId": 7,
+                "conversationId": 6,
                 "recipientId": 3,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
                 "deduplicator": null,
-                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -71,19 +60,10 @@
                 ],
                 "broadcast_data": {
                     "data": {
-                        "id": 7,
-                        "text": "hi",
-                        "conversation_id": 5,
-                        "is_read": true,
-                        "created_at": "2016-10-20T11:05:00.000000Z",
-                        "updated_at": "2016-10-20T11:05:00.000000Z",
-                        "sender": {
-                            "id": 3,
-                            "email": "alien.west@example.com"
-                        }
+                        "id": 6
                     }
                 },
-                "broadcast_as": "message.updated"
+                "broadcast_as": "conversation.deleted"
             },
             "channels": [
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"

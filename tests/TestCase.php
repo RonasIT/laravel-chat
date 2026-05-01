@@ -68,7 +68,7 @@ class TestCase extends BaseTest
                 if (preg_match('/laravel(\d+)/', $file, $matches)) {
                     $currentVersion = (int) $matches[1];
 
-                    if ($currentVersion <= $majorVersion && (is_null($bestVersion) || $currentVersion > $bestVersion)) {
+                    if ($currentVersion >= $majorVersion && (is_null($bestVersion) || $currentVersion < $bestVersion)) {
                         $bestVersion = $currentVersion;
                     }
                 }

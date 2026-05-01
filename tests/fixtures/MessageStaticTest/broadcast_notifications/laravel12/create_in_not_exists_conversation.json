@@ -1,14 +1,13 @@
 {
-    "RonasIT\\Chat\\Notifications\\ConversationUpdatedNotification": [
+    "RonasIT\\Chat\\Notifications\\ConversationCreatedNotification": [
         {
             "notification": {
-                "conversationId": 1,
-                "recipientId": 1,
+                "conversationId": 6,
+                "recipientId": 5,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
                 "deduplicator": null,
-                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -19,40 +18,86 @@
                 "locale": null,
                 "broadcast_on": [
                     {
-                        "name": "private-chat.1"
+                        "name": "private-chat.5"
                     }
                 ],
                 "broadcast_data": {
                     "data": {
-                        "id": 1,
+                        "id": 6,
                         "type": "private",
                         "title": null,
                         "last_updated_at": "2024-01-01 00:00:00",
-                        "created_at": "2016-10-20T11:05:00.000000Z",
+                        "created_at": "2024-01-01T00:00:00.000000Z",
                         "last_message": {
                             "id": 8,
                             "text": "hello",
-                            "conversation_id": 1,
+                            "conversation_id": 6,
                             "is_read": false,
                             "created_at": "2024-01-01T00:00:00.000000Z",
                             "updated_at": "2024-01-01T00:00:00.000000Z",
                             "sender": {
-                                "id": 1,
-                                "email": "anisio.tier@example.com"
+                                "id": 2,
+                                "email": "fidel.kutch@example.com"
+                            }
+                        }
+                    }
+                },
+                "broadcast_as": "conversation.created"
+            },
+            "channels": [
+                "Illuminate\\Notifications\\Channels\\BroadcastChannel"
+            ],
+            "notifiable": {
+                "id": 5,
+                "email": "william.bob@example.com"
+            },
+            "locale": null
+        }
+    ],
+    "RonasIT\\Chat\\Notifications\\ConversationUpdatedNotification": [
+        {
+            "notification": {
+                "conversationId": 6,
+                "recipientId": 5,
+                "connection": null,
+                "queue": null,
+                "messageGroup": null,
+                "deduplicator": null,
+                "delay": null,
+                "afterCommit": true,
+                "middleware": [],
+                "chained": [],
+                "chainConnection": null,
+                "chainQueue": null,
+                "chainCatchCallbacks": null,
+                "locale": null,
+                "broadcast_on": [
+                    {
+                        "name": "private-chat.5"
+                    }
+                ],
+                "broadcast_data": {
+                    "data": {
+                        "id": 6,
+                        "type": "private",
+                        "title": null,
+                        "last_updated_at": "2024-01-01 00:00:00",
+                        "created_at": "2024-01-01T00:00:00.000000Z",
+                        "last_message": {
+                            "id": 8,
+                            "text": "hello",
+                            "conversation_id": 6,
+                            "is_read": false,
+                            "created_at": "2024-01-01T00:00:00.000000Z",
+                            "updated_at": "2024-01-01T00:00:00.000000Z",
+                            "sender": {
+                                "id": 2,
+                                "email": "fidel.kutch@example.com"
                             }
                         },
-                        "pinned_messages": [
-                            {
-                                "id": 1,
-                                "text": "hi",
-                                "conversation_id": 1,
-                                "is_read": false,
-                                "created_at": "2016-10-20T11:05:00.000000Z",
-                                "updated_at": "2016-10-20T11:05:00.000000Z"
-                            }
-                        ],
+                        "pinned_messages": [],
                         "members_count": 2,
-                        "unread_messages_count": 0
+                        "unread_messages_count": 1
                     }
                 },
                 "broadcast_as": "conversation.updated"
@@ -61,20 +106,19 @@
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
             ],
             "notifiable": {
-                "id": 1,
-                "email": "anisio.tier@example.com"
+                "id": 5,
+                "email": "william.bob@example.com"
             },
             "locale": null
         },
         {
             "notification": {
-                "conversationId": 1,
+                "conversationId": 6,
                 "recipientId": 2,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
                 "deduplicator": null,
-                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -90,35 +134,26 @@
                 ],
                 "broadcast_data": {
                     "data": {
-                        "id": 1,
+                        "id": 6,
                         "type": "private",
                         "title": null,
                         "last_updated_at": "2024-01-01 00:00:00",
-                        "created_at": "2016-10-20T11:05:00.000000Z",
+                        "created_at": "2024-01-01T00:00:00.000000Z",
                         "last_message": {
                             "id": 8,
                             "text": "hello",
-                            "conversation_id": 1,
+                            "conversation_id": 6,
                             "is_read": false,
                             "created_at": "2024-01-01T00:00:00.000000Z",
                             "updated_at": "2024-01-01T00:00:00.000000Z",
                             "sender": {
-                                "id": 1,
-                                "email": "anisio.tier@example.com"
+                                "id": 2,
+                                "email": "fidel.kutch@example.com"
                             }
                         },
-                        "pinned_messages": [
-                            {
-                                "id": 1,
-                                "text": "hi",
-                                "conversation_id": 1,
-                                "is_read": false,
-                                "created_at": "2016-10-20T11:05:00.000000Z",
-                                "updated_at": "2016-10-20T11:05:00.000000Z"
-                            }
-                        ],
+                        "pinned_messages": [],
                         "members_count": 2,
-                        "unread_messages_count": 2
+                        "unread_messages_count": 0
                     }
                 },
                 "broadcast_as": "conversation.updated"
@@ -137,12 +172,11 @@
         {
             "notification": {
                 "messageId": 8,
-                "recipientId": 2,
+                "recipientId": 5,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
                 "deduplicator": null,
-                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -153,20 +187,20 @@
                 "locale": null,
                 "broadcast_on": [
                     {
-                        "name": "private-chat.2"
+                        "name": "private-chat.5"
                     }
                 ],
                 "broadcast_data": {
                     "data": {
                         "id": 8,
                         "text": "hello",
-                        "conversation_id": 1,
+                        "conversation_id": 6,
                         "is_read": false,
                         "created_at": "2024-01-01T00:00:00.000000Z",
                         "updated_at": "2024-01-01T00:00:00.000000Z",
                         "sender": {
-                            "id": 1,
-                            "email": "anisio.tier@example.com"
+                            "id": 2,
+                            "email": "fidel.kutch@example.com"
                         }
                     }
                 },
@@ -176,8 +210,8 @@
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
             ],
             "notifiable": {
-                "id": 2,
-                "email": "fidel.kutch@example.com"
+                "id": 5,
+                "email": "william.bob@example.com"
             },
             "locale": null
         }

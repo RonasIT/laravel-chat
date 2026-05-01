@@ -2,13 +2,12 @@
     "RonasIT\\Chat\\Notifications\\ConversationUpdatedNotification": [
         {
             "notification": {
-                "conversationId": 2,
+                "conversationId": 1,
                 "recipientId": 1,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
                 "deduplicator": null,
-                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -24,18 +23,18 @@
                 ],
                 "broadcast_data": {
                     "data": {
-                        "id": 2,
+                        "id": 1,
                         "type": "private",
                         "title": null,
-                        "last_updated_at": "2016-10-20 11:05:00",
+                        "last_updated_at": "2024-01-01 00:00:00",
                         "created_at": "2016-10-20T11:05:00.000000Z",
                         "last_message": {
-                            "id": 2,
-                            "text": "hi",
-                            "conversation_id": 2,
-                            "is_read": true,
-                            "created_at": "2016-10-20T11:05:00.000000Z",
-                            "updated_at": "2016-10-20T11:05:00.000000Z",
+                            "id": 8,
+                            "text": "hello",
+                            "conversation_id": 1,
+                            "is_read": false,
+                            "created_at": "2024-01-01T00:00:00.000000Z",
+                            "updated_at": "2024-01-01T00:00:00.000000Z",
                             "sender": {
                                 "id": 1,
                                 "email": "anisio.tier@example.com"
@@ -43,10 +42,10 @@
                         },
                         "pinned_messages": [
                             {
-                                "id": 2,
+                                "id": 1,
                                 "text": "hi",
-                                "conversation_id": 2,
-                                "is_read": true,
+                                "conversation_id": 1,
+                                "is_read": false,
                                 "created_at": "2016-10-20T11:05:00.000000Z",
                                 "updated_at": "2016-10-20T11:05:00.000000Z"
                             }
@@ -68,13 +67,12 @@
         },
         {
             "notification": {
-                "conversationId": 2,
-                "recipientId": 3,
+                "conversationId": 1,
+                "recipientId": 2,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
                 "deduplicator": null,
-                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -85,23 +83,23 @@
                 "locale": null,
                 "broadcast_on": [
                     {
-                        "name": "private-chat.3"
+                        "name": "private-chat.2"
                     }
                 ],
                 "broadcast_data": {
                     "data": {
-                        "id": 2,
+                        "id": 1,
                         "type": "private",
                         "title": null,
-                        "last_updated_at": "2016-10-20 11:05:00",
+                        "last_updated_at": "2024-01-01 00:00:00",
                         "created_at": "2016-10-20T11:05:00.000000Z",
                         "last_message": {
-                            "id": 2,
-                            "text": "hi",
-                            "conversation_id": 2,
-                            "is_read": true,
-                            "created_at": "2016-10-20T11:05:00.000000Z",
-                            "updated_at": "2016-10-20T11:05:00.000000Z",
+                            "id": 8,
+                            "text": "hello",
+                            "conversation_id": 1,
+                            "is_read": false,
+                            "created_at": "2024-01-01T00:00:00.000000Z",
+                            "updated_at": "2024-01-01T00:00:00.000000Z",
                             "sender": {
                                 "id": 1,
                                 "email": "anisio.tier@example.com"
@@ -109,16 +107,16 @@
                         },
                         "pinned_messages": [
                             {
-                                "id": 2,
+                                "id": 1,
                                 "text": "hi",
-                                "conversation_id": 2,
-                                "is_read": true,
+                                "conversation_id": 1,
+                                "is_read": false,
                                 "created_at": "2016-10-20T11:05:00.000000Z",
                                 "updated_at": "2016-10-20T11:05:00.000000Z"
                             }
                         ],
                         "members_count": 2,
-                        "unread_messages_count": 0
+                        "unread_messages_count": 2
                     }
                 },
                 "broadcast_as": "conversation.updated"
@@ -127,8 +125,56 @@
                 "Illuminate\\Notifications\\Channels\\BroadcastChannel"
             ],
             "notifiable": {
-                "id": 3,
-                "email": "alien.west@example.com"
+                "id": 2,
+                "email": "fidel.kutch@example.com"
+            },
+            "locale": null
+        }
+    ],
+    "RonasIT\\Chat\\Notifications\\MessageCreatedNotification": [
+        {
+            "notification": {
+                "messageId": 8,
+                "recipientId": 2,
+                "connection": null,
+                "queue": null,
+                "messageGroup": null,
+                "deduplicator": null,
+                "delay": null,
+                "afterCommit": true,
+                "middleware": [],
+                "chained": [],
+                "chainConnection": null,
+                "chainQueue": null,
+                "chainCatchCallbacks": null,
+                "locale": null,
+                "broadcast_on": [
+                    {
+                        "name": "private-chat.2"
+                    }
+                ],
+                "broadcast_data": {
+                    "data": {
+                        "id": 8,
+                        "text": "hello",
+                        "conversation_id": 1,
+                        "is_read": false,
+                        "created_at": "2024-01-01T00:00:00.000000Z",
+                        "updated_at": "2024-01-01T00:00:00.000000Z",
+                        "sender": {
+                            "id": 1,
+                            "email": "anisio.tier@example.com"
+                        }
+                    }
+                },
+                "broadcast_as": "message.created"
+            },
+            "channels": [
+                "Illuminate\\Notifications\\Channels\\BroadcastChannel"
+            ],
+            "notifiable": {
+                "id": 2,
+                "email": "fidel.kutch@example.com"
             },
             "locale": null
         }

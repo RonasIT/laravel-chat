@@ -4,11 +4,11 @@
             "notification": {
                 "conversationId": 6,
                 "recipientId": 5,
-                "locale": null,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
                 "deduplicator": null,
+                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -16,6 +16,7 @@
                 "chainConnection": null,
                 "chainQueue": null,
                 "chainCatchCallbacks": null,
+                "locale": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.5"
@@ -59,11 +60,11 @@
             "notification": {
                 "conversationId": 6,
                 "recipientId": 5,
-                "locale": null,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
                 "deduplicator": null,
+                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -71,6 +72,7 @@
                 "chainConnection": null,
                 "chainQueue": null,
                 "chainCatchCallbacks": null,
+                "locale": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.5"
@@ -115,11 +117,11 @@
             "notification": {
                 "conversationId": 6,
                 "recipientId": 2,
-                "locale": null,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
                 "deduplicator": null,
+                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -127,6 +129,7 @@
                 "chainConnection": null,
                 "chainQueue": null,
                 "chainCatchCallbacks": null,
+                "locale": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.2"
@@ -173,11 +176,11 @@
             "notification": {
                 "messageId": 8,
                 "recipientId": 5,
-                "locale": null,
                 "connection": null,
                 "queue": null,
                 "messageGroup": null,
                 "deduplicator": null,
+                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -185,6 +188,7 @@
                 "chainConnection": null,
                 "chainQueue": null,
                 "chainCatchCallbacks": null,
+                "locale": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.5"
