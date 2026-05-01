@@ -12,15 +12,18 @@
                 "created_at": "2016-10-20T11:05:00.000000Z",
                 "updated_at": "2016-10-20T11:05:00.000000Z",
                 "type": "private",
-                "title": null
+                "title": "Fidel"
             },
             "sender": {
                 "id": 1,
-                "email": "anisio.tier@example.com"
+                "email": "anisio.tier@example.com",
+                "first_name": "Anisio",
+                "last_name": null,
+                "avatar_id": null
             },
             "attachment": {
                 "id": 1,
-                "link": "http:\/\/localhost\/test_preview_1.jpg",
+                "link": "http://localhost/test_preview_1.jpg",
                 "name": "preview_Product main photo",
                 "is_public": true,
                 "meta": []
@@ -38,11 +41,14 @@
                 "created_at": "2016-10-20T11:05:00.000000Z",
                 "updated_at": "2016-10-20T11:05:00.000000Z",
                 "type": "private",
-                "title": null
+                "title": "Alien"
             },
             "sender": {
                 "id": 1,
-                "email": "anisio.tier@example.com"
+                "email": "anisio.tier@example.com",
+                "first_name": "Anisio",
+                "last_name": null,
+                "avatar_id": null
             },
             "attachment": null
         },
@@ -58,11 +64,14 @@
                 "created_at": "2016-10-20T11:05:00.000000Z",
                 "updated_at": "2016-10-20T11:05:00.000000Z",
                 "type": "private",
-                "title": null
+                "title": "Alien"
             },
             "sender": {
                 "id": 1,
-                "email": "anisio.tier@example.com"
+                "email": "anisio.tier@example.com",
+                "first_name": "Anisio",
+                "last_name": null,
+                "avatar_id": null
             },
             "attachment": null
         },
@@ -78,18 +87,21 @@
                 "created_at": "2016-10-20T11:05:00.000000Z",
                 "updated_at": "2016-10-20T11:05:00.000000Z",
                 "type": "private",
-                "title": null
+                "title": "William"
             },
             "sender": {
                 "id": 1,
-                "email": "anisio.tier@example.com"
+                "email": "anisio.tier@example.com",
+                "first_name": "Anisio",
+                "last_name": null,
+                "avatar_id": null
             },
             "attachment": null
         }
     ],
     "links": {
-        "first": "http:\/\/localhost\/messages?page=1",
-        "last": "http:\/\/localhost\/messages?page=1",
+        "first": "http://localhost/messages?page=1",
+        "last": "http://localhost/messages?page=1",
         "prev": null,
         "next": null
     },
@@ -105,7 +117,7 @@
                 "active": false
             },
             {
-                "url": "http:\/\/localhost\/messages?page=1",
+                "url": "http://localhost/messages?page=1",
                 "label": "1",
                 "page": 1,
                 "active": true
@@ -117,7 +129,7 @@
                 "active": false
             }
         ],
-        "path": "http:\/\/localhost\/messages",
+        "path": "http://localhost/messages",
         "per_page": 15,
         "to": 4,
         "total": 4

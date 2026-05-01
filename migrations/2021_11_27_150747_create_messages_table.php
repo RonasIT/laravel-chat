@@ -8,7 +8,7 @@ class CreateMessagesTable extends Migration
 {
     public function up(): void
     {
-        $usersTableName = app(config('chat.classes.user_model'))->getTable();
+        $usersTableName = app(config('chat.classes.user.model'))->getTable();
 
         Schema::create('messages', function (Blueprint $table) use ($usersTableName) {
             $table->increments('id');

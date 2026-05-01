@@ -3,11 +3,13 @@
 namespace RonasIT\Chat\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Arr;
 use RonasIT\Chat\Contracts\Models\ConversationModelContract;
 use RonasIT\Chat\Contracts\Models\MessageModelContract;
 use RonasIT\Chat\Enums\Conversation\TypeEnum;
@@ -43,13 +45,13 @@ class Conversation extends Model implements ConversationModelContract
 
     public function creator(): BelongsTo
     {
-        return $this->belongsTo(config('chat.classes.user_model'));
+        return $this->belongsTo(config('chat.classes.user.model'));
     }
 
     public function members(): BelongsToMany
     {
         return $this->belongsToMany(
-            related: config('chat.classes.user_model'),
+            related: config('chat.classes.user.model'),
             table: 'conversation_member',
             foreignPivotKey: 'conversation_id',
             relatedPivotKey: 'member_id',
@@ -58,7 +60,46 @@ class Conversation extends Model implements ConversationModelContract
 
     public function cover(): BelongsTo
     {
-        return $this->belongsTo(config('chat.classes.media_model'), 'cover_id');
+        return $this->belongsTo(config('chat.classes.media.model'), 'cover_id');
+    }
+
+    protected function title(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value): ?string {
+                return ($this->isPrivate())
+                    ? Arr::get($this->attributes, 'calculated_title')
+                    : $value;
+            },
+        );
+    }
+
+    protected function coverId(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value): ?int {
+                return ($this->isPrivate())
+                    ? Arr::get($this->attributes, 'calculated_cover_id')
+                    : $value;
+            },
+        );
+    }
+
+    public function scopeWithCalculatedIdentityForMember(Builder $query, int $memberId): Builder
+    {
+        $constraint = fn (Builder $query) => $query->where('member_id', '!=', $memberId);
+
+        if ($titleColumns = config('chat.classes.user.columns.full_name')) {
+            $titleColumn = $this->buildFullNameExpression($titleColumns);
+
+            $query->withAggregate(['members as calculated_title' => $constraint], $titleColumn);
+        }
+
+        if ($avatarColumn = config('chat.classes.user.columns.avatar')) {
+            $query->withAggregate(['members as calculated_cover_id' => $constraint], $avatarColumn);
+        }
+
+        return $query;
     }
 
     public function scopeWithUnreadMessagesCount(Builder $query, int $memberId): Builder
@@ -109,5 +150,23 @@ class Conversation extends Model implements ConversationModelContract
             ->pinned_messages()
             ->whereKey($messageId)
             ->exists();
+    }
+
+    private function buildFullNameExpression(array $columns): string
+    {
+        if (count($columns) === 1) {
+            return $columns[0];
+        }
+
+        $separators = config('chat.classes.user.columns.full_name_separator');
+
+        $parts = ["COALESCE({$columns[0]}, '')"];
+
+        foreach (array_slice($columns, 1) as $i => $column) {
+            $sep = str_replace("'", "''", ($separators[$i] ?? end($separators)) ?: '');
+            $parts[] = "COALESCE('{$sep}' || {$column}, '')";
+        }
+
+        return implode(' || ', $parts);
     }
 }

@@ -6,7 +6,7 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": null,
+            "title": "Bob Lewis",
             "messages": [
                 {
                     "id": 1,
@@ -27,11 +27,17 @@
             "members": [
                 {
                     "id": 1,
-                    "email": "anisio.tier@example.com"
+                    "email": "anisio.tier@example.com",
+                    "first_name": "Alice",
+                    "last_name": "Doe",
+                    "avatar_id": null
                 },
                 {
                     "id": 2,
-                    "email": "fidel.kutch@example.com"
+                    "email": "fidel.kutch@example.com",
+                    "first_name": "Bob",
+                    "last_name": "Lewis",
+                    "avatar_id": 2
                 }
             ],
             "last_message": {
@@ -41,7 +47,13 @@
                 "created_at": "2016-10-20T11:05:00.000000Z",
                 "updated_at": "2016-10-20T11:05:00.000000Z"
             },
-            "cover": null,
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            },
             "pinned_messages": [
                 {
                     "id": 2,
@@ -66,21 +78,33 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": null,
+            "title": "Bob Lewis",
             "messages": [],
             "creator": null,
             "members": [
                 {
                     "id": 1,
-                    "email": "anisio.tier@example.com"
+                    "email": "anisio.tier@example.com",
+                    "first_name": "Alice",
+                    "last_name": "Doe",
+                    "avatar_id": null
                 },
                 {
                     "id": 2,
-                    "email": "fidel.kutch@example.com"
+                    "email": "fidel.kutch@example.com",
+                    "first_name": "Bob",
+                    "last_name": "Lewis",
+                    "avatar_id": 2
                 }
             ],
             "last_message": null,
-            "cover": null,
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            },
             "pinned_messages": [],
             "members_count": 2
         },
@@ -90,21 +114,33 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": null,
+            "title": "Bob Lewis",
             "messages": [],
             "creator": null,
             "members": [
                 {
                     "id": 1,
-                    "email": "anisio.tier@example.com"
+                    "email": "anisio.tier@example.com",
+                    "first_name": "Alice",
+                    "last_name": "Doe",
+                    "avatar_id": null
                 },
                 {
                     "id": 2,
-                    "email": "fidel.kutch@example.com"
+                    "email": "fidel.kutch@example.com",
+                    "first_name": "Bob",
+                    "last_name": "Lewis",
+                    "avatar_id": 2
                 }
             ],
             "last_message": null,
-            "cover": null,
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            },
             "pinned_messages": [],
             "members_count": 2
         },
@@ -114,21 +150,33 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": null,
+            "title": "Bob Lewis",
             "messages": [],
             "creator": null,
             "members": [
                 {
                     "id": 1,
-                    "email": "anisio.tier@example.com"
+                    "email": "anisio.tier@example.com",
+                    "first_name": "Alice",
+                    "last_name": "Doe",
+                    "avatar_id": null
                 },
                 {
                     "id": 2,
-                    "email": "fidel.kutch@example.com"
+                    "email": "fidel.kutch@example.com",
+                    "first_name": "Bob",
+                    "last_name": "Lewis",
+                    "avatar_id": 2
                 }
             ],
             "last_message": null,
-            "cover": null,
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            },
             "pinned_messages": [],
             "members_count": 2
         },
@@ -138,21 +186,33 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": null,
+            "title": "Bob Lewis",
             "messages": [],
             "creator": null,
             "members": [
                 {
                     "id": 1,
-                    "email": "anisio.tier@example.com"
+                    "email": "anisio.tier@example.com",
+                    "first_name": "Alice",
+                    "last_name": "Doe",
+                    "avatar_id": null
                 },
                 {
                     "id": 2,
-                    "email": "fidel.kutch@example.com"
+                    "email": "fidel.kutch@example.com",
+                    "first_name": "Bob",
+                    "last_name": "Lewis",
+                    "avatar_id": 2
                 }
             ],
             "last_message": null,
-            "cover": null,
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            },
             "pinned_messages": [],
             "members_count": 2
         },
@@ -166,20 +226,32 @@
             "messages": [],
             "creator": {
                 "id": 1,
-                "email": "anisio.tier@example.com"
+                "email": "anisio.tier@example.com",
+                "first_name": "Alice",
+                "last_name": "Doe",
+                "avatar_id": null
             },
             "members": [
                 {
                     "id": 1,
-                    "email": "anisio.tier@example.com"
+                    "email": "anisio.tier@example.com",
+                    "first_name": "Alice",
+                    "last_name": "Doe",
+                    "avatar_id": null
                 },
                 {
                     "id": 2,
-                    "email": "fidel.kutch@example.com"
+                    "email": "fidel.kutch@example.com",
+                    "first_name": "Bob",
+                    "last_name": "Lewis",
+                    "avatar_id": 2
                 },
                 {
                     "id": 3,
-                    "email": "alien.west@example.com"
+                    "email": "alien.west@example.com",
+                    "first_name": "Charlie",
+                    "last_name": null,
+                    "avatar_id": null
                 }
             ],
             "last_message": null,

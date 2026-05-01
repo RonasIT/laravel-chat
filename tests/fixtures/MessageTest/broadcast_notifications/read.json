@@ -31,7 +31,10 @@
                         "updated_at": "2016-10-20T11:05:00.000000Z",
                         "sender": {
                             "id": 3,
-                            "email": "alien.west@example.com"
+                            "email": "alien.west@example.com",
+                            "first_name": "Alien",
+                            "last_name": null,
+                            "avatar_id": null
                         }
                     }
                 },
@@ -42,7 +45,10 @@
             ],
             "notifiable": {
                 "id": 2,
-                "email": "fidel.kutch@example.com"
+                "email": "fidel.kutch@example.com",
+                "first_name": "Fidel",
+                "last_name": null,
+                "avatar_id": null
             },
             "locale": null
         },
@@ -77,7 +83,10 @@
                         "updated_at": "2016-10-20T11:05:00.000000Z",
                         "sender": {
                             "id": 3,
-                            "email": "alien.west@example.com"
+                            "email": "alien.west@example.com",
+                            "first_name": "Alien",
+                            "last_name": null,
+                            "avatar_id": null
                         }
                     }
                 },
@@ -88,7 +97,10 @@
             ],
             "notifiable": {
                 "id": 3,
-                "email": "alien.west@example.com"
+                "email": "alien.west@example.com",
+                "first_name": "Alien",
+                "last_name": null,
+                "avatar_id": null
             },
             "locale": null
         }

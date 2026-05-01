@@ -1,36 +1,19 @@
 {
     "data": [
         {
-            "id": 6,
-            "last_updated_at": "2016-10-20 11:05:00",
-            "created_at": "2016-10-20T11:05:00.000000Z",
-            "updated_at": "2016-10-20T11:05:00.000000Z",
-            "type": "group",
-            "title": "Group Chat"
-        },
-        {
-            "id": 5,
+            "id": 1,
             "last_updated_at": "2016-10-20 11:05:00",
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob Lewis"
-        },
-        {
-            "id": 4,
-            "last_updated_at": "2016-10-20 11:05:00",
-            "created_at": "2016-10-20T11:05:00.000000Z",
-            "updated_at": "2016-10-20T11:05:00.000000Z",
-            "type": "private",
-            "title": "Bob Lewis"
-        },
-        {
-            "id": 3,
-            "last_updated_at": "2016-10-20 11:05:00",
-            "created_at": "2016-10-20T11:05:00.000000Z",
-            "updated_at": "2016-10-20T11:05:00.000000Z",
-            "type": "private",
-            "title": "Bob Lewis"
+            "title": "Bob Lewis",
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            }
         },
         {
             "id": 2,
@@ -38,15 +21,59 @@
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob Lewis"
+            "title": "Bob Lewis",
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            }
         },
         {
-            "id": 1,
+            "id": 3,
             "last_updated_at": "2016-10-20 11:05:00",
             "created_at": "2016-10-20T11:05:00.000000Z",
             "updated_at": "2016-10-20T11:05:00.000000Z",
             "type": "private",
-            "title": "Bob Lewis"
+            "title": "Bob Lewis",
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            }
+        },
+        {
+            "id": 4,
+            "last_updated_at": "2016-10-20 11:05:00",
+            "created_at": "2016-10-20T11:05:00.000000Z",
+            "updated_at": "2016-10-20T11:05:00.000000Z",
+            "type": "private",
+            "title": "Bob Lewis",
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            }
+        },
+        {
+            "id": 5,
+            "last_updated_at": "2016-10-20 11:05:00",
+            "created_at": "2016-10-20T11:05:00.000000Z",
+            "updated_at": "2016-10-20T11:05:00.000000Z",
+            "type": "private",
+            "title": "Bob Lewis",
+            "cover": {
+                "id": 2,
+                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "name": "bob_avatar",
+                "is_public": true,
+                "meta": []
+            }
         }
     ],
     "links": {
@@ -63,25 +90,22 @@
             {
                 "url": null,
                 "label": "&laquo; Previous",
-                "page": null,
                 "active": false
             },
             {
                 "url": "http:\/\/localhost\/conversations?page=1",
                 "label": "1",
-                "page": 1,
                 "active": true
             },
             {
                 "url": null,
                 "label": "Next &raquo;",
-                "page": null,
                 "active": false
             }
         ],
         "path": "http:\/\/localhost\/conversations",
         "per_page": 15,
-        "to": 6,
-        "total": 6
+        "to": 5,
+        "total": 5
     }
 }

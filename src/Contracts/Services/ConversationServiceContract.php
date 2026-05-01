@@ -14,4 +14,6 @@ interface ConversationServiceContract
     public function getPrivate(int $firstMemberId, int $secondMemberId): ?Model;
 
     public function delete($where): void;
+
+    public function retrieveById(int $id): ?Model;
 }
