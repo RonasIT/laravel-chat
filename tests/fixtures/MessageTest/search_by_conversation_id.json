@@ -9,8 +9,8 @@
         }
     ],
     "links": {
-        "first": "http:\/\/localhost\/messages?page=1",
-        "last": "http:\/\/localhost\/messages?page=1",
+        "first": "http://localhost/messages?page=1",
+        "last": "http://localhost/messages?page=1",
         "prev": null,
         "next": null
     },
@@ -25,7 +25,7 @@
                 "active": false
             },
             {
-                "url": "http:\/\/localhost\/messages?page=1",
+                "url": "http://localhost/messages?page=1",
                 "label": "1",
                 "active": true
             },
@@ -35,7 +35,7 @@
                 "active": false
             }
         ],
-        "path": "http:\/\/localhost\/messages",
+        "path": "http://localhost/messages",
         "per_page": 15,
         "to": 1,
         "total": 1

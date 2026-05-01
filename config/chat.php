@@ -11,12 +11,16 @@ return [
             'model' => User::class,
 
             'columns' => [
-                // The column in the users table used as the display name for private conversation titles.
-                'name' => 'name',
+                // The columns list used as the display name for private conversation titles.
+                'full_name' => [
+                    'name',
+                ],
+                // Separators between full_name columns.
+                // A separator per gap (last value repeats if fewer than gaps) — e.g., [' ', ' - '] → "Smith John - Developer".
+                'full_name_separator' => [],
 
-                // The column in the users table referencing the user's avatar media record.
                 // Used to resolve the cover for private conversations.
-                'avatar_id' => 'avatar_id',
+                'avatar' => 'avatar_id',
             ],
         ],
 

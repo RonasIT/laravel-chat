@@ -9,7 +9,7 @@
             "title": "Bob",
             "cover": {
                 "id": 2,
-                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "link": "http://localhost/bob_avatar.jpg",
                 "name": "bob_avatar",
                 "is_public": true,
                 "meta": []
@@ -24,7 +24,7 @@
             "title": "Bob",
             "cover": {
                 "id": 2,
-                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "link": "http://localhost/bob_avatar.jpg",
                 "name": "bob_avatar",
                 "is_public": true,
                 "meta": []
@@ -39,7 +39,7 @@
             "title": "Bob",
             "cover": {
                 "id": 2,
-                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "link": "http://localhost/bob_avatar.jpg",
                 "name": "bob_avatar",
                 "is_public": true,
                 "meta": []
@@ -54,7 +54,7 @@
             "title": "Bob",
             "cover": {
                 "id": 2,
-                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "link": "http://localhost/bob_avatar.jpg",
                 "name": "bob_avatar",
                 "is_public": true,
                 "meta": []
@@ -69,7 +69,7 @@
             "title": "Bob",
             "cover": {
                 "id": 2,
-                "link": "http:\/\/localhost\/bob_avatar.jpg",
+                "link": "http://localhost/bob_avatar.jpg",
                 "name": "bob_avatar",
                 "is_public": true,
                 "meta": []
@@ -77,8 +77,8 @@
         }
     ],
     "links": {
-        "first": "http:\/\/localhost\/conversations?page=1",
-        "last": "http:\/\/localhost\/conversations?page=1",
+        "first": "http://localhost/conversations?page=1",
+        "last": "http://localhost/conversations?page=1",
         "prev": null,
         "next": null
     },
@@ -93,7 +93,7 @@
                 "active": false
             },
             {
-                "url": "http:\/\/localhost\/conversations?page=1",
+                "url": "http://localhost/conversations?page=1",
                 "label": "1",
                 "active": true
             },
@@ -103,7 +103,7 @@
                 "active": false
             }
         ],
-        "path": "http:\/\/localhost\/conversations",
+        "path": "http://localhost/conversations",
         "per_page": 15,
         "to": 5,
         "total": 5

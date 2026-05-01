@@ -29,8 +29,9 @@ class TestCase extends BaseTest
         Config::set('chat.classes.user.model', User::class);
         Config::set('chat.classes.media.model', Media::class);
         Config::set('chat.default_channels.0', BroadcastChannel::class);
-        Config::set('chat.classes.user.columns.avatar_id', 'avatar_id');
-        Config::set('chat.classes.user.columns.name', 'name');
+        Config::set('chat.classes.user.columns.avatar', 'avatar_id');
+        Config::set('chat.classes.user.columns.full_name', ['first_name', 'last_name']);
+        Config::set('chat.classes.user.columns.full_name_separator', [' ']);
 
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadMigrationsFrom(__DIR__ . '/../migrations');

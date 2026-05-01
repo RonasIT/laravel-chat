@@ -26,13 +26,15 @@
         {
             "id": 1,
             "email": "anisio.tier@example.com",
-            "name": "Alice",
+            "first_name": "Alice",
+            "last_name": null,
             "avatar_id": null
         },
         {
             "id": 2,
             "email": "fidel.kutch@example.com",
-            "name": "Bob",
+            "first_name": "Bob",
+            "last_name": null,
             "avatar_id": 2
         }
     ],
@@ -45,7 +47,7 @@
     },
     "cover": {
         "id": 2,
-        "link": "http:\/\/localhost\/bob_avatar.jpg",
+        "link": "http://localhost/bob_avatar.jpg",
         "name": "bob_avatar",
         "is_public": true,
         "meta": []

@@ -1,7 +1,7 @@
-INSERT INTO users(id, email, name, avatar_id) VALUES
-    (1, 'anisio.tier@example.com', 'Alice', null),
-    (2, 'fidel.kutch@example.com', 'Bob', 2),
-    (3, 'alien.west@example.com', 'Charlie', null);
+INSERT INTO users(id, email, first_name, last_name, avatar_id) VALUES
+    (1, 'anisio.tier@example.com', 'Alice', null, null),
+    (2, 'fidel.kutch@example.com', 'Bob', null, 2),
+    (3, 'alien.west@example.com', 'Charlie', null, null);
 
 INSERT INTO media(id, name, owner_id, is_public, link, preview_id, meta, created_at, updated_at) VALUES
     (1, 'group_chat_cover', 1, true, 'http://localhost/group_chat_cover.jpg', null, '{}', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),

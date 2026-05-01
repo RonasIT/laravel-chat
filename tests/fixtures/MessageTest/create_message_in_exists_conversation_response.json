@@ -7,7 +7,8 @@
     "sender": {
         "id": 2,
         "email": "fidel.kutch@example.com",
-        "name": "Fidel",
+        "first_name": "Fidel",
+        "last_name": null,
         "avatar_id": null
     }
 }

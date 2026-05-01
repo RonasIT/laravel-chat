@@ -32,7 +32,8 @@
             "notifiable": {
                 "id": 2,
                 "email": "fidel.kutch@example.com",
-                "name": "Bob",
+                "first_name": "Bob",
+                "last_name": null,
                 "avatar_id": 2
             },
             "locale": null
@@ -69,7 +70,8 @@
             "notifiable": {
                 "id": 3,
                 "email": "alien.west@example.com",
-                "name": "Charlie",
+                "first_name": "Charlie",
+                "last_name": null,
                 "avatar_id": null
             },
             "locale": null

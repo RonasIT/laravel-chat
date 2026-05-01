@@ -36,7 +36,8 @@
                             "sender": {
                                 "id": 2,
                                 "email": "fidel.kutch@example.com",
-                                "name": "Fidel",
+                                "first_name": "Fidel",
+                                "last_name": null,
                                 "avatar_id": null
                             }
                         }
@@ -50,7 +51,8 @@
             "notifiable": {
                 "id": 5,
                 "email": "william.bob@example.com",
-                "name": "William",
+                "first_name": "William",
+                "last_name": null,
                 "avatar_id": null
             },
             "locale": null
@@ -93,7 +95,8 @@
                             "sender": {
                                 "id": 2,
                                 "email": "fidel.kutch@example.com",
-                                "name": "Fidel",
+                                "first_name": "Fidel",
+                                "last_name": null,
                                 "avatar_id": null
                             }
                         },
@@ -110,7 +113,8 @@
             "notifiable": {
                 "id": 5,
                 "email": "william.bob@example.com",
-                "name": "William",
+                "first_name": "William",
+                "last_name": null,
                 "avatar_id": null
             },
             "locale": null
@@ -151,7 +155,8 @@
                             "sender": {
                                 "id": 2,
                                 "email": "fidel.kutch@example.com",
-                                "name": "Fidel",
+                                "first_name": "Fidel",
+                                "last_name": null,
                                 "avatar_id": null
                             }
                         },
@@ -168,7 +173,8 @@
             "notifiable": {
                 "id": 2,
                 "email": "fidel.kutch@example.com",
-                "name": "Fidel",
+                "first_name": "Fidel",
+                "last_name": null,
                 "avatar_id": null
             },
             "locale": null
@@ -205,7 +211,8 @@
                         "sender": {
                             "id": 2,
                             "email": "fidel.kutch@example.com",
-                            "name": "Fidel",
+                            "first_name": "Fidel",
+                            "last_name": null,
                             "avatar_id": null
                         }
                     }
@@ -218,7 +225,8 @@
             "notifiable": {
                 "id": 5,
                 "email": "william.bob@example.com",
-                "name": "William",
+                "first_name": "William",
+                "last_name": null,
                 "avatar_id": null
             },
             "locale": null

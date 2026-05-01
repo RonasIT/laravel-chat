@@ -30,7 +30,8 @@
                         "sender": {
                             "id": 3,
                             "email": "alien.west@example.com",
-                            "name": "Alien",
+                            "first_name": "Alien",
+                            "last_name": null,
                             "avatar_id": null
                         }
                     }
@@ -43,7 +44,8 @@
             "notifiable": {
                 "id": 2,
                 "email": "fidel.kutch@example.com",
-                "name": "Fidel",
+                "first_name": "Fidel",
+                "last_name": null,
                 "avatar_id": null
             },
             "locale": null
@@ -78,7 +80,8 @@
                         "sender": {
                             "id": 3,
                             "email": "alien.west@example.com",
-                            "name": "Alien",
+                            "first_name": "Alien",
+                            "last_name": null,
                             "avatar_id": null
                         }
                     }
@@ -91,7 +94,8 @@
             "notifiable": {
                 "id": 3,
                 "email": "alien.west@example.com",
-                "name": "Alien",
+                "first_name": "Alien",
+                "last_name": null,
                 "avatar_id": null
             },
             "locale": null

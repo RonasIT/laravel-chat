@@ -36,7 +36,8 @@
                             "sender": {
                                 "id": 1,
                                 "email": "anisio.tier@example.com",
-                                "name": "Anisio",
+                                "first_name": "Anisio",
+                                "last_name": null,
                                 "avatar_id": null
                             }
                         },
@@ -62,7 +63,8 @@
             "notifiable": {
                 "id": 1,
                 "email": "anisio.tier@example.com",
-                "name": "Anisio",
+                "first_name": "Anisio",
+                "last_name": null,
                 "avatar_id": null
             },
             "locale": null
@@ -103,7 +105,8 @@
                             "sender": {
                                 "id": 1,
                                 "email": "anisio.tier@example.com",
-                                "name": "Anisio",
+                                "first_name": "Anisio",
+                                "last_name": null,
                                 "avatar_id": null
                             }
                         },
@@ -129,7 +132,8 @@
             "notifiable": {
                 "id": 3,
                 "email": "alien.west@example.com",
-                "name": "Alien",
+                "first_name": "Alien",
+                "last_name": null,
                 "avatar_id": null
             },
             "locale": null
