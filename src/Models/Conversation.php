@@ -85,7 +85,7 @@ class Conversation extends Model implements ConversationModelContract
         );
     }
 
-    public function scopeWithCalculatedIdentityForMember(Builder $query, int $memberId): Builder
+    public function scopeWithOverriddenTitleAndCover(Builder $query, int $memberId): Builder
     {
         $constraint = fn (Builder $query) => $query->where('member_id', '!=', $memberId);
 

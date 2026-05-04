@@ -34,7 +34,7 @@ class MessageRepository extends BaseRepository
             ->toArray();
     }
 
-    public function withCalculatedIdentityForMemberId(?int $memberId): self
+    public function withOverriddenTitleAndCover(?int $memberId): self
     {
         $this->withCalculatedIdentityForMemberId = $memberId;
 
@@ -48,7 +48,7 @@ class MessageRepository extends BaseRepository
         if (!is_null($this->withCalculatedIdentityForMemberId)) {
             if (in_array('conversation', $this->attachedRelations)) {
                 $memberId = $this->withCalculatedIdentityForMemberId;
-                $query->with(['conversation' => fn ($query) => $query->withCalculatedIdentityForMember($memberId)]);
+                $query->with(['conversation' => fn ($query) => $query->withOverriddenTitleAndCover($memberId)]);
             }
 
             $this->withCalculatedIdentityForMemberId = null;

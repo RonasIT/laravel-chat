@@ -106,7 +106,7 @@ class ConversationService extends EntityService implements ConversationServiceCo
             : null;
 
         return $this
-            ->withCalculatedIdentityForMemberId(Arr::get($filters, 'member_id'))
+            ->withOverriddenTitleAndCover(Arr::get($filters, 'member_id'))
             ->withUnreadCountMemberId($forMemberId)
             ->searchQuery($filters)
             ->filterBy('members.member_id', 'member_id')
@@ -116,14 +116,14 @@ class ConversationService extends EntityService implements ConversationServiceCo
     public function retrieveById(int $id): ?Model
     {
         return $this
-            ->withCalculatedIdentityForMemberId(Auth::id())
+            ->withOverriddenTitleAndCover(Auth::id())
             ->find($id);
     }
 
     public function getPrivate(int $firstMemberId, int $secondMemberId): ?Model
     {
         return $this
-            ->withCalculatedIdentityForMemberId($firstMemberId)
+            ->withOverriddenTitleAndCover($firstMemberId)
             ->getByTypeAndMembers(TypeEnum::Private, $firstMemberId, $secondMemberId);
     }
 

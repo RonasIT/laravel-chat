@@ -38,7 +38,7 @@ class ConversationRepository extends BaseRepository
         $conversation->members()->attach($memberIds);
     }
 
-    public function withCalculatedIdentityForMemberId(?int $memberId): self
+    public function withOverriddenTitleAndCover(?int $memberId): self
     {
         $this->withCalculatedIdentityForMemberId = $memberId;
 
@@ -71,7 +71,7 @@ class ConversationRepository extends BaseRepository
         $query = parent::getQuery($where);
 
         if (!is_null($this->withCalculatedIdentityForMemberId)) {
-            $query->withCalculatedIdentityForMember($this->withCalculatedIdentityForMemberId);
+            $query->withOverriddenTitleAndCover($this->withCalculatedIdentityForMemberId);
 
             $this->withCalculatedIdentityForMemberId = null;
         }
