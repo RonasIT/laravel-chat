@@ -270,6 +270,13 @@ class MessageTest extends TestCase
         self::$readMessageState->assertNotChanged();
     }
 
+    public function testReadUpToWithInvalidId(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/abc/read-to');
+
+        $response->assertNotFound();
+    }
+
     public function testPin(): void
     {
         $response = $this->actingAs(self::$firstUser)->postJson('/messages/2/pin');
@@ -310,6 +317,15 @@ class MessageTest extends TestCase
         $response->assertNotFound();
 
         $response->assertJson(['message' => 'Message does not exist']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testPinWithInvalidId(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/abc/pin');
+
+        $response->assertNotFound();
 
         self::$pinnedMessageState->assertNotChanged();
     }
@@ -360,6 +376,17 @@ class MessageTest extends TestCase
         self::$pinnedMessageState->assertNotChanged();
     }
 
+    public function testUnpinAsNonMemberNotPinned(): void
+    {
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/3/unpin');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
     public function testUnpinNotFound(): void
     {
         $response = $this->actingAs(self::$firstUser)->postJson('/messages/0/unpin');
@@ -367,6 +394,15 @@ class MessageTest extends TestCase
         $response->assertNotFound();
 
         $response->assertJson(['message' => 'Message does not exist']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpinWithInvalidId(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/abc/unpin');
+
+        $response->assertNotFound();
 
         self::$pinnedMessageState->assertNotChanged();
     }

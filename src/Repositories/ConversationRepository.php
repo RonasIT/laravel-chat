@@ -3,12 +3,12 @@
 namespace RonasIT\Chat\Repositories;
 
 use Illuminate\Database\Eloquent\Builder;
+use RonasIT\Chat\Contracts\Models\ConversationModelContract;
 use RonasIT\Chat\Enums\Conversation\TypeEnum;
-use RonasIT\Chat\Models\Conversation;
 use RonasIT\Support\Repositories\BaseRepository;
 
 /**
- * @property Conversation $model
+ * @property ConversationModelContract $model
  */
 class ConversationRepository extends BaseRepository
 {
@@ -16,7 +16,7 @@ class ConversationRepository extends BaseRepository
 
     public function __construct()
     {
-        $this->setModel(Conversation::class);
+        $this->setModel(app()->getAlias(ConversationModelContract::class));
 
         $this->setAdditionalReservedFilters(
             'member_id',
@@ -24,7 +24,7 @@ class ConversationRepository extends BaseRepository
         );
     }
 
-    public function getByTypeAndMembers(TypeEnum $type, int ...$membersIDs): ?Conversation
+    public function getByTypeAndMembers(TypeEnum $type, int ...$membersIDs): ?ConversationModelContract
     {
         return $this
             ->getQuery(['type' => $type])
@@ -32,7 +32,7 @@ class ConversationRepository extends BaseRepository
             ->first();
     }
 
-    public function attachMembers(Conversation $conversation, array $memberIds): void
+    public function attachMembers(ConversationModelContract $conversation, array $memberIds): void
     {
         $conversation->members()->attach($memberIds);
     }
@@ -44,14 +44,14 @@ class ConversationRepository extends BaseRepository
         return $this;
     }
 
-    public function pinMessage(Conversation $conversation, int $messageId): array
+    public function pinMessage(ConversationModelContract $conversation, int $messageId): array
     {
         return $conversation
             ->pinned_messages()
             ->syncWithoutDetaching([$messageId]);
     }
 
-    public function unpinMessage(Conversation $conversation, int $messageId): int
+    public function unpinMessage(ConversationModelContract $conversation, int $messageId): int
     {
         return $conversation
             ->pinned_messages()

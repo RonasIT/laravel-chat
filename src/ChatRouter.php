@@ -37,17 +37,17 @@ class ChatRouter
 
             $this->controller(ConversationController::class)->group(function () use ($defaultOptions) {
                 when($defaultOptions['conversations_search'], fn () => $this->get('conversations', 'search')->name('conversations.search'));
-                when($defaultOptions['conversation_get'], fn () => $this->get('conversations/{id}', 'get')->name('conversations.get'));
-                when($defaultOptions['conversation_delete'], fn () => $this->delete('conversations/{id}', 'delete')->name('conversations.delete'));
-                when($defaultOptions['conversation_get_by_user'], fn () => $this->get('users/{userId}/conversation', 'getByUserId')->name('conversations.get_by_user_id'));
+                when($defaultOptions['conversation_get'], fn () => $this->get('conversations/{id}', 'get')->whereNumber('id')->name('conversations.get'));
+                when($defaultOptions['conversation_delete'], fn () => $this->delete('conversations/{id}', 'delete')->whereNumber('id')->name('conversations.delete'));
+                when($defaultOptions['conversation_get_by_user'], fn () => $this->get('users/{userId}/conversation', 'getByUserId')->whereNumber('userId')->name('conversations.get_by_user_id'));
             });
 
             $this->controller(MessageController::class)->group(function () use ($defaultOptions) {
                 when($defaultOptions['messages_search'], fn () => $this->get('messages', 'search')->name('messages.search'));
                 when($defaultOptions['message_create'], fn () => $this->post('messages', 'create')->name('messages.create'));
-                when($defaultOptions['messages_read'], fn () => $this->post('messages/{id}/read-to', 'readUpTo')->name('messages.read'));
-                when($defaultOptions['message_pin'], fn () => $this->post('messages/{id}/pin', 'pin')->name('messages.pin'));
-                when($defaultOptions['message_unpin'], fn () => $this->post('messages/{id}/unpin', 'unpin')->name('messages.unpin'));
+                when($defaultOptions['messages_read'], fn () => $this->post('messages/{id}/read-to', 'readUpTo')->whereNumber('id')->name('messages.read'));
+                when($defaultOptions['message_pin'], fn () => $this->post('messages/{id}/pin', 'pin')->whereNumber('id')->name('messages.pin'));
+                when($defaultOptions['message_unpin'], fn () => $this->post('messages/{id}/unpin', 'unpin')->whereNumber('id')->name('messages.unpin'));
             });
         };
     }
