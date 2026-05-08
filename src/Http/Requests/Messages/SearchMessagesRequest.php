@@ -17,6 +17,7 @@ class SearchMessagesRequest extends BaseRequest implements SearchMessagesRequest
             'order_by' => 'string',
             'desc' => 'boolean',
             'conversation_id' => 'integer',
+            'with_overridden_title_and_cover' => 'boolean',
             'with' => 'array',
             'with.*' => 'string|required|in:' . $this->getAvailableRelations(),
         ];

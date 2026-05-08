@@ -17,7 +17,10 @@ class MessageRepository extends BaseRepository
     {
         $this->setModel(app()->getAlias(MessageModelContract::class));
 
-        $this->setAdditionalReservedFilters('member_id');
+        $this->setAdditionalReservedFilters(
+            'member_id',
+            'with_overridden_title_and_cover',
+        );
     }
 
     public function getUnreadIdsByUser(int $conversationId, int $toMessageId, int $memberId): array
