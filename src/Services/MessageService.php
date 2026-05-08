@@ -68,7 +68,7 @@ class MessageService extends EntityService implements MessageServiceContract
             : null;
 
         return $this
-            ->withOverriddenTitleAndCover($memberId)
+            ->withCalculatedIdentity($memberId)
             ->searchQuery($filters)
             ->filterBy('conversation.members.member_id', 'member_id')
             ->getSearchResults();

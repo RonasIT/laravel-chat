@@ -98,7 +98,7 @@ class ConversationService extends EntityService implements ConversationServiceCo
     public function search(array $filters = []): LengthAwarePaginator
     {
         return $this
-            ->withOverriddenTitleAndCover(Arr::get($filters, 'member_id'))
+            ->withCalculatedIdentity(Arr::get($filters, 'member_id'))
             ->withUnreadCountMemberId(Arr::get($filters, 'with_unread_messages_count_for_member_id'))
             ->searchQuery($filters)
             ->filterBy('members.member_id', 'member_id')
@@ -108,14 +108,14 @@ class ConversationService extends EntityService implements ConversationServiceCo
     public function retrieveById(int $id): ?Model
     {
         return $this
-            ->withOverriddenTitleAndCover(Auth::id())
+            ->withCalculatedIdentity(Auth::id())
             ->find($id);
     }
 
     public function getPrivate(int $firstMemberId, int $secondMemberId): ?Model
     {
         return $this
-            ->withOverriddenTitleAndCover($firstMemberId)
+            ->withCalculatedIdentity($firstMemberId)
             ->getByTypeAndMembers(TypeEnum::Private, $firstMemberId, $secondMemberId);
     }
 

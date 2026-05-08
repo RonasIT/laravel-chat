@@ -26,7 +26,7 @@ class ConversationModelTest extends TestCase
         $this->assertFalse($conversation->isPrivate());
     }
 
-    public static function getBuildFullNameExpressionCases(): array
+    public static function getBuildTitleExpressionCases(): array
     {
         return [
             'single_column' => [
@@ -47,12 +47,12 @@ class ConversationModelTest extends TestCase
         ];
     }
 
-    #[DataProvider('getBuildFullNameExpressionCases')]
-    public function testBuildFullNameExpression(array $columns, array $separators, string $expected): void
+    #[DataProvider('getBuildTitleExpressionCases')]
+    public function testBuildTitleExpression(array $columns, array $separators, string $expected): void
     {
         Config::set('chat.classes.user.columns.full_name_separator', $separators);
 
-        $method = new ReflectionMethod(Conversation::class, 'buildFullNameExpression');
+        $method = new ReflectionMethod(Conversation::class, 'buildTitleExpression');
         $result = $method->invoke(new Conversation(), $columns);
 
         $this->assertSame($expected, $result);

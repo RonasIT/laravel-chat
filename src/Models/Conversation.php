@@ -85,14 +85,16 @@ class Conversation extends Model implements ConversationModelContract
         );
     }
 
-    public function scopeWithOverriddenTitleAndCover(Builder $query, int $memberId): Builder
+    public function scopeWithCalculatedIdentity(Builder $query, int $forMemberId): Builder
     {
-        $constraint = fn (Builder $query) => $query->where('member_id', '!=', $memberId);
+        $constraint = fn (Builder $query) => $query->where('member_id', '!=', $forMemberId);
 
         if ($titleColumns = config('chat.classes.user.columns.full_name')) {
-            $titleColumn = $this->buildFullNameExpression($titleColumns);
+            $titleColumn = $this->buildTitleExpression($titleColumns);
 
             $query->withAggregate(['members as calculated_title' => $constraint], $titleColumn);
+        } else {
+            trigger_error('chat.classes.user.columns.full_name is not configured, calculated_title will be null.', E_USER_WARNING);
         }
 
         if ($avatarColumn = config('chat.classes.user.columns.avatar')) {
@@ -152,7 +154,7 @@ class Conversation extends Model implements ConversationModelContract
             ->exists();
     }
 
-    private function buildFullNameExpression(array $columns): string
+    private function buildTitleExpression(array $columns): string
     {
         if (count($columns) === 1) {
             return $columns[0];

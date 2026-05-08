@@ -37,7 +37,7 @@ class MessageRepository extends BaseRepository
             ->toArray();
     }
 
-    public function withOverriddenTitleAndCover(?int $memberId): self
+    public function withCalculatedIdentity(?int $memberId): self
     {
         $this->withCalculatedIdentityForMemberId = $memberId;
 
@@ -48,11 +48,9 @@ class MessageRepository extends BaseRepository
     {
         $query = parent::getQuery($where);
 
-        if (!is_null($this->withCalculatedIdentityForMemberId)) {
-            if (in_array('conversation', $this->attachedRelations)) {
-                $memberId = $this->withCalculatedIdentityForMemberId;
-                $query->with(['conversation' => fn ($query) => $query->withOverriddenTitleAndCover($memberId)]);
-            }
+        if (!is_null($this->withCalculatedIdentityForMemberId) && in_array('conversation', $this->attachedRelations)) {
+            $memberId = $this->withCalculatedIdentityForMemberId;
+            $query->with(['conversation' => fn ($query) => $query->withCalculatedIdentity($memberId)]);
 
             $this->withCalculatedIdentityForMemberId = null;
         }
