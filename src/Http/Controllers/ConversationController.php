@@ -9,6 +9,7 @@ use RonasIT\Chat\Contracts\Requests\GetConversationRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchConversationsRequestContract;
 use RonasIT\Chat\Contracts\Resources\ConversationResourceContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
+use RonasIT\Chat\Http\Actions\SearchAction;
 use RonasIT\Chat\Http\Resources\ConversationsCollectionResource;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -36,9 +37,9 @@ class ConversationController extends Controller
             : app(ConversationResourceContract::class, ['resource' => $result]);
     }
 
-    public function search(SearchConversationsRequestContract $request, ConversationServiceContract $service): ConversationsCollectionResource
+    public function search(SearchConversationsRequestContract $request, SearchAction $action): ConversationsCollectionResource
     {
-        $result = $service->search($request->onlyValidated());
+        $result = $action->execute($request->onlyValidated());
 
         return ConversationsCollectionResource::make($result);
     }
