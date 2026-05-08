@@ -16,12 +16,10 @@ readonly class SearchAction
 
     public function execute(array $filters = []): LengthAwarePaginator
     {
-        if (Auth::check()) {
-            $filters['member_id'] = Auth::id();
-        }
+        $filters['member_id'] = Auth::id();
 
         $filters['with_unread_messages_count_for_member_id'] = Arr::get($filters, 'with_unread_messages_count', false)
-            ? Arr::get($filters, 'member_id')
+            ? Auth::id()
             : null;
 
         return $this->conversationService->search($filters);
