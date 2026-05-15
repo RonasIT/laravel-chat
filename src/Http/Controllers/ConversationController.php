@@ -9,7 +9,7 @@ use RonasIT\Chat\Contracts\Requests\GetConversationRequestContract;
 use RonasIT\Chat\Contracts\Requests\SearchConversationsRequestContract;
 use RonasIT\Chat\Contracts\Resources\ConversationResourceContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
-use RonasIT\Chat\Http\Actions\SearchAction;
+use RonasIT\Chat\Http\Actions\Conversation\SearchAction;
 use RonasIT\Chat\Http\Resources\ConversationsCollectionResource;
 use Symfony\Component\HttpFoundation\Response;
 

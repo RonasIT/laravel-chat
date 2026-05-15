@@ -1,6 +1,6 @@
 <?php
 
-namespace RonasIT\Chat\Http\Actions;
+namespace RonasIT\Chat\Http\Actions\Conversation;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;

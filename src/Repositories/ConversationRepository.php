@@ -39,7 +39,7 @@ class ConversationRepository extends BaseRepository
         $conversation->members()->attach($memberIds);
     }
 
-    public function withCalculatedIdentity(?int $memberId): self
+    public function withCalculatedIdentity(int $memberId): self
     {
         $this->withCalculatedIdentityForMemberId = $memberId;
 

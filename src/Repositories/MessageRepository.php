@@ -37,7 +37,7 @@ class MessageRepository extends BaseRepository
             ->toArray();
     }
 
-    public function withCalculatedIdentity(?int $memberId): self
+    public function withCalculatedIdentity(int $memberId): self
     {
         $this->withCalculatedIdentityForMemberId = $memberId;
 
