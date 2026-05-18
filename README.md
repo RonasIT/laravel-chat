@@ -63,7 +63,7 @@ Route::prefix('api')->group(function () {
 });
 ```
 
-All endpoints require authentication. The routes are protected by the `auth` middleware.
+All endpoints are using the current auth user context, so it critical to always wrap them into the `auth` middleware.
 
 ### Conversations
 
