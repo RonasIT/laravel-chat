@@ -53,11 +53,13 @@ All routes are registered by default, you can change the route registration by c
 // routes/api.php
 use RonasIT\Chat\Enums\ChatRouteActionEnum;
 
-Route::middleware('auth')->group(function () {
-    Route::chat(
-        ChatRouteActionEnum::ConversationsSearch,
-        ChatRouteActionEnum::MessageCreate,
-    );
+Route::prefix('api')->group(function () {
+    Route::middleware('auth_group')->group(function () {
+        Route::chat(
+            ChatRouteActionEnum::ConversationsSearch,
+            ChatRouteActionEnum::MessageCreate,
+        );
+    });
 });
 ```
 
