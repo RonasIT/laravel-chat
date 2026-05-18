@@ -45,7 +45,7 @@ This package includes an OpenAPI documentation file. To include it in your proje
 ## API Endpoints
 
 All routes are registered by default, you can change the route registration by calling `Route::chat()` in your routes file (e.g. `routes/api.php`).
-- feel free to call `Route::chat()` helper inside any route wrappers like `group`, `prefix`, etc. to wrap package routes;
+- feel free to call `Route::chat()` helper inside any route wrappers like `group`, `prefix`, etc. to wrap package routes; **In this case default package's routes start to return 404.**
 - calling `Route::chat()` without args will add all package routes inside the calling helper place;
 - calling `Route::chat()` with `ChatRouteActionEnum` cases as arguments will register **only** the specified routes — all others are automatically disabled:
 
