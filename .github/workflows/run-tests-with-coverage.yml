@@ -1,4 +1,4 @@
-name: Run tests with coverage
+name: Run tests
 
 on:
   push:
@@ -6,21 +6,29 @@ on:
   pull_request:
     branches: [ "master" ]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  PHP_LATEST: &php-latest "8.5"
+  LARAVEL_LATEST: &laravel-latest "13.*"
+
 jobs:
-  tests-with-coverage:
+  tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: [ "8.3", "8.4" ]
-    env:
+        php-version: [ "8.3", "8.4", "8.5" ]
+        laravel-version: [ "12.*", "13.*" ]
+        exclude:
+          - php-version: *php-latest
+            laravel-version: *laravel-latest
+    env: &db-env
       DB_CONNECTION: pgsql
       DB_HOST: 127.0.0.1
       DB_PORT: 5432
       DB_DATABASE: forge
       DB_USERNAME: forge
       DB_PASSWORD: secret
-
-    services:
+    services: &postgres-service
       postgres:
         image: postgres
         env:
@@ -34,46 +42,37 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-
     steps:
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup
+        uses: ./.github/actions/php-laravel-setup
         with:
           php-version: ${{ matrix.php-version }}
-          coverage: xdebug
-          tools: composer
-        env:
-          POSTGRES_HOST: postgres
-          POSTGRES_PORT: 5432
+          laravel-version: ${{ matrix.laravel-version }}
+          coverage: none
+      - name: Execute unit tests via PHPUnit
+        run: vendor/bin/phpunit
+
+  tests-with-coverage:
+    runs-on: ubuntu-latest
+    env: *db-env
+    services: *postgres-service
+    steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up PostgreSQL
-        run: |
-          sudo apt-get update 
-          sudo apt-get install -y postgresql-client
-          psql --version
-      - name: Wait for PostgreSQL
-        run: |
-          echo "Waiting for PostgreSQL to be ready..."
-          for i in {1..30}; do
-            if pg_isready -h 127.0.0.1 -p 5432 -U forge -d forge; then
-              echo "PostgreSQL is ready"
-              exit 0
-            fi
-            echo "Waiting for PostgreSQL..."
-            sleep 2
-          done
-          echo "PostgreSQL failed to start"
-          exit 1
-      - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        uses: actions/checkout@v6
+      - name: Setup
+        uses: ./.github/actions/php-laravel-setup
+        with:
+          php-version: *php-latest
+          laravel-version: *laravel-latest
+          coverage: xdebug
       - name: Format code style via Pint
         run: vendor/bin/pint --test
       - name: Execute unit tests via PHPUnit with coverage
         run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
       - name: Export coverage report
-        if: ${{ matrix.php-version == '8.4' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: clover.xml
           path: build/logs
@@ -85,9 +84,9 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Import coverage report
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: clover.xml
           path: build/logs
