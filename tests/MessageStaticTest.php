@@ -355,6 +355,15 @@ class MessageStaticTest extends TestCase
         self::$readMessageState->assertNotChanged();
     }
 
+    public function testReadUpToWithInvalidId(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessagesRead);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/abc/read-to');
+
+        $response->assertNotFound();
+    }
+
     public function testReadEndpointDisabled(): void
     {
         $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/read-to');
@@ -470,6 +479,17 @@ class MessageStaticTest extends TestCase
         self::$pinnedMessageState->assertNotChanged();
     }
 
+    public function testPinWithInvalidId(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessagePin);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/abc/pin');
+
+        $response->assertNotFound();
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
     public function testPinEndpointDisabled(): void
     {
         $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/pin');
@@ -544,6 +564,17 @@ class MessageStaticTest extends TestCase
         $response->assertNotFound();
 
         $response->assertJson(['message' => 'Message does not exist']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpinWithInvalidId(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageUnpin);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/abc/unpin');
+
+        $response->assertNotFound();
 
         self::$pinnedMessageState->assertNotChanged();
     }
