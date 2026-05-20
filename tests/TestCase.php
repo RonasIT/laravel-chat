@@ -118,6 +118,6 @@ class TestCase extends BaseTest
         $preparedActualData = json_decode(json_encode($actualData), true);
 
         // TODO: change to assertEqualsFixture after increase min Laravel version to 13
-        $this->assertEqualsVersionedFixture("broadcast_notifications/{$fixtureName}", $preparedActualData, [13]);
+        $this->assertEqualsVersionedFixture("broadcast_notifications/{$fixtureName}", $preparedActualData, [13], $exportMode);
     }
 }
