@@ -444,6 +444,17 @@ class ConversationStaticTest extends TestCase
         $this->assertEqualsFixture($fixture, $response->json());
     }
 
+    public function testSearchWithInvalidOrderBy()
+    {
+        Route::chat(ChatRouteActionEnum::ConversationsSearch);
+
+        $response = $this->actingAs(self::$sender)->json('get', '/conversations', [
+            'order_by' => 'invalid_field',
+        ]);
+
+        $response->assertUnprocessable();
+    }
+
     public function testSearchEndpointDisabled()
     {
         $response = $this->actingAs(self::$sender)->json('get', '/conversations');

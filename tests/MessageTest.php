@@ -224,6 +224,15 @@ class MessageTest extends TestCase
         $this->assertEqualsFixture($fixture, $response->json());
     }
 
+    public function testSearchWithInvalidOrderBy()
+    {
+        $response = $this->actingAs(self::$firstUser)->json('get', '/messages', [
+            'order_by' => 'invalid_field',
+        ]);
+
+        $response->assertUnprocessable();
+    }
+
     public function testSearchNoAuth()
     {
         $response = $this->getJson('/messages');
