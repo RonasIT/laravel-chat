@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 interface MessageModelContract
 {
+    public static function getFields(): array;
+
     public function conversation(): BelongsTo;
 
     public function sender(): BelongsTo;

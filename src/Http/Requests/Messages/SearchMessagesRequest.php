@@ -2,6 +2,7 @@
 
 namespace RonasIT\Chat\Http\Requests\Messages;
 
+use RonasIT\Chat\Contracts\Models\MessageModelContract;
 use RonasIT\Chat\Contracts\Requests\SearchMessagesRequestContract;
 use RonasIT\Support\Http\BaseRequest;
 
@@ -14,7 +15,7 @@ class SearchMessagesRequest extends BaseRequest implements SearchMessagesRequest
             'per_page' => 'integer',
             'all' => 'integer',
             'query' => 'nullable|string',
-            'order_by' => 'string',
+            'order_by' => 'string|in:' . $this->getOrderableFields(app()->getAlias(MessageModelContract::class)),
             'desc' => 'boolean',
             'conversation_id' => 'integer',
             'with' => 'array',

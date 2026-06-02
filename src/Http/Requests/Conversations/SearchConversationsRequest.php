@@ -2,6 +2,7 @@
 
 namespace RonasIT\Chat\Http\Requests\Conversations;
 
+use RonasIT\Chat\Contracts\Models\ConversationModelContract;
 use RonasIT\Chat\Contracts\Requests\SearchConversationsRequestContract;
 use RonasIT\Chat\Enums\Conversation\TypeEnum;
 
@@ -14,7 +15,7 @@ class SearchConversationsRequest extends BaseConversationRequest implements Sear
             'per_page' => 'integer',
             'all' => 'integer',
             'query' => 'nullable|string',
-            'order_by' => 'string',
+            'order_by' => 'string|in:' . $this->getOrderableFields(app()->getAlias(ConversationModelContract::class)),
             'desc' => 'boolean',
             'type' => 'string|in:' . TypeEnum::toString(),
             'with_unread_messages_count' => 'boolean',
