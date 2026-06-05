@@ -8,12 +8,12 @@ INSERT INTO media(id, name, owner_id, is_public, link, preview_id, meta, created
     (2, 'bob_avatar', 2, true, 'http://localhost/bob_avatar.jpg', null, '{}', '2016-10-20 11:05:00', '2016-10-20 11:05:00');
 
 INSERT INTO conversations(id, creator_id, type, title, cover_id, last_updated_at, created_at, updated_at) VALUES
-    (1, null, 'private', null, null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
-    (2, null, 'private', null, null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
-    (3, null, 'private', null, null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
-    (4, null, 'private', null, null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
-    (5, null, 'private', null, null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
-    (6, 1, 'group', 'Group Chat', 1, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
+    (1, null, 'private', null, null, '2016-10-20 14:00:00', '2016-10-20 11:05:00', '2016-10-20 14:00:00'),
+    (2, null, 'private', null, null, '2016-10-20 13:00:00', '2016-10-20 11:05:00', '2016-10-20 13:00:00'),
+    (3, null, 'private', null, null, '2016-10-20 12:00:00', '2016-10-20 11:05:00', '2016-10-20 12:00:00'),
+    (4, null, 'private', null, null, '2016-10-20 11:00:00', '2016-10-20 11:05:00', '2016-10-20 11:00:00'),
+    (5, null, 'private', null, null, '2016-10-20 10:00:00', '2016-10-20 11:05:00', '2016-10-20 10:00:00'),
+    (6, 1, 'group', 'Group Chat', 1, '2016-10-20 09:00:00', '2016-10-20 11:05:00', '2016-10-20 09:00:00'),
     (7, null, 'private', null, null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00');
 
 INSERT INTO conversation_member(conversation_id, member_id) VALUES

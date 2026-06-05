@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 interface ConversationModelContract
 {
+    public static function getFields(): array;
+
     public function last_message(): HasOne;
 
     public function messages(): HasMany;

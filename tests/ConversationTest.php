@@ -298,6 +298,13 @@ class ConversationTest extends TestCase
                 'fixture' => 'search_by_order_by_desc',
             ],
             [
+                'filter' => [
+                    'order_by' => 'last_updated_at',
+                    'desc' => true,
+                ],
+                'fixture' => 'search_order_by_last_updated_at',
+            ],
+            [
                 'filter' => ['with_unread_messages_count' => true],
                 'fixture' => 'search_with_unread_messages_count',
             ],
@@ -327,6 +334,15 @@ class ConversationTest extends TestCase
         $response->assertOk();
 
         $this->assertEqualsFixture($fixture, $response->json());
+    }
+
+    public function testSearchWithInvalidOrderBy()
+    {
+        $response = $this->actingAs(self::$sender)->json('get', '/conversations', [
+            'order_by' => 'invalid_field',
+        ]);
+
+        $response->assertUnprocessable();
     }
 
     public function testSearchNoAuth()

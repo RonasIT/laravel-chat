@@ -264,6 +264,13 @@ class MessageStaticTest extends TestCase
                 ],
                 'fixture' => 'search_by_order_by_desc',
             ],
+            [
+                'filter' => [
+                    'order_by' => 'created_at',
+                    'desc' => true,
+                ],
+                'fixture' => 'search_order_by_created_at',
+            ],
         ];
     }
 
@@ -277,6 +284,17 @@ class MessageStaticTest extends TestCase
         $response->assertOk();
 
         $this->assertEqualsFixture($fixture, $response->json());
+    }
+
+    public function testSearchWithInvalidOrderBy()
+    {
+        Route::chat(ChatRouteActionEnum::MessagesSearch);
+
+        $response = $this->actingAs(self::$firstUser)->json('get', '/messages', [
+            'order_by' => 'invalid_field',
+        ]);
+
+        $response->assertUnprocessable();
     }
 
     public function testSearchEndpointDisabled()
