@@ -11,7 +11,7 @@ use RonasIT\Support\Repositories\BaseRepository;
  */
 class MessageRepository extends BaseRepository
 {
-    protected ?int $withCalculatedIdentityForMemberId = null;
+    protected ?int $withConversationIdentityForMemberId = null;
 
     public function __construct()
     {
@@ -37,9 +37,9 @@ class MessageRepository extends BaseRepository
             ->toArray();
     }
 
-    public function withCalculatedIdentity(int $memberId): self
+    public function withConversationIdentity(int $memberId): self
     {
-        $this->withCalculatedIdentityForMemberId = $memberId;
+        $this->withConversationIdentityForMemberId = $memberId;
 
         return $this;
     }
@@ -48,11 +48,11 @@ class MessageRepository extends BaseRepository
     {
         $query = parent::getQuery($where);
 
-        if (!is_null($this->withCalculatedIdentityForMemberId) && in_array('conversation', $this->attachedRelations)) {
-            $memberId = $this->withCalculatedIdentityForMemberId;
+        if (!is_null($this->withConversationIdentityForMemberId) && in_array('conversation', $this->attachedRelations)) {
+            $memberId = $this->withConversationIdentityForMemberId;
             $query->with(['conversation' => fn ($query) => $query->withCalculatedIdentity($memberId)]);
 
-            $this->withCalculatedIdentityForMemberId = null;
+            $this->withConversationIdentityForMemberId = null;
         }
 
         return $query;
