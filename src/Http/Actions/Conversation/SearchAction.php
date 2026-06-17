@@ -18,7 +18,7 @@ readonly class SearchAction
     {
         $filters['member_id'] = Auth::id();
 
-        $filters['with_unread_messages_count_for_member_id'] = Arr::get($filters, 'with_unread_messages_count', false)
+        $filters['with_unread_messages_count_for_member_id'] = (Arr::get($filters, 'with_unread_messages_count', false))
             ? Auth::id()
             : null;
 

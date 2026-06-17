@@ -105,13 +105,6 @@ class ConversationService extends EntityService implements ConversationServiceCo
             ->getSearchResults();
     }
 
-    public function retrieveById(int $id): ?Model
-    {
-        return $this
-            ->withCalculatedIdentity(Auth::id())
-            ->find($id);
-    }
-
     public function getPrivate(int $firstMemberId, int $secondMemberId): ?Model
     {
         return $this

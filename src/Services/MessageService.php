@@ -59,8 +59,11 @@ class MessageService extends EntityService implements MessageServiceContract
 
     public function search(array $filters = []): LengthAwarePaginator
     {
+        if (Arr::get($filters, 'with_overridden_title_and_cover', false)) {
+            $this->withCalculatedIdentity(Arr::get($filters, 'member_id'));
+        }
+
         return $this
-            ->withCalculatedIdentity($filters['member_id'])
             ->searchQuery($filters)
             ->filterBy('conversation.members.member_id', 'member_id')
             ->getSearchResults();

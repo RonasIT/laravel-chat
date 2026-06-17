@@ -20,7 +20,8 @@ class ConversationController extends Controller
         $result = $service
             ->with($request->input('with', []))
             ->withCount($request->input('with_count', []))
-            ->retrieveById($id);
+            ->withCalculatedIdentity($request->user()->id)
+            ->find($id);
 
         return app(ConversationResourceContract::class, ['resource' => $result]);
     }
