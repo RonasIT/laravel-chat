@@ -22,7 +22,6 @@ class ConversationRepository extends BaseRepository
         $this->setAdditionalReservedFilters(
             'member_id',
             'with_unread_messages_count',
-            'with_unread_messages_count_for_member_id',
         );
     }
 
