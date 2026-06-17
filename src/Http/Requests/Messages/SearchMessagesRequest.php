@@ -18,7 +18,7 @@ class SearchMessagesRequest extends BaseRequest implements SearchMessagesRequest
             'order_by' => 'string|in:' . $this->getOrderableFields(app()->getAlias(MessageModelContract::class)),
             'desc' => 'boolean',
             'conversation_id' => 'integer',
-            'with_overridden_title_and_cover' => 'boolean',
+            'with_conversation_identity' => 'boolean',
             'with' => 'array',
             'with.*' => 'string|required|in:' . $this->getAvailableRelations(),
         ];

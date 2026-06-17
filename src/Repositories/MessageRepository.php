@@ -19,7 +19,7 @@ class MessageRepository extends BaseRepository
 
         $this->setAdditionalReservedFilters(
             'member_id',
-            'with_overridden_title_and_cover',
+            'with_conversation_identity',
         );
     }
 

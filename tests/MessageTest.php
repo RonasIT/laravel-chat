@@ -183,7 +183,7 @@ class MessageTest extends TestCase
                         'sender',
                         'attachment',
                     ],
-                    'with_overridden_title_and_cover' => true,
+                    'with_conversation_identity' => true,
                 ],
                 'fixture' => 'search_with_relations',
             ],
