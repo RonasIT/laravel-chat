@@ -19,7 +19,7 @@ readonly class SearchAction
         $filters['member_id'] = Auth::id();
 
         if (Arr::get($filters, 'with_conversation_identity', false)) {
-            $this->messageService->withConversationIdentity($filters['member_id']);
+            $this->messageService->withConversationIdentity(Auth::id());
         }
 
         return $this->messageService->search($filters);
