@@ -109,11 +109,11 @@ class ConversationService extends EntityService implements ConversationServiceCo
             ->getSearchResults();
     }
 
-    public function getPrivate(int $firstMemberId, int $secondMemberId): ?Model
+    public function getPrivate(int $asUserId, int $withUserId): ?Model
     {
         return $this
-            ->withCalculatedIdentity($firstMemberId)
-            ->getByTypeAndMembers(TypeEnum::Private, $firstMemberId, $secondMemberId);
+            ->withCalculatedIdentity($asUserId)
+            ->getByTypeAndMembers(TypeEnum::Private, $asUserId, $withUserId);
     }
 
     protected function sendCreatedNotifications(Conversation $conversation, Collection $recipients): void
