@@ -156,19 +156,19 @@ class Conversation extends Model implements ConversationModelContract
 
     private function buildTitleExpression(array $columns): string
     {
-        if (count($columns) === 1) {
-            return $columns[0];
+        $expression = array_shift($columns);
+
+        if (!empty($columns)) {
+            $separators = config('chat.classes.user.columns.full_name_separator');
+
+            $expression = "COALESCE({$expression}, '')";
+
+            foreach ($columns as $i => $column) {
+                $sep = str_replace("'", "''", ($separators[$i] ?? end($separators)) ?: '');
+                $expression .= " || COALESCE('{$sep}' || {$column}, '')";
+            }
         }
 
-        $separators = config('chat.classes.user.columns.full_name_separator');
-
-        $parts = ["COALESCE({$columns[0]}, '')"];
-
-        foreach (array_slice($columns, 1) as $i => $column) {
-            $sep = str_replace("'", "''", ($separators[$i] ?? end($separators)) ?: '');
-            $parts[] = "COALESCE('{$sep}' || {$column}, '')";
-        }
-
-        return implode(' || ', $parts);
+        return $expression;
     }
 }
