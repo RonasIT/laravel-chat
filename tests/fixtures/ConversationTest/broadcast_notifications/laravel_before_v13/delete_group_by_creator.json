@@ -33,7 +33,10 @@
             ],
             "notifiable": {
                 "id": 2,
-                "email": "fidel.kutch@example.com"
+                "email": "fidel.kutch@example.com",
+                "first_name": "Bob",
+                "last_name": "Lewis",
+                "avatar_id": 2
             },
             "locale": null
         },
@@ -70,7 +73,10 @@
             ],
             "notifiable": {
                 "id": 3,
-                "email": "alien.west@example.com"
+                "email": "alien.west@example.com",
+                "first_name": "Charlie",
+                "last_name": null,
+                "avatar_id": null
             },
             "locale": null
         }

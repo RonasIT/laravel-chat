@@ -1,9 +1,9 @@
-INSERT INTO users(id, email) VALUES
-    (1, 'anisio.tier@example.com'),
-    (2, 'fidel.kutch@example.com'),
-    (3, 'alien.west@example.com'),
-    (4, 'alien.east@example.com'),
-    (5, 'william.bob@example.com');
+INSERT INTO users(id, email, first_name, last_name) VALUES
+    (1, 'anisio.tier@example.com', 'Anisio', null),
+    (2, 'fidel.kutch@example.com', 'Fidel', null),
+    (3, 'alien.west@example.com', 'Alien', null),
+    (4, 'alien.east@example.com', 'Alien', null),
+    (5, 'william.bob@example.com', 'William', null);
 
 INSERT INTO media(id, name, owner_id, is_public, link, preview_id, meta, created_at, updated_at) VALUES
     (1, 'preview_Product main photo', 1, true, 'http://localhost/test_preview_1.jpg', null, '{}', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),

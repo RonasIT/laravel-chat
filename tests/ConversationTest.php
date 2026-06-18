@@ -38,7 +38,7 @@ class ConversationTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('get_conversation', $response->json());
+        $this->assertEqualsFixture('get_conversation_by_sender', $response->json());
     }
 
     public function testGetWithRelations()
@@ -68,11 +68,11 @@ class ConversationTest extends TestCase
 
     public function testGetByRecipient()
     {
-        $response = $this->actingAs(self::$sender)->json('get', '/conversations/1');
+        $response = $this->actingAs(self::$recipient)->json('get', '/conversations/1');
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('get_conversation', $response->json());
+        $this->assertEqualsFixture('get_conversation_by_recipient', $response->json());
     }
 
     public function testGetBySomeUser()
@@ -115,7 +115,7 @@ class ConversationTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('get_conversation', $response->json());
+        $this->assertEqualsFixture('get_conversation_between_users_by_sender', $response->json());
     }
 
     public function testGetBetweenUsersByRecipient()
@@ -124,7 +124,7 @@ class ConversationTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('get_conversation', $response->json());
+        $this->assertEqualsFixture('get_conversation_between_users_by_recipient', $response->json());
     }
 
     public function testGetBetweenUsersIdWithRelations()
@@ -315,6 +315,13 @@ class ConversationTest extends TestCase
             [
                 'filter' => ['type' => 'group'],
                 'fixture' => 'search_by_type_group',
+            ],
+            [
+                'filter' => [
+                    'type' => 'private',
+                    'with' => ['cover'],
+                ],
+                'fixture' => 'search_private_with_overridden_fields',
             ],
         ];
     }

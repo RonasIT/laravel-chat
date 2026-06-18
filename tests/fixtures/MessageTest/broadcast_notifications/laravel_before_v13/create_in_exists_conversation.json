@@ -37,7 +37,10 @@
                             "updated_at": "2024-01-01T00:00:00.000000Z",
                             "sender": {
                                 "id": 1,
-                                "email": "anisio.tier@example.com"
+                                "email": "anisio.tier@example.com",
+                                "first_name": "Anisio",
+                                "last_name": null,
+                                "avatar_id": null
                             }
                         },
                         "pinned_messages": [
@@ -61,7 +64,10 @@
             ],
             "notifiable": {
                 "id": 1,
-                "email": "anisio.tier@example.com"
+                "email": "anisio.tier@example.com",
+                "first_name": "Anisio",
+                "last_name": null,
+                "avatar_id": null
             },
             "locale": null
         },
@@ -102,7 +108,10 @@
                             "updated_at": "2024-01-01T00:00:00.000000Z",
                             "sender": {
                                 "id": 1,
-                                "email": "anisio.tier@example.com"
+                                "email": "anisio.tier@example.com",
+                                "first_name": "Anisio",
+                                "last_name": null,
+                                "avatar_id": null
                             }
                         },
                         "pinned_messages": [
@@ -126,7 +135,10 @@
             ],
             "notifiable": {
                 "id": 2,
-                "email": "fidel.kutch@example.com"
+                "email": "fidel.kutch@example.com",
+                "first_name": "Fidel",
+                "last_name": null,
+                "avatar_id": null
             },
             "locale": null
         }
@@ -163,7 +175,10 @@
                         "updated_at": "2024-01-01T00:00:00.000000Z",
                         "sender": {
                             "id": 1,
-                            "email": "anisio.tier@example.com"
+                            "email": "anisio.tier@example.com",
+                            "first_name": "Anisio",
+                            "last_name": null,
+                            "avatar_id": null
                         }
                     }
                 },
@@ -174,7 +189,10 @@
             ],
             "notifiable": {
                 "id": 2,
-                "email": "fidel.kutch@example.com"
+                "email": "fidel.kutch@example.com",
+                "first_name": "Fidel",
+                "last_name": null,
+                "avatar_id": null
             },
             "locale": null
         }

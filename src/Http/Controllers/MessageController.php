@@ -11,6 +11,7 @@ use RonasIT\Chat\Contracts\Requests\SearchMessagesRequestContract;
 use RonasIT\Chat\Contracts\Requests\UnpinMessageRequestContract;
 use RonasIT\Chat\Contracts\Resources\MessageResourceContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
+use RonasIT\Chat\Http\Actions\Message\SearchAction;
 use RonasIT\Chat\Http\Resources\MessagesCollectionResource;
 
 class MessageController extends Controller
@@ -22,9 +23,9 @@ class MessageController extends Controller
         return app(MessageResourceContract::class, ['resource' => $result]);
     }
 
-    public function search(SearchMessagesRequestContract $request, MessageServiceContract $service): MessagesCollectionResource
+    public function search(SearchMessagesRequestContract $request, SearchAction $action): MessagesCollectionResource
     {
-        $result = $service->search($request->onlyValidated());
+        $result = $action->execute($request->onlyValidated());
 
         return MessagesCollectionResource::make($result);
     }
