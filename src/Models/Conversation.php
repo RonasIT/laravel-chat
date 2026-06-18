@@ -159,13 +159,14 @@ class Conversation extends Model implements ConversationModelContract
         $expression = array_shift($columns);
 
         if (!empty($columns)) {
-            $separators = config('chat.classes.user.columns.full_name_separator');
+            $separators = config('chat.classes.user.columns.full_name_separator') ?: [' '];
+            $separators = array_pad($separators, count($columns), end($separators));
 
             $expression = "COALESCE({$expression}, '')";
 
             foreach ($columns as $i => $column) {
-                $sep = str_replace("'", "''", ($separators[$i] ?? end($separators)) ?: '');
-                $expression .= " || COALESCE('{$sep}' || {$column}, '')";
+                $sep = $this->getConnection()->escape($separators[$i]);
+                $expression .= " || COALESCE({$sep} || {$column}, '')";
             }
         }
 
