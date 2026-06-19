@@ -56,8 +56,13 @@ class ChatServiceProvider extends ServiceProvider
         Route::mixin(new ChatRouter());
 
         $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'chat');
-        $this->loadRoutesFrom(__DIR__ . '/Http/routes/api.php');
         $this->loadRoutesFrom(__DIR__ . '/Http/routes/channels.php');
+
+        $this->app->booted(function () {
+            if (!ChatRouter::$isBlockedBaseRoutes) {
+                $this->loadRoutesFrom(__DIR__ . '/Http/routes/api.php');
+            }
+        });
 
         $this->publishesMigrations([
             __DIR__ . '/../migrations' => database_path('migrations'),

@@ -3,7 +3,6 @@
 namespace RonasIT\Chat\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use RonasIT\Chat\ChatRouter;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\ModelTestState;
@@ -28,8 +27,6 @@ class ConversationTest extends TestCase
 
         self::$conversationState = new ModelTestState(Conversation::class);
         self::$conversationMemberState = new TableTestState('conversation_member');
-
-        ChatRouter::$isBlockedBaseRoutes = false;
     }
 
     public function testGetBySender()

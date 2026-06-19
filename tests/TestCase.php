@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Notification;
 use Orchestra\Testbench\TestCase as BaseTest;
 use ReflectionClass;
+use RonasIT\Chat\ChatRouter;
 use RonasIT\Chat\ChatServiceProvider;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Media\Models\Media;
@@ -58,6 +59,8 @@ class TestCase extends BaseTest
         Dotenv::createImmutable(__DIR__ . '/..', '.env.testing')->load();
 
         $this->setupDb($app);
+
+        ChatRouter::$isBlockedBaseRoutes = false;
     }
 
     protected function getPackageProviders($app): array

@@ -4,7 +4,6 @@ namespace RonasIT\Chat\Tests;
 
 use Illuminate\Support\Facades\Notification;
 use PHPUnit\Framework\Attributes\DataProvider;
-use RonasIT\Chat\ChatRouter;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Models\Message;
 use RonasIT\Chat\Models\ReadMessage;
@@ -37,8 +36,6 @@ class MessageTest extends TestCase
         self::$conversationMemberState = new TableTestState('conversation_member');
         self::$readMessageState = new ModelTestState(ReadMessage::class);
         self::$pinnedMessageState = new TableTestState('pinned_messages');
-
-        ChatRouter::$isBlockedBaseRoutes = false;
     }
 
     public function testCreateInExistsConversation(): void
