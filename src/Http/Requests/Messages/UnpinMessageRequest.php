@@ -13,9 +13,9 @@ class UnpinMessageRequest extends BaseMessageRequest implements UnpinMessageRequ
 
         $this->checkMessageExists();
 
-        $this->checkMessagePinned();
-
         parent::validateResolved();
+
+        $this->checkMessagePinned();
     }
 
     protected function checkMessagePinned(): void

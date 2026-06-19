@@ -119,7 +119,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('get_conversation', $response->json());
+        $this->assertEqualsFixture('get_conversation_by_sender', $response->json());
     }
 
     public function testGetWithRelations()
@@ -153,11 +153,11 @@ class ConversationStaticTest extends TestCase
     {
         Route::chat(ChatRouteActionEnum::ConversationGet);
 
-        $response = $this->actingAs(self::$sender)->json('get', '/conversations/1');
+        $response = $this->actingAs(self::$recipient)->json('get', '/conversations/1');
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('get_conversation', $response->json());
+        $this->assertEqualsFixture('get_conversation_by_recipient', $response->json());
     }
 
     public function testGetBySomeUser()
@@ -182,6 +182,15 @@ class ConversationStaticTest extends TestCase
         $response->assertJson(['message' => 'Conversation does not exist']);
     }
 
+    public function testGetWithInvalidId(): void
+    {
+        Route::chat(ChatRouteActionEnum::ConversationGet);
+
+        $response = $this->actingAs(self::$sender)->json('get', '/conversations/abc');
+
+        $response->assertNotFound();
+    }
+
     public function testGetEndpointDisabled()
     {
         $response = $this->actingAs(self::$sender)->json('get', '/conversations/1');
@@ -199,7 +208,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('get_conversation', $response->json());
+        $this->assertEqualsFixture('get_conversation_between_users_by_sender', $response->json());
     }
 
     public function testGetBetweenUsersByRecipient()
@@ -210,7 +219,7 @@ class ConversationStaticTest extends TestCase
 
         $response->assertOk();
 
-        $this->assertEqualsFixture('get_conversation', $response->json());
+        $this->assertEqualsFixture('get_conversation_between_users_by_recipient', $response->json());
     }
 
     public function testGetBetweenUsersIdWithRelations()
@@ -243,6 +252,15 @@ class ConversationStaticTest extends TestCase
         $response = $this->actingAs(self::$sender)->json('get', 'users/3/conversation');
 
         $response->assertNoContent();
+    }
+
+    public function testGetBetweenUsersWithInvalidUserId(): void
+    {
+        Route::chat(ChatRouteActionEnum::ConversationGetByUser);
+
+        $response = $this->actingAs(self::$sender)->json('get', '/users/abc/conversation');
+
+        $response->assertNotFound();
     }
 
     public function testGetByUserEndpointDisabled()
@@ -304,6 +322,17 @@ class ConversationStaticTest extends TestCase
         $response->assertNotFound();
 
         $response->assertJson(['message' => 'Conversation does not exist']);
+
+        self::$conversationState->assertNotChanged();
+    }
+
+    public function testDeleteWithInvalidId(): void
+    {
+        Route::chat(ChatRouteActionEnum::ConversationDelete);
+
+        $response = $this->actingAs(self::$sender)->json('delete', '/conversations/abc');
+
+        $response->assertNotFound();
 
         self::$conversationState->assertNotChanged();
     }
@@ -382,6 +411,13 @@ class ConversationStaticTest extends TestCase
                 'fixture' => 'search_by_order_by_desc',
             ],
             [
+                'filter' => [
+                    'order_by' => 'last_updated_at',
+                    'desc' => true,
+                ],
+                'fixture' => 'search_order_by_last_updated_at',
+            ],
+            [
                 'filter' => ['with_unread_messages_count' => true],
                 'fixture' => 'search_with_unread_messages_count',
             ],
@@ -392,6 +428,13 @@ class ConversationStaticTest extends TestCase
             [
                 'filter' => ['type' => 'group'],
                 'fixture' => 'search_by_type_group',
+            ],
+            [
+                'filter' => [
+                    'type' => 'private',
+                    'with' => ['cover'],
+                ],
+                'fixture' => 'search_private_with_overridden_fields',
             ],
         ];
     }
@@ -406,6 +449,17 @@ class ConversationStaticTest extends TestCase
         $response->assertOk();
 
         $this->assertEqualsFixture($fixture, $response->json());
+    }
+
+    public function testSearchWithInvalidOrderBy()
+    {
+        Route::chat(ChatRouteActionEnum::ConversationsSearch);
+
+        $response = $this->actingAs(self::$sender)->json('get', '/conversations', [
+            'order_by' => 'invalid_field',
+        ]);
+
+        $response->assertUnprocessable();
     }
 
     public function testSearchEndpointDisabled()

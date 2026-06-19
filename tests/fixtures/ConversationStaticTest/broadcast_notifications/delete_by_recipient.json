@@ -4,9 +4,11 @@
             "notification": {
                 "conversationId": 1,
                 "recipientId": 1,
-                "locale": null,
                 "connection": null,
                 "queue": null,
+                "messageGroup": null,
+                "deduplicator": null,
+                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -14,6 +16,7 @@
                 "chainConnection": null,
                 "chainQueue": null,
                 "chainCatchCallbacks": null,
+                "locale": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.1"
@@ -31,7 +34,10 @@
             ],
             "notifiable": {
                 "id": 1,
-                "email": "anisio.tier@example.com"
+                "email": "anisio.tier@example.com",
+                "first_name": "Alice",
+                "last_name": "Doe",
+                "avatar_id": null
             },
             "locale": null
         }

@@ -6,6 +6,9 @@
     "updated_at": "2024-01-01T00:00:00.000000Z",
     "sender": {
         "id": 1,
-        "email": "anisio.tier@example.com"
+        "email": "anisio.tier@example.com",
+        "first_name": "Anisio",
+        "last_name": null,
+        "avatar_id": null
     }
 }

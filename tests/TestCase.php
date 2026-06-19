@@ -26,9 +26,12 @@ class TestCase extends BaseTest
     {
         parent::setUp();
 
-        Config::set('chat.classes.user_model', User::class);
-        Config::set('chat.classes.media_model', Media::class);
+        Config::set('chat.classes.user.model', User::class);
+        Config::set('chat.classes.media.model', Media::class);
         Config::set('chat.default_channels.0', BroadcastChannel::class);
+        Config::set('chat.classes.user.columns.avatar', 'avatar_id');
+        Config::set('chat.classes.user.columns.full_name', ['first_name', 'last_name']);
+        Config::set('chat.classes.user.columns.full_name_separator', [' ']);
 
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
         $this->loadMigrationsFrom(__DIR__ . '/../migrations');
@@ -117,6 +120,7 @@ class TestCase extends BaseTest
 
         $preparedActualData = json_decode(json_encode($actualData), true);
 
-        $this->assertEqualsFixture("broadcast_notifications/{$fixtureName}", $preparedActualData, $exportMode);
+        // TODO: change to assertEqualsFixture after increase min Laravel version to 13
+        $this->assertEqualsVersionedFixture("broadcast_notifications/{$fixtureName}", $preparedActualData, [13], $exportMode);
     }
 }

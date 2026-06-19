@@ -4,9 +4,11 @@
             "notification": {
                 "conversationId": 6,
                 "recipientId": 5,
-                "locale": null,
                 "connection": null,
                 "queue": null,
+                "messageGroup": null,
+                "deduplicator": null,
+                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -14,6 +16,7 @@
                 "chainConnection": null,
                 "chainQueue": null,
                 "chainCatchCallbacks": null,
+                "locale": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.5"
@@ -35,7 +38,10 @@
                             "updated_at": "2024-01-01T00:00:00.000000Z",
                             "sender": {
                                 "id": 2,
-                                "email": "fidel.kutch@example.com"
+                                "email": "fidel.kutch@example.com",
+                                "first_name": "Fidel",
+                                "last_name": null,
+                                "avatar_id": null
                             }
                         }
                     }
@@ -47,7 +53,10 @@
             ],
             "notifiable": {
                 "id": 5,
-                "email": "william.bob@example.com"
+                "email": "william.bob@example.com",
+                "first_name": "William",
+                "last_name": null,
+                "avatar_id": null
             },
             "locale": null
         }
@@ -57,9 +66,11 @@
             "notification": {
                 "conversationId": 6,
                 "recipientId": 5,
-                "locale": null,
                 "connection": null,
                 "queue": null,
+                "messageGroup": null,
+                "deduplicator": null,
+                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -67,6 +78,7 @@
                 "chainConnection": null,
                 "chainQueue": null,
                 "chainCatchCallbacks": null,
+                "locale": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.5"
@@ -88,7 +100,10 @@
                             "updated_at": "2024-01-01T00:00:00.000000Z",
                             "sender": {
                                 "id": 2,
-                                "email": "fidel.kutch@example.com"
+                                "email": "fidel.kutch@example.com",
+                                "first_name": "Fidel",
+                                "last_name": null,
+                                "avatar_id": null
                             }
                         },
                         "pinned_messages": [],
@@ -103,7 +118,10 @@
             ],
             "notifiable": {
                 "id": 5,
-                "email": "william.bob@example.com"
+                "email": "william.bob@example.com",
+                "first_name": "William",
+                "last_name": null,
+                "avatar_id": null
             },
             "locale": null
         },
@@ -111,9 +129,11 @@
             "notification": {
                 "conversationId": 6,
                 "recipientId": 2,
-                "locale": null,
                 "connection": null,
                 "queue": null,
+                "messageGroup": null,
+                "deduplicator": null,
+                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -121,6 +141,7 @@
                 "chainConnection": null,
                 "chainQueue": null,
                 "chainCatchCallbacks": null,
+                "locale": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.2"
@@ -142,7 +163,10 @@
                             "updated_at": "2024-01-01T00:00:00.000000Z",
                             "sender": {
                                 "id": 2,
-                                "email": "fidel.kutch@example.com"
+                                "email": "fidel.kutch@example.com",
+                                "first_name": "Fidel",
+                                "last_name": null,
+                                "avatar_id": null
                             }
                         },
                         "pinned_messages": [],
@@ -157,7 +181,10 @@
             ],
             "notifiable": {
                 "id": 2,
-                "email": "fidel.kutch@example.com"
+                "email": "fidel.kutch@example.com",
+                "first_name": "Fidel",
+                "last_name": null,
+                "avatar_id": null
             },
             "locale": null
         }
@@ -167,9 +194,11 @@
             "notification": {
                 "messageId": 8,
                 "recipientId": 5,
-                "locale": null,
                 "connection": null,
                 "queue": null,
+                "messageGroup": null,
+                "deduplicator": null,
+                "debounceOwner": "",
                 "delay": null,
                 "afterCommit": true,
                 "middleware": [],
@@ -177,6 +206,7 @@
                 "chainConnection": null,
                 "chainQueue": null,
                 "chainCatchCallbacks": null,
+                "locale": null,
                 "broadcast_on": [
                     {
                         "name": "private-chat.5"
@@ -192,7 +222,10 @@
                         "updated_at": "2024-01-01T00:00:00.000000Z",
                         "sender": {
                             "id": 2,
-                            "email": "fidel.kutch@example.com"
+                            "email": "fidel.kutch@example.com",
+                            "first_name": "Fidel",
+                            "last_name": null,
+                            "avatar_id": null
                         }
                     }
                 },
@@ -203,7 +236,10 @@
             ],
             "notifiable": {
                 "id": 5,
-                "email": "william.bob@example.com"
+                "email": "william.bob@example.com",
+                "first_name": "William",
+                "last_name": null,
+                "avatar_id": null
             },
             "locale": null
         }

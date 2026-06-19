@@ -242,6 +242,7 @@ class MessageStaticTest extends TestCase
                         'sender',
                         'attachment',
                     ],
+                    'with_conversation_identity' => true,
                 ],
                 'fixture' => 'search_with_relations',
             ],
@@ -263,6 +264,13 @@ class MessageStaticTest extends TestCase
                 ],
                 'fixture' => 'search_by_order_by_desc',
             ],
+            [
+                'filter' => [
+                    'order_by' => 'created_at',
+                    'desc' => true,
+                ],
+                'fixture' => 'search_order_by_created_at',
+            ],
         ];
     }
 
@@ -276,6 +284,17 @@ class MessageStaticTest extends TestCase
         $response->assertOk();
 
         $this->assertEqualsFixture($fixture, $response->json());
+    }
+
+    public function testSearchWithInvalidOrderBy()
+    {
+        Route::chat(ChatRouteActionEnum::MessagesSearch);
+
+        $response = $this->actingAs(self::$firstUser)->json('get', '/messages', [
+            'order_by' => 'invalid_field',
+        ]);
+
+        $response->assertUnprocessable();
     }
 
     public function testSearchEndpointDisabled()
@@ -346,6 +365,15 @@ class MessageStaticTest extends TestCase
         $response->assertJson(['message' => 'This action is unauthorized.']);
 
         self::$readMessageState->assertNotChanged();
+    }
+
+    public function testReadUpToWithInvalidId(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessagesRead);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/abc/read-to');
+
+        $response->assertNotFound();
     }
 
     public function testReadEndpointDisabled(): void
@@ -463,6 +491,17 @@ class MessageStaticTest extends TestCase
         self::$pinnedMessageState->assertNotChanged();
     }
 
+    public function testPinWithInvalidId(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessagePin);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/abc/pin');
+
+        $response->assertNotFound();
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
     public function testPinEndpointDisabled(): void
     {
         $response = $this->actingAs(self::$firstUser)->postJson('/messages/1/pin');
@@ -515,6 +554,19 @@ class MessageStaticTest extends TestCase
         self::$pinnedMessageState->assertNotChanged();
     }
 
+    public function testUnpinAsNonMemberNotPinned(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageUnpin);
+
+        $response = $this->actingAs(self::$someAuthUser)->postJson('/messages/3/unpin');
+
+        $response->assertForbidden();
+
+        $response->assertJson(['message' => 'This action is unauthorized.']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
     public function testUnpinNotFound(): void
     {
         Route::chat(ChatRouteActionEnum::MessageUnpin);
@@ -524,6 +576,17 @@ class MessageStaticTest extends TestCase
         $response->assertNotFound();
 
         $response->assertJson(['message' => 'Message does not exist']);
+
+        self::$pinnedMessageState->assertNotChanged();
+    }
+
+    public function testUnpinWithInvalidId(): void
+    {
+        Route::chat(ChatRouteActionEnum::MessageUnpin);
+
+        $response = $this->actingAs(self::$firstUser)->postJson('/messages/abc/unpin');
+
+        $response->assertNotFound();
 
         self::$pinnedMessageState->assertNotChanged();
     }

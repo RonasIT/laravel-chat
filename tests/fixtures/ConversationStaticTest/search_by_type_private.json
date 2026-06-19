@@ -2,43 +2,43 @@
     "data": [
         {
             "id": 1,
-            "last_updated_at": "2016-10-20 11:05:00",
+            "last_updated_at": "2016-10-20 14:00:00",
             "created_at": "2016-10-20T11:05:00.000000Z",
-            "updated_at": "2016-10-20T11:05:00.000000Z",
+            "updated_at": "2016-10-20T14:00:00.000000Z",
             "type": "private",
-            "title": null
+            "title": "Bob Lewis"
         },
         {
             "id": 2,
-            "last_updated_at": "2016-10-20 11:05:00",
+            "last_updated_at": "2016-10-20 13:00:00",
             "created_at": "2016-10-20T11:05:00.000000Z",
-            "updated_at": "2016-10-20T11:05:00.000000Z",
+            "updated_at": "2016-10-20T13:00:00.000000Z",
             "type": "private",
-            "title": null
+            "title": "Bob Lewis"
         },
         {
             "id": 3,
-            "last_updated_at": "2016-10-20 11:05:00",
+            "last_updated_at": "2016-10-20 12:00:00",
             "created_at": "2016-10-20T11:05:00.000000Z",
-            "updated_at": "2016-10-20T11:05:00.000000Z",
+            "updated_at": "2016-10-20T12:00:00.000000Z",
             "type": "private",
-            "title": null
+            "title": "Bob Lewis"
         },
         {
             "id": 4,
-            "last_updated_at": "2016-10-20 11:05:00",
+            "last_updated_at": "2016-10-20 11:00:00",
             "created_at": "2016-10-20T11:05:00.000000Z",
-            "updated_at": "2016-10-20T11:05:00.000000Z",
+            "updated_at": "2016-10-20T11:00:00.000000Z",
             "type": "private",
-            "title": null
+            "title": "Bob Lewis"
         },
         {
             "id": 5,
-            "last_updated_at": "2016-10-20 11:05:00",
+            "last_updated_at": "2016-10-20 10:00:00",
             "created_at": "2016-10-20T11:05:00.000000Z",
-            "updated_at": "2016-10-20T11:05:00.000000Z",
+            "updated_at": "2016-10-20T10:00:00.000000Z",
             "type": "private",
-            "title": null
+            "title": "Bob Lewis"
         }
     ],
     "links": {
@@ -55,16 +55,19 @@
             {
                 "url": null,
                 "label": "&laquo; Previous",
+                "page": null,
                 "active": false
             },
             {
                 "url": "http:\/\/localhost\/conversations?page=1",
                 "label": "1",
+                "page": 1,
                 "active": true
             },
             {
                 "url": null,
                 "label": "Next &raquo;",
+                "page": null,
                 "active": false
             }
         ],

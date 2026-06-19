@@ -9,7 +9,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        $usersTableName = app(config('chat.classes.user_model'))->getTable();
+        $usersTableName = app(config('chat.classes.user.model'))->getTable();
 
         Schema::create('read_messages', function (Blueprint $table) use ($usersTableName) {
             $table->id();
@@ -42,7 +42,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        $usersTableName = app(config('chat.classes.user_model'))->getTable();
+        $usersTableName = app(config('chat.classes.user.model'))->getTable();
 
         Schema::table('messages', function (Blueprint $table) use ($usersTableName) {
             $table

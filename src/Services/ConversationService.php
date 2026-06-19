@@ -97,24 +97,23 @@ class ConversationService extends EntityService implements ConversationServiceCo
 
     public function search(array $filters = []): LengthAwarePaginator
     {
-        if (Auth::check()) {
-            $filters['member_id'] = Auth::id();
-        }
-
         $forMemberId = (Arr::get($filters, 'with_unread_messages_count', false))
             ? Arr::get($filters, 'member_id')
             : null;
 
         return $this
+            ->withCalculatedIdentity(Arr::get($filters, 'member_id'))
             ->withUnreadCountMemberId($forMemberId)
             ->searchQuery($filters)
             ->filterBy('members.member_id', 'member_id')
             ->getSearchResults();
     }
 
-    public function getPrivate(int $firstMemberId, int $secondMemberId): ?Model
+    public function getPrivate(int $asUserId, int $withUserId): ?Model
     {
-        return $this->getByTypeAndMembers(TypeEnum::Private, $firstMemberId, $secondMemberId);
+        return $this
+            ->withCalculatedIdentity($asUserId)
+            ->getByTypeAndMembers(TypeEnum::Private, $asUserId, $withUserId);
     }
 
     protected function sendCreatedNotifications(Conversation $conversation, Collection $recipients): void
