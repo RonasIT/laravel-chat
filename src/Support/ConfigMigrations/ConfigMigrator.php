@@ -2,8 +2,17 @@
 
 namespace RonasIT\Chat\Support\ConfigMigrations;
 
+use RuntimeException;
+
 class ConfigMigrator
 {
+    /**
+     * Memoized migrations, ordered ascending by version.
+     *
+     * @var array<int, ConfigMigration>|null
+     */
+    protected ?array $migrations = null;
+
     public function __construct(
         protected string $migrationsPath,
     ) {
@@ -14,9 +23,9 @@ class ConfigMigrator
      */
     public function getLatestVersion(): int
     {
-        $versions = array_keys($this->migrationFiles());
+        $migrations = $this->migrations();
 
-        return empty($versions) ? 0 : max($versions);
+        return empty($migrations) ? 0 : max(array_map(fn (ConfigMigration $m): int => $m->version(), $migrations));
     }
 
     public function hasPending(int $fromVersion): bool
@@ -25,64 +34,67 @@ class ConfigMigrator
     }
 
     /**
-     * Apply every migration newer than $fromVersion, in ascending numeric version order,
+     * Apply every migration newer than $fromVersion, in ascending version order,
      * and stamp the resulting version into the returned config array.
      */
     public function migrate(array $config, ?int $fromVersion = null): array
     {
         $fromVersion ??= (int) ($config['version'] ?? 0);
 
-        foreach ($this->getPendingSteps($fromVersion) as $version => $migrations) {
-            foreach ($migrations as $migration) {
-                $config = $migration->up($config);
-            }
-
-            $config['version'] = $version;
+        foreach ($this->pendingMigrations($fromVersion) as $migration) {
+            $config = $migration->up($config);
+            $config['version'] = $migration->version();
         }
 
         return $config;
     }
 
     /**
-     * @return array<int, array<int, ConfigMigration>> version => [migrations], sorted ascending.
+     * @return array<int, ConfigMigration> ordered ascending by version.
      */
-    protected function getPendingSteps(int $fromVersion): array
+    protected function pendingMigrations(int $fromVersion): array
     {
-        $steps = [];
-
-        foreach ($this->migrationFiles() as $version => $files) {
-            if ($version <= $fromVersion) {
-                continue;
-            }
-
-            // Explicit sort — never rely on glob()/filesystem iteration order (differs across OSes).
-            sort($files);
-
-            $steps[$version] = array_map(fn (string $file): ConfigMigration => require $file, $files);
-        }
-
-        // Explicit numeric ascending order, independent of how the directory was iterated.
-        ksort($steps);
-
-        return $steps;
+        return array_values(array_filter(
+            $this->migrations(),
+            fn (ConfigMigration $migration): bool => $migration->version() > $fromVersion,
+        ));
     }
 
     /**
-     * Discover migration files and group them by the numeric version parsed from the
-     * `V{n}` filename prefix (e.g. `V1RestructureUserAndMediaClasses.php` -> 1).
+     * Load every migration once and order it by the version it declares.
      *
-     * @return array<int, array<int, string>> version => [absolute file paths]
+     * Ordering is driven by version() — independent of file name, glob() and filesystem
+     * iteration order, so it is identical on every OS.
+     *
+     * @return array<int, ConfigMigration>
      */
-    protected function migrationFiles(): array
+    protected function migrations(): array
     {
-        $files = [];
-
-        foreach (glob("{$this->migrationsPath}/*.php") ?: [] as $file) {
-            if (preg_match('/^V(\d+)/', basename($file), $matches)) {
-                $files[(int) $matches[1]][] = $file;
-            }
+        if ($this->migrations !== null) {
+            return $this->migrations;
         }
 
-        return $files;
+        $migrations = array_map(
+            fn (string $file): ConfigMigration => require $file,
+            glob("{$this->migrationsPath}/*.php") ?: [],
+        );
+
+        usort($migrations, fn (ConfigMigration $a, ConfigMigration $b): int => $a->version() <=> $b->version());
+
+        $this->assertUniqueVersions($migrations);
+
+        return $this->migrations = $migrations;
+    }
+
+    /**
+     * @param array<int, ConfigMigration> $migrations
+     */
+    protected function assertUniqueVersions(array $migrations): void
+    {
+        $versions = array_map(fn (ConfigMigration $migration): int => $migration->version(), $migrations);
+
+        if (count($versions) !== count(array_unique($versions))) {
+            throw new RuntimeException('Two config migrations declare the same version.');
+        }
     }
 }
