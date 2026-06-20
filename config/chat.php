@@ -5,6 +5,10 @@ use Illuminate\Notifications\Channels\BroadcastChannel;
 use RonasIT\Media\Models\Media;
 
 return [
+    // Schema version of this config. Managed by the config migrations system —
+    // do not edit by hand. Run `php artisan chat:config-upgrade` after upgrading the package.
+    'version' => 1,
+
     'classes' => [
         'user' => [
             // The User model class used for conversation members, message senders, and auth.

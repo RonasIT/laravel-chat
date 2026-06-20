@@ -4,6 +4,7 @@ namespace RonasIT\Chat;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use RonasIT\Chat\Console\Commands\ConfigUpgradeCommand;
 use RonasIT\Chat\Contracts\Models\ConversationModelContract;
 use RonasIT\Chat\Contracts\Models\MessageModelContract;
 use RonasIT\Chat\Contracts\Notifications\ConversationCreatedNotificationContract;
@@ -26,6 +27,7 @@ use RonasIT\Chat\Contracts\Resources\ConversationResourceContract;
 use RonasIT\Chat\Contracts\Resources\MessageResourceContract;
 use RonasIT\Chat\Contracts\Services\ConversationServiceContract;
 use RonasIT\Chat\Contracts\Services\MessageServiceContract;
+use RonasIT\Chat\Exceptions\OutdatedConfigException;
 use RonasIT\Chat\Http\Requests\Conversations\DeleteConversationRequest;
 use RonasIT\Chat\Http\Requests\Conversations\GetConversationByUserIdRequest;
 use RonasIT\Chat\Http\Requests\Conversations\GetConversationRequest;
@@ -48,6 +50,7 @@ use RonasIT\Chat\Notifications\Resources\Broadcast\ConversationResource as Conve
 use RonasIT\Chat\Notifications\Resources\Broadcast\MessageResource as MessageBroadcastResource;
 use RonasIT\Chat\Services\ConversationService;
 use RonasIT\Chat\Services\MessageService;
+use RonasIT\Chat\Support\ConfigMigrations\ConfigMigrator;
 
 class ChatServiceProvider extends ServiceProvider
 {
@@ -66,10 +69,49 @@ class ChatServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/chat.php' => config_path('chat.php'),
         ]);
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                ConfigUpgradeCommand::class,
+            ]);
+
+            // Allow `chat:config-upgrade` (and other CLI maintenance) to run against an outdated config.
+            return;
+        }
+
+        $this->guardConfigVersion();
+    }
+
+    /**
+     * Fail fast when the published config is behind the package's schema, instead of silently
+     * transforming it at runtime. Points the consumer at the explicit upgrade command.
+     */
+    protected function guardConfigVersion(): void
+    {
+        $publishedConfig = config_path('chat.php');
+
+        // Not published — the consumer relies on the package defaults, which are always current.
+        if (!file_exists($publishedConfig)) {
+            return;
+        }
+
+        // Read the raw on-disk version, not config('chat.version'): mergeConfigFrom would
+        // backfill a missing `version` with the package default and hide the mismatch.
+        $config = require $publishedConfig;
+        $currentVersion = (int) ($config['version'] ?? 0);
+        $latestVersion = (new ConfigMigrator(__DIR__ . '/../config_migrations'))->getLatestVersion();
+
+        if ($currentVersion < $latestVersion) {
+            throw new OutdatedConfigException($currentVersion, $latestVersion);
+        }
     }
 
     public function register(): void
     {
+        // Additive config drift: newly added keys fall back to the package defaults
+        // even when the consumer's published config predates them.
+        $this->mergeConfigFrom(__DIR__ . '/../config/chat.php', 'chat');
+
         $this->app->bind(CreateMessageRequestContract::class, CreateMessageRequest::class);
         $this->app->bind(PinMessageRequestContract::class, PinMessageRequest::class);
         $this->app->bind(UnpinMessageRequestContract::class, UnpinMessageRequest::class);
