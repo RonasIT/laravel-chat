@@ -5,6 +5,7 @@ namespace RonasIT\Chat;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use RonasIT\Chat\Console\Commands\ConfigUpgradeCommand;
+use RonasIT\Chat\Console\Commands\MakeConfigMigrationCommand;
 use RonasIT\Chat\Contracts\Models\ConversationModelContract;
 use RonasIT\Chat\Contracts\Models\MessageModelContract;
 use RonasIT\Chat\Contracts\Notifications\ConversationCreatedNotificationContract;
@@ -73,6 +74,7 @@ class ChatServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 ConfigUpgradeCommand::class,
+                MakeConfigMigrationCommand::class,
             ]);
 
             // Allow `chat:config-upgrade` (and other CLI maintenance) to run against an outdated config.

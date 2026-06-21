@@ -1,0 +1,23 @@
+<?php
+
+use RonasIT\Chat\Support\ConfigMigrations\ConfigMigration;
+
+/**
+ * Describe the v{{ previous }} -> v{{ version }} config change here.
+ *
+ * IMPORTANT: transform the consumer's existing values — never overwrite them with
+ * the new defaults, otherwise a customized config silently resets on upgrade.
+ */
+return new class extends ConfigMigration {
+    public function version(): int
+    {
+        return {{ version }};
+    }
+
+    public function up(array $config): array
+    {
+        // TODO: transform $config to the v{{ version }} schema and return it.
+
+        return $config;
+    }
+};
