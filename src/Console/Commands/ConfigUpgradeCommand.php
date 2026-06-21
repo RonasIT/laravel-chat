@@ -4,6 +4,7 @@ namespace RonasIT\Chat\Console\Commands;
 
 use Illuminate\Console\Command;
 use RonasIT\Chat\Support\ConfigMigrations\ConfigMigrator;
+use Winter\LaravelConfigWriter\ArrayFile;
 
 class ConfigUpgradeCommand extends Command
 {
@@ -33,24 +34,21 @@ class ConfigUpgradeCommand extends Command
         }
 
         $migrated = $migrator->migrate($current, $fromVersion);
+        $toVersion = $migrator->getLatestVersion();
 
-        // 1. Backup the original file before touching it.
+        // Back up the original before rewriting it.
         $backupPath = "{$configPath}.v{$fromVersion}.backup";
         copy($configPath, $backupPath);
-        $this->line("Backup written to [{$backupPath}].");
 
-        // 2. Show the diff for human review.
-        // TODO: render a readable diff between $current and $migrated.
+        // winter/laravel-config-writer edits the existing file in place, keeping the
+        // consumer's comments and formatting for keys it doesn't touch. set() accepts
+        // the whole migrated array, so the up() result is applied as one operation.
+        ArrayFile::open($configPath)
+            ->set($migrated)
+            ->write();
 
-        // 3. Write the migrated array back as a valid config file.
-        // TODO: this is the non-trivial part — serialize $migrated to pretty,
-        //       PSR-compatible PHP (var_export() is not enough: short array syntax,
-        //       FQCN `::class` references, preserved comments). Until implemented,
-        //       do not overwrite the consumer's file.
-        $this->warn('File writing is not implemented yet — the config was NOT modified.');
-        // file_put_contents($configPath, $this->dump($migrated));
-
-        $this->info("Chat config can be migrated v{$fromVersion} -> v{$migrator->getLatestVersion()}.");
+        $this->info("Chat config migrated v{$fromVersion} -> v{$toVersion}.");
+        $this->line("A backup of the previous version was saved to [{$backupPath}].");
 
         return self::SUCCESS;
     }
