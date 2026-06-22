@@ -75,6 +75,15 @@ class ConversationTest extends TestCase
         $this->assertEqualsFixture('get_conversation_by_recipient', $response->json());
     }
 
+    public function testGetPrivateConversationTitleWithEmptyFirstName(): void
+    {
+        $response = $this->actingAs(self::$recipient)->json('get', '/conversations/8');
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture('get_conversation_empty_first_name', $response->json());
+    }
+
     public function testGetBySomeUser()
     {
         $response = $this->actingAs(self::$someAuthUser)->json('get', '/conversations/1');

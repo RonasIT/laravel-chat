@@ -168,6 +168,8 @@ class Conversation extends Model implements ConversationModelContract
                 $sep = $this->getConnection()->escape($separators[$i]);
                 $expression .= " || COALESCE({$sep} || {$column}, '')";
             }
+
+            return "TRIM({$expression})";
         }
 
         return $expression;
