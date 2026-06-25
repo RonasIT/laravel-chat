@@ -169,7 +169,12 @@ class Conversation extends Model implements ConversationModelContract
                 $expression .= " || COALESCE({$sep} || {$column}, '')";
             }
 
-            return "TRIM({$expression})";
+            $chars = implode('', $separators);
+            $trimChars = $this->getConnection()->escape($chars);
+
+            return ($this->getConnection()->getDriverName() === 'sqlite')
+                ? "trim({$expression}, {$trimChars})"
+                : "TRIM(BOTH {$trimChars} FROM {$expression})";
         }
 
         return $expression;

@@ -2,6 +2,7 @@
 
 namespace RonasIT\Chat\Tests;
 
+use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RonasIT\Chat\ChatRouter;
 use RonasIT\Chat\Models\Conversation;
@@ -82,6 +83,17 @@ class ConversationTest extends TestCase
         $response->assertOk();
 
         $this->assertEqualsFixture('get_conversation_empty_first_name', $response->json());
+    }
+
+    public function testGetPrivateConversationTitleWithEmptyFirstNameAndCustomSeparator(): void
+    {
+        Config::set('chat.classes.user.columns.full_name_separator', [' - ']);
+
+        $response = $this->actingAs(self::$recipient)->json('get', '/conversations/8');
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture('get_conversation_empty_first_name_custom_separator', $response->json());
     }
 
     public function testGetBySomeUser()

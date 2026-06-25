@@ -17,5 +17,5 @@ interface MessageServiceContract
 
     public function unpin(int $id): void;
 
-    public function withConversationIdentity(int|string|null $id);
+    public function withConversationIdentity(int $id);
 }

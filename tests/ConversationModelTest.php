@@ -37,12 +37,12 @@ class ConversationModelTest extends TestCase
             'first_and_last_name' => [
                 'columns' => ['first_name', 'last_name'],
                 'separators' => [' '],
-                'expected' => "TRIM(COALESCE(first_name, '') || COALESCE(' ' || last_name, ''))",
+                'expected' => "TRIM(BOTH ' ' FROM COALESCE(first_name, '') || COALESCE(' ' || last_name, ''))",
             ],
             'first_last_name_and_job' => [
                 'columns' => ['first_name', 'last_name', 'job'],
                 'separators' => [' ', ' - '],
-                'expected' => "TRIM(COALESCE(first_name, '') || COALESCE(' ' || last_name, '') || COALESCE(' - ' || job, ''))",
+                'expected' => "TRIM(BOTH '  - ' FROM COALESCE(first_name, '') || COALESCE(' ' || last_name, '') || COALESCE(' - ' || job, ''))",
             ],
         ];
     }
