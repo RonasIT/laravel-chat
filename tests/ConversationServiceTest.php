@@ -11,7 +11,7 @@ use RonasIT\Chat\Tests\Support\TableTestState;
 
 class ConversationServiceTest extends TestCase
 {
-    protected static User $sender;
+    protected static User $currentUser;
 
     protected static ModelTestState $conversationState;
     protected static TableTestState $conversationMemberState;
@@ -20,7 +20,7 @@ class ConversationServiceTest extends TestCase
     {
         parent::setUp();
 
-        self::$sender ??= User::find(1);
+        self::$currentUser ??= User::find(1);
 
         self::$conversationState = new ModelTestState(Conversation::class);
         self::$conversationMemberState = new TableTestState('conversation_member');
@@ -28,7 +28,7 @@ class ConversationServiceTest extends TestCase
 
     public function testDeleteByList(): void
     {
-        $this->actingAs(self::$sender);
+        $this->actingAs(self::$currentUser);
 
         app(ConversationServiceContract::class)->deleteByList([1, 6]);
 
@@ -40,7 +40,7 @@ class ConversationServiceTest extends TestCase
 
     public function testDeleteByListWithNonExistingIds(): void
     {
-        $this->actingAs(self::$sender);
+        $this->actingAs(self::$currentUser);
 
         app(ConversationServiceContract::class)->deleteByList([2, 999]);
 
@@ -52,7 +52,7 @@ class ConversationServiceTest extends TestCase
 
     public function testDeleteByListEmpty(): void
     {
-        $this->actingAs(self::$sender);
+        $this->actingAs(self::$currentUser);
 
         app(ConversationServiceContract::class)->deleteByList([]);
 
@@ -64,9 +64,9 @@ class ConversationServiceTest extends TestCase
 
     public function testDeleteByListByField(): void
     {
-        $this->actingAs(self::$sender);
+        $this->actingAs(self::$currentUser);
 
-        app(ConversationServiceContract::class)->deleteByList([1], 'creator_id');
+        app(ConversationServiceContract::class)->deleteByList([1, 4], 'creator_id');
 
         $this->assertBroadcastNotificationSent('delete_by_list_by_field');
 

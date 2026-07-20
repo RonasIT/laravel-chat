@@ -26,6 +26,16 @@
             "id": 9,
             "conversation_id": 7,
             "member_id": 2
+        },
+        {
+            "id": 12,
+            "conversation_id": 9,
+            "member_id": 3
+        },
+        {
+            "id": 13,
+            "conversation_id": 9,
+            "member_id": 4
         }
     ]
 }
