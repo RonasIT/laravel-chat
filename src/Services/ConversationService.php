@@ -95,6 +95,17 @@ class ConversationService extends EntityService implements ConversationServiceCo
         $this->postDeleteHook($conversation);
     }
 
+    public function deleteByList(array $values, ?string $field = null): void
+    {
+        $conversations = $this->with('members')->getByList($values, $field);
+
+        if (!$conversations->isEmpty()) {
+            $this->repository->deleteByList($conversations->pluck('id')->all());
+
+            $conversations->each(fn (Conversation $conversation) => $this->postDeleteHook($conversation));
+        }
+    }
+
     public function search(array $filters = []): LengthAwarePaginator
     {
         $forMemberId = (Arr::get($filters, 'with_unread_messages_count', false))

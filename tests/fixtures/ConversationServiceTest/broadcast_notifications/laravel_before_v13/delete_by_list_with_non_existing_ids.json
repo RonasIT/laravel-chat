@@ -1,0 +1,44 @@
+{
+    "RonasIT\\Chat\\Notifications\\ConversationDeletedNotification": [
+        {
+            "notification": {
+                "conversationId": 2,
+                "recipientId": 2,
+                "connection": null,
+                "queue": null,
+                "messageGroup": null,
+                "deduplicator": null,
+                "delay": null,
+                "afterCommit": true,
+                "middleware": [],
+                "chained": [],
+                "chainConnection": null,
+                "chainQueue": null,
+                "chainCatchCallbacks": null,
+                "locale": null,
+                "broadcast_on": [
+                    {
+                        "name": "private-chat.2"
+                    }
+                ],
+                "broadcast_data": {
+                    "data": {
+                        "id": 2
+                    }
+                },
+                "broadcast_as": "conversation.deleted"
+            },
+            "channels": [
+                "Illuminate\\Notifications\\Channels\\BroadcastChannel"
+            ],
+            "notifiable": {
+                "id": 2,
+                "email": "fidel.kutch@example.com",
+                "first_name": "Bob",
+                "last_name": "Lewis",
+                "avatar_id": null
+            },
+            "locale": null
+        }
+    ]
+}
