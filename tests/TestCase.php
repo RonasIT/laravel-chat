@@ -110,7 +110,7 @@ class TestCase extends BaseTest
                         $notification['notification']['broadcast_on'] = $broadcastNotification->broadcastOn();
                         $notification['notification']['broadcast_data'] = $broadcastNotification->toBroadcast()->data;
                         $notification['notification']['broadcast_as'] = $broadcastNotification->broadcastAs();
-                        unset($notification['notification']['id']);
+                        unset($notification['notification']['id'], $notification['notification']['uniqueLockOwner']);
 
                         $actualData[$notificationClassName][] = $notification;
                     }
