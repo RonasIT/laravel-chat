@@ -35,7 +35,7 @@ class Conversation extends Model implements ConversationModelContract
 
     public function last_message(): HasOne
     {
-        return $this->hasOne(app()->getAlias(MessageModelContract::class))->latest();
+        return $this->hasOne(app()->getAlias(MessageModelContract::class))->latest('id');
     }
 
     public function messages(): HasMany
