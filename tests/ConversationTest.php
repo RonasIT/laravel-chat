@@ -96,6 +96,18 @@ class ConversationTest extends TestCase
         $this->assertEqualsFixture('get_conversation_empty_first_name_custom_separator', $response->json());
     }
 
+    public function testGetPrivateConversationTitleWithEmptyMiddleColumn(): void
+    {
+        Config::set('chat.classes.user.columns.full_name', ['first_name', 'last_name', 'email']);
+        Config::set('chat.classes.user.columns.full_name_separator', [' ', ' - ']);
+
+        $response = $this->actingAs(self::$recipient)->json('get', '/conversations/9');
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture('get_conversation_empty_middle_column', $response->json());
+    }
+
     public function testGetBySomeUser()
     {
         $response = $this->actingAs(self::$someAuthUser)->json('get', '/conversations/1');

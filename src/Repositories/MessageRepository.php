@@ -62,6 +62,6 @@ class MessageRepository extends BaseRepository
     private function hasConversationRelation(): bool
     {
         return collect($this->attachedRelations)
-            ->contains(fn ($relation) => Str::startsWith($relation, 'conversation'));
+            ->contains(fn ($relation) => $relation === 'conversation' || Str::startsWith($relation, 'conversation.'));
     }
 }

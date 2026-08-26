@@ -31,9 +31,9 @@ class MessageService extends EntityService implements MessageServiceContract
         $this->setRepository(MessageRepository::class);
     }
 
-    public function withConversationIdentity(int $id): static
+    public function withConversationIdentity(int $memberId): static
     {
-        $this->repository->withConversationIdentity($id);
+        $this->repository->withConversationIdentity($memberId);
 
         return $this;
     }
