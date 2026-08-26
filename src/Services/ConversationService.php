@@ -29,6 +29,27 @@ class ConversationService extends EntityService implements ConversationServiceCo
         $this->setRepository(ConversationRepository::class);
     }
 
+    public function with(array|string $relations): static
+    {
+        $this->repository->with($relations);
+
+        return $this;
+    }
+
+    public function withCount(array|string $relations): static
+    {
+        $this->repository->withCount($relations);
+
+        return $this;
+    }
+
+    public function withCalculatedIdentity(int $memberId): static
+    {
+        $this->repository->withCalculatedIdentity($memberId);
+
+        return $this;
+    }
+
     public function getOrCreatePrivate(int $firstMemberId, int $secondMemberId): Model
     {
         $conversation = $this->getPrivate($firstMemberId, $secondMemberId);

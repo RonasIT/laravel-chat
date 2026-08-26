@@ -14,4 +14,10 @@ interface ConversationServiceContract
     public function getPrivate(int $asUserId, int $withUserId): ?Model;
 
     public function delete($where): void;
+
+    public function with(array|string $relations): static;
+
+    public function withCount(array|string $relations): static;
+
+    public function withCalculatedIdentity(int $memberId): static;
 }

@@ -3,6 +3,7 @@
 namespace RonasIT\Chat\Repositories;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use RonasIT\Chat\Contracts\Models\MessageModelContract;
 use RonasIT\Support\Repositories\BaseRepository;
 
@@ -48,7 +49,7 @@ class MessageRepository extends BaseRepository
     {
         $query = parent::getQuery($where);
 
-        if (!is_null($this->withConversationIdentityForMemberId) && in_array('conversation', $this->attachedRelations)) {
+        if (!is_null($this->withConversationIdentityForMemberId) && $this->hasConversationRelation()) {
             $memberId = $this->withConversationIdentityForMemberId;
             $query->with(['conversation' => fn ($query) => $query->withCalculatedIdentity($memberId)]);
 
@@ -56,5 +57,11 @@ class MessageRepository extends BaseRepository
         }
 
         return $query;
+    }
+
+    private function hasConversationRelation(): bool
+    {
+        return collect($this->attachedRelations)
+            ->contains(fn ($relation) => $relation === 'conversation' || Str::startsWith($relation, 'conversation.'));
     }
 }

@@ -162,12 +162,14 @@ class Conversation extends Model implements ConversationModelContract
             $separators = config('chat.classes.user.columns.full_name_separator') ?: [' '];
             $separators = array_pad($separators, count($columns), end($separators));
 
-            $expression = "COALESCE({$expression}, '')";
+            $expression = "NULLIF({$expression}, '')";
 
             foreach ($columns as $i => $column) {
                 $sep = $this->getConnection()->escape($separators[$i]);
-                $expression .= " || COALESCE({$sep} || {$column}, '')";
+                $expression = "NULLIF(concat_ws({$sep}, {$expression}, NULLIF({$column}, '')), '')";
             }
+
+            return "COALESCE({$expression}, '')";
         }
 
         return $expression;
