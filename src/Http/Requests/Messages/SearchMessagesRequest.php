@@ -28,6 +28,7 @@ class SearchMessagesRequest extends BaseRequest implements SearchMessagesRequest
     {
         return implode(',', [
             'conversation',
+            'conversation.cover',
             'sender',
             'attachment',
         ]);

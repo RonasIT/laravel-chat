@@ -212,6 +212,13 @@ class MessageTest extends TestCase
                 ],
                 'fixture' => 'search_order_by_created_at',
             ],
+            [
+                'filter' => [
+                    'with' => ['conversation.cover'],
+                    'with_conversation_identity' => true,
+                ],
+                'fixture' => 'search_with_conversation_cover_and_identity',
+            ],
         ];
     }
 
