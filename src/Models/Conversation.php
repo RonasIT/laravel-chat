@@ -35,12 +35,14 @@ class Conversation extends Model implements ConversationModelContract
 
     public function last_message(): HasOne
     {
-        return $this->hasOne(app()->getAlias(MessageModelContract::class))->latest();
+        return $this->hasOne(app()->getAlias(MessageModelContract::class))->latest('id');
     }
 
     public function messages(): HasMany
     {
-        return $this->hasMany(app()->getAlias(MessageModelContract::class));
+        return $this
+            ->hasMany(app()->getAlias(MessageModelContract::class))
+            ->orderBy('id');
     }
 
     public function creator(): BelongsTo
@@ -50,12 +52,14 @@ class Conversation extends Model implements ConversationModelContract
 
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(
-            related: config('chat.classes.user.model'),
-            table: 'conversation_member',
-            foreignPivotKey: 'conversation_id',
-            relatedPivotKey: 'member_id',
-        );
+        return $this
+            ->belongsToMany(
+                related: config('chat.classes.user.model'),
+                table: 'conversation_member',
+                foreignPivotKey: 'conversation_id',
+                relatedPivotKey: 'member_id',
+            )
+            ->orderByPivot('id');
     }
 
     public function cover(): BelongsTo

@@ -56,7 +56,9 @@ class Message extends Model implements MessageModelContract
 
     public function reads(): HasMany
     {
-        return $this->hasMany(ReadMessage::class, 'message_id');
+        return $this
+            ->hasMany(ReadMessage::class, 'message_id')
+            ->orderBy('id');
     }
 
     protected static function booted(): void
