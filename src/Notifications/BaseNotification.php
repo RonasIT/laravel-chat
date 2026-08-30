@@ -35,11 +35,16 @@ abstract class BaseNotification extends Notification implements NotificationCont
     public function toBroadcast(): BroadcastMessage
     {
         return (new BroadcastMessage($this->getBroadcastData()))
-            ->onQueue(config('chat.broadcast_queue'));
+            ->onQueue($this->getQueueName());
     }
 
     public function viaQueues(): array
     {
-        return array_fill_keys(config('chat.default_channels'), config('chat.broadcast_queue'));
+        return array_fill_keys(config('chat.default_channels'), $this->getQueueName());
+    }
+
+    protected function getQueueName(): ?string
+    {
+        return config('chat.broadcast_queue');
     }
 }

@@ -287,6 +287,32 @@ class CustomMessageCreatedNotification extends MessageCreatedNotification
 }
 ```
 
+#### Overriding the queue for one notification
+
+`chat.broadcast_queue` applies to every chat notification. To move a single one — for example
+`conversation.updated`, which is sent to every member on every new message — subclass it, override
+`getQueueName()` and rebind its contract:
+
+```php
+class HeavyConversationUpdatedNotification extends ConversationUpdatedNotification
+{
+    protected function getQueueName(): ?string
+    {
+        return 'chat-heavy';
+    }
+}
+```
+
+```php
+// AppServiceProvider::register()
+$this->app->bind(
+    ConversationUpdatedNotificationContract::class,
+    HeavyConversationUpdatedNotification::class,
+);
+```
+
+Both jobs read the queue from this single method, so they cannot end up on different queues.
+
 ## Contributing
 
 Thank you for considering contributing to the Laravel Chat plugin! The contribution guide can be found in the [Contributing guide](CONTRIBUTING.md).

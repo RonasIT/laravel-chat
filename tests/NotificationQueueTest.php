@@ -18,10 +18,12 @@ use RonasIT\Chat\Contracts\Notifications\MessageCreatedNotificationContract;
 use RonasIT\Chat\Contracts\Notifications\MessageUpdatedNotificationContract;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\Channels\CustomBroadcastChannel;
+use RonasIT\Chat\Tests\Support\Notifications\CustomMessageCreatedNotification;
 
 class NotificationQueueTest extends TestCase
 {
     const string QUEUE_NAME = 'chat';
+    const string NOTIFICATION_QUEUE_NAME = 'custom';
 
     protected bool $isNotificationFaked = false;
 
@@ -173,6 +175,75 @@ class NotificationQueueTest extends TestCase
         );
 
         $this->assertNull($notification->toBroadcast()->queue);
+    }
+
+    public function testSendWithQueueSetOnNotification(): void
+    {
+        Bus::fake();
+
+        $notification = app(MessageCreatedNotificationContract::class, [
+            'messageId' => 1,
+            'recipientId' => 1,
+        ]);
+
+        self::$recipient->notify($notification->onQueue(self::NOTIFICATION_QUEUE_NAME));
+
+        Bus::assertDispatched(
+            command: SendQueuedNotifications::class,
+            callback: fn (SendQueuedNotifications $job) => $job->queue === self::NOTIFICATION_QUEUE_NAME,
+        );
+
+        $this->assertNull($notification->toBroadcast()->queue);
+    }
+
+    public function testSendWithConfiguredQueueOverridingQueueSetOnNotification(): void
+    {
+        Config::set('chat.broadcast_queue', self::QUEUE_NAME);
+
+        Bus::fake();
+
+        $notification = app(MessageCreatedNotificationContract::class, [
+            'messageId' => 1,
+            'recipientId' => 1,
+        ]);
+
+        self::$recipient->notify($notification->onQueue(self::NOTIFICATION_QUEUE_NAME));
+
+        Bus::assertDispatched(
+            command: SendQueuedNotifications::class,
+            callback: fn (SendQueuedNotifications $job) => $job->queue === self::QUEUE_NAME,
+        );
+
+        $this->assertEquals(self::QUEUE_NAME, $notification->toBroadcast()->queue);
+    }
+
+    public function testSendWithQueueOverriddenOnNotification(): void
+    {
+        Config::set('chat.broadcast_queue', self::QUEUE_NAME);
+
+        $this->app->bind(
+            abstract: MessageCreatedNotificationContract::class,
+            concrete: CustomMessageCreatedNotification::class,
+        );
+
+        Bus::fake();
+
+        $notification = app(MessageCreatedNotificationContract::class, [
+            'messageId' => 1,
+            'recipientId' => 1,
+        ]);
+
+        self::$recipient->notify($notification);
+
+        Bus::assertDispatched(
+            command: SendQueuedNotifications::class,
+            callback: fn (SendQueuedNotifications $job) => $job->queue === CustomMessageCreatedNotification::QUEUE_NAME,
+        );
+
+        $this->assertEquals(
+            expected: CustomMessageCreatedNotification::QUEUE_NAME,
+            actual: $notification->toBroadcast()->queue,
+        );
     }
 
     public static function getNotifications(): array
