@@ -58,6 +58,14 @@ Set the queue name with the `CHAT_BROADCAST_QUEUE` environment variable, or dire
 CHAT_BROADCAST_QUEUE=chat
 ```
 
+The config value may also be a backed enum, so an application that keeps its queue names in one can
+use it directly:
+
+```php
+// config/chat.php
+'broadcast_queue' => QueueEnum::Chat,
+```
+
 Sending one chat notification pushes two jobs, and the setting moves **both** of them:
 
 | Job | Pushed by |
@@ -296,9 +304,9 @@ class CustomMessageCreatedNotification extends MessageCreatedNotification
 ```php
 class HeavyConversationUpdatedNotification extends ConversationUpdatedNotification
 {
-    protected function getQueueName(): ?string
+    protected function getQueueName(): UnitEnum|string|null
     {
-        return 'chat-heavy';
+        return QueueEnum::ChatHeavy;
     }
 }
 ```

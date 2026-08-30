@@ -8,6 +8,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\Attributes\WithoutRelations;
 use RonasIT\Chat\Contracts\Notifications\NotificationContract;
+use UnitEnum;
 
 #[WithoutRelations]
 abstract class BaseNotification extends Notification implements NotificationContract
@@ -43,7 +44,7 @@ abstract class BaseNotification extends Notification implements NotificationCont
         return array_fill_keys(config('chat.default_channels'), $this->getQueueName());
     }
 
-    protected function getQueueName(): ?string
+    protected function getQueueName(): UnitEnum|string|null
     {
         return config('chat.broadcast_queue');
     }

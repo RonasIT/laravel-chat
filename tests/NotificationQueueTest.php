@@ -18,6 +18,7 @@ use RonasIT\Chat\Contracts\Notifications\MessageCreatedNotificationContract;
 use RonasIT\Chat\Contracts\Notifications\MessageUpdatedNotificationContract;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\Channels\CustomBroadcastChannel;
+use RonasIT\Chat\Tests\Support\Enums\QueueEnum;
 use RonasIT\Chat\Tests\Support\Notifications\CustomMessageCreatedNotification;
 
 class NotificationQueueTest extends TestCase
@@ -244,6 +245,27 @@ class NotificationQueueTest extends TestCase
             expected: CustomMessageCreatedNotification::QUEUE_NAME,
             actual: $notification->toBroadcast()->queue,
         );
+    }
+
+    public function testSendWithConfiguredQueueAsEnum(): void
+    {
+        Config::set('chat.broadcast_queue', QueueEnum::Chat);
+
+        Bus::fake();
+
+        $notification = app(MessageCreatedNotificationContract::class, [
+            'messageId' => 1,
+            'recipientId' => 1,
+        ]);
+
+        self::$recipient->notify($notification);
+
+        Bus::assertDispatched(
+            command: SendQueuedNotifications::class,
+            callback: fn (SendQueuedNotifications $job) => $job->queue === QueueEnum::Chat->value,
+        );
+
+        $this->assertEquals(QueueEnum::Chat->value, $notification->toBroadcast()->queue);
     }
 
     public static function getNotifications(): array
