@@ -37,13 +37,14 @@ composer require ronasit/laravel-chat
 php artisan vendor:publish --provider=RonasIT\\Chat\\ChatServiceProvider
 ```
 
-3. If you use non default `App\Models\User` model - update `chat.classes.user_model` config.
+3. If you use non default `App\Models\User` model - update `chat.classes.user.model` config.
 
 ## Configuration
 
-The package config is merged with the published `config/chat.php`, so keys added by newer versions
-of the package resolve to their defaults even if your published copy predates them. You only need to
-re-publish the config when you want to see the new keys in the file itself.
+The package config is merged with the published `config/chat.php`, so a new **top-level** key added
+by a newer version resolves to its default even if your published copy predates it. The merge is not
+recursive — a key nested inside an array you already published is not backfilled — so re-publish the
+config after upgrading to a release that adds one.
 
 ### Queue
 
