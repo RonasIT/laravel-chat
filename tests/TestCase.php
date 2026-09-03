@@ -12,6 +12,7 @@ use ReflectionClass;
 use RonasIT\Chat\ChatRouter;
 use RonasIT\Chat\ChatServiceProvider;
 use RonasIT\Chat\Tests\Models\User;
+use RonasIT\Chat\Tests\Support\Attributes\RegisterChatRoutes;
 use RonasIT\Media\Models\Media;
 use RonasIT\Support\Traits\FixturesTrait;
 
@@ -61,6 +62,11 @@ class TestCase extends BaseTest
         $this->setupDb($app);
 
         ChatRouter::$isBlockedBaseRoutes = false;
+    }
+
+    protected function defineRoutes($router): void
+    {
+        $this->parseTestMethodAttributes($this->app, RegisterChatRoutes::class);
     }
 
     protected function getPackageProviders($app): array

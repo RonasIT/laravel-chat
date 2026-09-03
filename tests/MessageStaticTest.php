@@ -12,12 +12,9 @@ use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\Attributes\RegisterChatRoutes;
 use RonasIT\Chat\Tests\Support\ModelTestState;
 use RonasIT\Chat\Tests\Support\TableTestState;
-use RonasIT\Chat\Tests\Support\Traits\RegistersChatRoutesTrait;
 
 class MessageStaticTest extends TestCase
 {
-    use RegistersChatRoutesTrait;
-
     protected static User $firstUser;
     protected static User $secondUser;
     protected static User $someAuthUser;
