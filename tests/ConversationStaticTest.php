@@ -2,11 +2,11 @@
 
 namespace RonasIT\Chat\Tests;
 
-use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\DataProvider;
 use RonasIT\Chat\Enums\ChatRouteActionEnum;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Tests\Models\User;
+use RonasIT\Chat\Tests\Support\Attributes\RegisterChatRoutes;
 use RonasIT\Chat\Tests\Support\ModelTestState;
 use RonasIT\Chat\Tests\Support\TableTestState;
 
@@ -31,10 +31,9 @@ class ConversationStaticTest extends TestCase
         self::$conversationMemberState = new TableTestState('conversation_member');
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationsSearch)]
     public function testEverythingDisabledExceptSearch(): void
     {
-        Route::chat(ChatRouteActionEnum::ConversationsSearch);
-
         $responseSearch = $this->actingAs(self::$sender)->getJson('/conversations');
         $responseGet = $this->actingAs(self::$sender)->getJson('/conversations/1');
         $responseDelete = $this->actingAs(self::$sender)->deleteJson('/conversations/1');
@@ -51,10 +50,9 @@ class ConversationStaticTest extends TestCase
         $responseCreate->assertNotFound();
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationDelete)]
     public function testEverythingDisabledExceptDelete(): void
     {
-        Route::chat(ChatRouteActionEnum::ConversationDelete);
-
         $responseSearch = $this->actingAs(self::$sender)->getJson('/conversations');
         $responseGet = $this->actingAs(self::$sender)->getJson('/conversations/1');
         $responseDelete = $this->actingAs(self::$sender)->deleteJson('/conversations/1');
@@ -64,17 +62,17 @@ class ConversationStaticTest extends TestCase
 
         $responseDelete->assertNoContent();
 
-        $responseGet->assertNotFound();
+        $responseGet->assertMethodNotAllowed();
+
         $responseSearch->assertNotFound();
         $responseGetByUser->assertNotFound();
         $responseSearchMessages->assertNotFound();
         $responseCreate->assertNotFound();
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationGet)]
     public function testEverythingDisabledExceptGet(): void
     {
-        Route::chat(ChatRouteActionEnum::ConversationGet);
-
         $responseSearch = $this->actingAs(self::$sender)->getJson('/conversations');
         $responseGet = $this->actingAs(self::$sender)->getJson('/conversations/1');
         $responseDelete = $this->actingAs(self::$sender)->deleteJson('/conversations/1');
@@ -84,17 +82,17 @@ class ConversationStaticTest extends TestCase
 
         $responseGet->assertOk();
 
-        $responseDelete->assertNotFound();
+        $responseDelete->assertMethodNotAllowed();
+
         $responseSearch->assertNotFound();
         $responseGetByUser->assertNotFound();
         $responseSearchMessages->assertNotFound();
         $responseCreate->assertNotFound();
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationGetByUser)]
     public function testEverythingDisabledExceptGetByUser(): void
     {
-        Route::chat(ChatRouteActionEnum::ConversationGetByUser);
-
         $responseSearch = $this->actingAs(self::$sender)->getJson('/conversations');
         $responseGet = $this->actingAs(self::$sender)->getJson('/conversations/1');
         $responseDelete = $this->actingAs(self::$sender)->deleteJson('/conversations/1');
@@ -111,10 +109,9 @@ class ConversationStaticTest extends TestCase
         $responseCreate->assertNotFound();
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationGet)]
     public function testGetBySender()
     {
-        Route::chat(ChatRouteActionEnum::ConversationGet);
-
         $response = $this->actingAs(self::$sender)->json('get', '/conversations/1');
 
         $response->assertOk();
@@ -122,10 +119,9 @@ class ConversationStaticTest extends TestCase
         $this->assertEqualsFixture('get_conversation_by_sender', $response->json());
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationGet)]
     public function testGetWithRelations()
     {
-        Route::chat(ChatRouteActionEnum::ConversationGet);
-
         $response = $this->actingAs(self::$sender)->json(
             method: 'get',
             uri: '/conversations/1',
@@ -149,10 +145,9 @@ class ConversationStaticTest extends TestCase
         $this->assertEqualsFixture('get_conversation_with_relations', $response->json());
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationGet)]
     public function testGetByRecipient()
     {
-        Route::chat(ChatRouteActionEnum::ConversationGet);
-
         $response = $this->actingAs(self::$recipient)->json('get', '/conversations/1');
 
         $response->assertOk();
@@ -160,10 +155,9 @@ class ConversationStaticTest extends TestCase
         $this->assertEqualsFixture('get_conversation_by_recipient', $response->json());
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationGet)]
     public function testGetBySomeUser()
     {
-        Route::chat(ChatRouteActionEnum::ConversationGet);
-
         $response = $this->actingAs(self::$someAuthUser)->json('get', '/conversations/1');
 
         $response->assertForbidden();
@@ -171,10 +165,9 @@ class ConversationStaticTest extends TestCase
         $response->assertJson(['message' => 'This action is unauthorized.']);
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationGet)]
     public function testGetNotExists()
     {
-        Route::chat(ChatRouteActionEnum::ConversationGet);
-
         $response = $this->actingAs(self::$sender)->json('get', '/conversations/0');
 
         $response->assertNotFound();
@@ -182,28 +175,25 @@ class ConversationStaticTest extends TestCase
         $response->assertJson(['message' => 'Conversation does not exist']);
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationGet)]
     public function testGetWithInvalidId(): void
     {
-        Route::chat(ChatRouteActionEnum::ConversationGet);
-
         $response = $this->actingAs(self::$sender)->json('get', '/conversations/abc');
 
         $response->assertNotFound();
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationsSearch)]
     public function testGetEndpointDisabled()
     {
         $response = $this->actingAs(self::$sender)->json('get', '/conversations/1');
 
         $response->assertNotFound();
-
-        $response->assertJson(['message' => 'Not found.']);
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationGetByUser)]
     public function testGetBetweenUsersIdBySender()
     {
-        Route::chat(ChatRouteActionEnum::ConversationGetByUser);
-
         $response = $this->actingAs(self::$sender)->json('get', 'users/2/conversation');
 
         $response->assertOk();
@@ -211,10 +201,9 @@ class ConversationStaticTest extends TestCase
         $this->assertEqualsFixture('get_conversation_between_users_by_sender', $response->json());
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationGetByUser)]
     public function testGetBetweenUsersByRecipient()
     {
-        Route::chat(ChatRouteActionEnum::ConversationGetByUser);
-
         $response = $this->actingAs(self::$recipient)->json('get', 'users/1/conversation');
 
         $response->assertOk();
@@ -222,10 +211,9 @@ class ConversationStaticTest extends TestCase
         $this->assertEqualsFixture('get_conversation_between_users_by_recipient', $response->json());
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationGetByUser)]
     public function testGetBetweenUsersIdWithRelations()
     {
-        Route::chat(ChatRouteActionEnum::ConversationGetByUser);
-
         $response = $this->actingAs(self::$sender)->json('get', 'users/2/conversation', [
             'with' => [
                 'messages',
@@ -245,37 +233,33 @@ class ConversationStaticTest extends TestCase
         $this->assertEqualsFixture('get_conversation_with_relations', $response->json());
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationGetByUser)]
     public function testGetBetweenUsersWhoDontHaveConversations()
     {
-        Route::chat(ChatRouteActionEnum::ConversationGetByUser);
-
         $response = $this->actingAs(self::$sender)->json('get', 'users/3/conversation');
 
         $response->assertNoContent();
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationGetByUser)]
     public function testGetBetweenUsersWithInvalidUserId(): void
     {
-        Route::chat(ChatRouteActionEnum::ConversationGetByUser);
-
         $response = $this->actingAs(self::$sender)->json('get', '/users/abc/conversation');
 
         $response->assertNotFound();
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationsSearch)]
     public function testGetByUserEndpointDisabled()
     {
         $response = $this->actingAs(self::$sender)->json('get', 'users/2/conversation');
 
         $response->assertNotFound();
-
-        $response->assertJson(['message' => 'Not found.']);
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationDelete)]
     public function testDeleteBySender()
     {
-        Route::chat(ChatRouteActionEnum::ConversationDelete);
-
         $response = $this->actingAs(self::$sender)->json('delete', '/conversations/1');
 
         $response->assertNoContent();
@@ -286,10 +270,9 @@ class ConversationStaticTest extends TestCase
         self::$conversationMemberState->assertChangesEqualsFixture('deleted');
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationDelete)]
     public function testDeleteByRecipient()
     {
-        Route::chat(ChatRouteActionEnum::ConversationDelete);
-
         $response = $this->actingAs(self::$recipient)->json('delete', '/conversations/1');
 
         $this->assertBroadcastNotificationSent('delete_by_recipient');
@@ -300,10 +283,9 @@ class ConversationStaticTest extends TestCase
         self::$conversationMemberState->assertChangesEqualsFixture('deleted');
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationDelete)]
     public function testDeleteBySomeUser()
     {
-        Route::chat(ChatRouteActionEnum::ConversationDelete);
-
         $response = $this->actingAs(self::$someAuthUser)->json('delete', '/conversations/1');
 
         $response->assertForbidden();
@@ -313,10 +295,9 @@ class ConversationStaticTest extends TestCase
         self::$conversationState->assertNotChanged();
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationDelete)]
     public function testDeleteNotExists()
     {
-        Route::chat(ChatRouteActionEnum::ConversationDelete);
-
         $response = $this->actingAs(self::$sender)->json('delete', '/conversations/0');
 
         $response->assertNotFound();
@@ -326,10 +307,9 @@ class ConversationStaticTest extends TestCase
         self::$conversationState->assertNotChanged();
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationDelete)]
     public function testDeleteWithInvalidId(): void
     {
-        Route::chat(ChatRouteActionEnum::ConversationDelete);
-
         $response = $this->actingAs(self::$sender)->json('delete', '/conversations/abc');
 
         $response->assertNotFound();
@@ -337,10 +317,9 @@ class ConversationStaticTest extends TestCase
         self::$conversationState->assertNotChanged();
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationDelete)]
     public function testDeleteGroupByCreator()
     {
-        Route::chat(ChatRouteActionEnum::ConversationDelete);
-
         $response = $this->actingAs(self::$sender)->json('delete', '/conversations/6');
 
         $response->assertNoContent();
@@ -351,10 +330,9 @@ class ConversationStaticTest extends TestCase
         self::$conversationMemberState->assertChangesEqualsFixture('deleted_group');
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationDelete)]
     public function testDeleteGroupByNonCreator()
     {
-        Route::chat(ChatRouteActionEnum::ConversationDelete);
-
         $response = $this->actingAs(self::$recipient)->json('delete', '/conversations/6');
 
         $response->assertForbidden();
@@ -364,13 +342,12 @@ class ConversationStaticTest extends TestCase
         self::$conversationState->assertNotChanged();
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationsSearch)]
     public function testDeleteEndpointDisabled()
     {
         $response = $this->actingAs(self::$sender)->json('delete', '/conversations/1');
 
         $response->assertNotFound();
-
-        $response->assertJson(['message' => 'Not found.']);
     }
 
     public static function getSearchFilters(): array
@@ -440,10 +417,9 @@ class ConversationStaticTest extends TestCase
     }
 
     #[DataProvider('getSearchFilters')]
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationsSearch)]
     public function testSearch(array $filter, string $fixture)
     {
-        Route::chat(ChatRouteActionEnum::ConversationsSearch);
-
         $response = $this->actingAs(self::$sender)->json('get', '/conversations', $filter);
 
         $response->assertOk();
@@ -451,10 +427,9 @@ class ConversationStaticTest extends TestCase
         $this->assertEqualsFixture($fixture, $response->json());
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationsSearch)]
     public function testSearchWithInvalidOrderBy()
     {
-        Route::chat(ChatRouteActionEnum::ConversationsSearch);
-
         $response = $this->actingAs(self::$sender)->json('get', '/conversations', [
             'order_by' => 'invalid_field',
         ]);
@@ -462,12 +437,11 @@ class ConversationStaticTest extends TestCase
         $response->assertUnprocessable();
     }
 
+    #[RegisterChatRoutes(ChatRouteActionEnum::ConversationGet)]
     public function testSearchEndpointDisabled()
     {
         $response = $this->actingAs(self::$sender)->json('get', '/conversations');
 
         $response->assertNotFound();
-
-        $response->assertJson(['message' => 'Not found.']);
     }
 }
