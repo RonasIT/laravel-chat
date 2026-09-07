@@ -2,17 +2,18 @@
 
 namespace RonasIT\Chat\Notifications;
 
-use Illuminate\Notifications\Messages\BroadcastMessage;
 use RonasIT\Chat\Contracts\Notifications\ConversationDeletedNotificationContract;
 use RonasIT\Chat\Enums\BroadcastNotificationTypeEnum;
 
 class ConversationDeletedNotification extends BaseConversationNotification implements ConversationDeletedNotificationContract
 {
-    public function toBroadcast(): BroadcastMessage
+    public function getBroadcastData(): array
     {
-        return new BroadcastMessage(['data' => [
-            'id' => $this->conversationId,
-        ]]);
+        return [
+            'data' => [
+                'id' => $this->conversationId,
+            ],
+        ];
     }
 
     public function broadcastAs(): string

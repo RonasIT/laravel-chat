@@ -34,4 +34,8 @@ return [
     'default_channels' => [
         BroadcastChannel::class,
     ],
+
+    // Queue used to dispatch chat broadcast notifications.
+    // null falls back to the application's default queue.
+    'broadcast_queue' => env('CHAT_BROADCAST_QUEUE'),
 ];

@@ -23,6 +23,7 @@ class TestCase extends BaseTest
     }
 
     protected bool $globalExportMode = false;
+    protected bool $isNotificationFaked = true;
 
     protected function setUp(): void
     {
@@ -45,7 +46,9 @@ class TestCase extends BaseTest
 
         Carbon::setTestNow(Carbon::create(2024));
 
-        Notification::fake();
+        if ($this->isNotificationFaked) {
+            Notification::fake();
+        }
     }
 
     public function getFixturePath(string $fixtureName): string

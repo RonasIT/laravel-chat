@@ -6,6 +6,8 @@
 
 - [Introduction](#introduction)
 - [Installation](#installation)
+- [Configuration](#configuration)
+  - [Queue](#queue)
 - [Integration with LaravelSwagger](#integration-with-laravelswagger)
 - [API Endpoints](#api-endpoints)
   - [Conversations](#conversations)
@@ -13,6 +15,7 @@
 - [Broadcast Events](#broadcast-events)
   - [Channel Authorization](#channel-authorization)
   - [Events](#events)
+  - [Customizing Notifications](#customizing-notifications)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -34,7 +37,54 @@ composer require ronasit/laravel-chat
 php artisan vendor:publish --provider=RonasIT\\Chat\\ChatServiceProvider
 ```
 
-3. If you use non default `App\Models\User` model - update `chat.classes.user_model` config.
+3. If you use non default `App\Models\User` model - update `chat.classes.user.model` config.
+
+## Configuration
+
+The package config is merged with the published `config/chat.php`, so a new **top-level** key added
+by a newer version resolves to its default even if your published copy predates it. The merge is not
+recursive — a key nested inside an array you already published is not backfilled — so re-publish the
+config after upgrading to a release that adds one.
+
+### Queue
+
+Chat notifications are queued. By default, they land on the application's default queue, which means
+they compete with every other job you dispatch. Since chat events are latency-sensitive, you will
+usually want them on a dedicated queue served by their own worker.
+
+Set the queue name with the `CHAT_BROADCAST_QUEUE` environment variable, or directly through the
+`chat.broadcast_queue` config key:
+
+```dotenv
+CHAT_BROADCAST_QUEUE=chat
+```
+
+The config value may also be a backed enum, so an application that keeps its queue names in one can
+use it directly:
+
+```php
+// config/chat.php
+'broadcast_queue' => QueueEnum::Chat,
+```
+
+Sending one chat notification pushes two jobs, and the setting moves **both** of them:
+
+| Job | Pushed by |
+|-----|-----------|
+| `Illuminate\Notifications\SendQueuedNotifications` | the notification sender, when the notification is sent |
+| `Illuminate\Broadcasting\BroadcastEvent` | the broadcast channel, while the first job is running |
+
+Leaving the value as `null` keeps the default behavior — both jobs go to the application's default
+queue.
+
+The setting applies to every channel listed in `chat.default_channels`, including a channel class you
+substituted for the default one. Notifications outside this package are unaffected.
+
+Run a worker for the queue you configured:
+
+```sh
+php artisan queue:work --queue=chat
+```
 
 ## Integration with [LaravelSwagger](https://github.com/RonasIT/laravel-swagger)
 
@@ -210,6 +260,73 @@ This event is triggered when:
     "sender": { /* UserResource */ }
 }
 ```
+
+### Customizing Notifications
+
+#### Building notifications through the container
+
+Chat notifications are resolved through the container with **named** arguments:
+
+```php
+app(MessageCreatedNotificationContract::class, [
+    'messageId' => $message->id,
+    'recipientId' => $recipient->id,
+]);
+```
+
+If you subclass a notification and rebind its contract, keep the same constructor parameter names.
+Renaming them (for example `messageId` to `id`) makes the container unable to satisfy the argument
+and it throws a `BindingResolutionException` at send time.
+
+#### Overriding the broadcast payload
+
+The payload is built by `getBroadcastData()`, which returns a plain array. The public
+`toBroadcast()` lives in `BaseNotification`, wraps that array into a `BroadcastMessage` and applies
+the configured queue — override `getBroadcastData()` and the queue keeps working:
+
+```php
+class CustomMessageCreatedNotification extends MessageCreatedNotification
+{
+    public function getBroadcastData(): array
+    {
+        $message = app(MessageServiceContract::class)
+            ->with('sender')
+            ->find($this->messageId);
+
+        return [
+            'data' => app(MyMessageResource::class, [
+                'resource' => $message,
+            ]),
+        ];
+    }
+}
+```
+
+#### Overriding the queue for one notification
+
+`chat.broadcast_queue` applies to every chat notification. To move a single one — for example
+`conversation.updated`, which is sent to every member on every new message — subclass it, override
+`getQueueName()` and rebind its contract:
+
+```php
+class HeavyConversationUpdatedNotification extends ConversationUpdatedNotification
+{
+    protected function getQueueName(): UnitEnum|string|null
+    {
+        return QueueEnum::ChatHeavy;
+    }
+}
+```
+
+```php
+// AppServiceProvider::register()
+$this->app->bind(
+    ConversationUpdatedNotificationContract::class,
+    HeavyConversationUpdatedNotification::class,
+);
+```
+
+Both jobs read the queue from this single method, so they cannot end up on different queues.
 
 ## Contributing
 
