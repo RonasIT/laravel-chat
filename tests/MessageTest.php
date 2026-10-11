@@ -7,6 +7,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use RonasIT\Chat\Models\Conversation;
 use RonasIT\Chat\Models\Message;
 use RonasIT\Chat\Models\ReadMessage;
+use RonasIT\Chat\Notifications\ConversationUpdatedNotification;
 use RonasIT\Chat\Tests\Models\User;
 use RonasIT\Chat\Tests\Support\ModelTestState;
 use RonasIT\Chat\Tests\Support\TableTestState;
@@ -70,6 +71,24 @@ class MessageTest extends TestCase
         self::$conversationState->assertChangesEqualsFixture('created_with_new_conversation');
         self::$messageState->assertChangesEqualsFixture('created_with_new_conversation');
         self::$conversationMemberState->assertChangesEqualsFixture('created');
+    }
+
+    public function testCreateInNotExistsConversationWithNamelessRecipient(): void
+    {
+        $response = $this->actingAs(self::$firstUser)->json('post', '/messages', [
+            'recipient_id' => 6,
+            'text' => 'hello',
+        ]);
+
+        $response->assertCreated();
+
+        $broadcastData = Notification::sent(self::$firstUser, ConversationUpdatedNotification::class)
+            ->sole()
+            ->toBroadcast()
+            ->data['data']
+            ->jsonSerialize();
+
+        $this->assertNull($broadcastData['title']);
     }
 
     public function testCreateSelfMessage(): void
@@ -307,6 +326,15 @@ class MessageTest extends TestCase
         self::$pinnedMessageState->assertChangesEqualsFixture('pinned');
 
         $this->assertBroadcastNotificationSent('pin');
+    }
+
+    public function testPinInGroupConversation(): void
+    {
+        $response = $this->actingAs(self::$secondUser)->postJson('/messages/5/pin');
+
+        $response->assertNoContent();
+
+        $this->assertBroadcastNotificationSent('pin_in_group_conversation');
     }
 
     public function testPinAlreadyPinned(): void

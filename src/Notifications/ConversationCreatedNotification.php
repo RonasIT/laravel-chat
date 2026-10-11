@@ -14,6 +14,7 @@ class ConversationCreatedNotification extends BaseConversationNotification imple
     {
         $conversation = app(ConversationServiceContract::class)
             ->with('last_message.sender')
+            ->withCalculatedIdentity($this->recipientId)
             ->find($this->conversationId);
 
         return new BroadcastMessage([
