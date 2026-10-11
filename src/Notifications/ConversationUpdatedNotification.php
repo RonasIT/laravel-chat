@@ -19,6 +19,7 @@ class ConversationUpdatedNotification extends BaseConversationNotification imple
             ])
             ->withCount('members')
             ->withUnreadCountMemberId($this->recipientId)
+            ->withCalculatedIdentity($this->recipientId)
             ->find($this->conversationId);
 
         return new BroadcastMessage([

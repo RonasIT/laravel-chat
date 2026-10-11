@@ -3,7 +3,8 @@ INSERT INTO users(id, email, first_name, last_name, avatar_id) VALUES
     (2, 'fidel.kutch@example.com', 'Bob', 'Lewis', 2),
     (3, 'alien.west@example.com', 'Charlie', null, null),
     (4, 'west.no-first@example.com', '', 'West', null),
-    (5, 'middle.empty@example.com', 'Middle', '', null);
+    (5, 'middle.empty@example.com', 'Middle', '', null),
+    (6, 'no.name@example.com', '', null, null);
 
 INSERT INTO media(id, name, owner_id, is_public, link, preview_id, meta, created_at, updated_at) VALUES
     (1, 'group_chat_cover', 1, true, 'http://localhost/group_chat_cover.jpg', null, '{}', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
@@ -41,13 +42,16 @@ INSERT INTO messages(id, sender_id, conversation_id, text, attachment_id, update
 
 INSERT INTO conversations(id, creator_id, type, title, cover_id, last_updated_at, created_at, updated_at) VALUES
     (8, null, 'private', null, null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
-    (9, null, 'private', null, null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00');
+    (9, null, 'private', null, null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
+    (10, null, 'private', null, null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00');
 
 INSERT INTO conversation_member(conversation_id, member_id) VALUES
     (8, 2),
     (8, 4),
     (9, 2),
-    (9, 5);
+    (9, 5),
+    (10, 2),
+    (10, 6);
 
 INSERT INTO pinned_messages(id, conversation_id, message_id, created_at, updated_at) VALUES
     (1, 1, 1, '2016-10-20 11:05:00', '2016-10-20 11:05:00'),

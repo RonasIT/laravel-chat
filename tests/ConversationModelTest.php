@@ -32,17 +32,17 @@ class ConversationModelTest extends TestCase
             'single_column' => [
                 'columns' => ['name'],
                 'separators' => [],
-                'expected' => 'name',
+                'expected' => "NULLIF(name, '')",
             ],
             'first_and_last_name' => [
                 'columns' => ['first_name', 'last_name'],
                 'separators' => [' '],
-                'expected' => "COALESCE(NULLIF(concat_ws(' ', NULLIF(first_name, ''), NULLIF(last_name, '')), ''), '')",
+                'expected' => "NULLIF(concat_ws(' ', NULLIF(first_name, ''), NULLIF(last_name, '')), '')",
             ],
             'first_last_name_and_job' => [
                 'columns' => ['first_name', 'last_name', 'job'],
                 'separators' => [' ', ' - '],
-                'expected' => "COALESCE(NULLIF(concat_ws(' - ', NULLIF(concat_ws(' ', NULLIF(first_name, ''), NULLIF(last_name, '')), ''), NULLIF(job, '')), ''), '')",
+                'expected' => "NULLIF(concat_ws(' - ', NULLIF(concat_ws(' ', NULLIF(first_name, ''), NULLIF(last_name, '')), ''), NULLIF(job, '')), '')",
             ],
         ];
     }

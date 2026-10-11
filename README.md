@@ -34,7 +34,7 @@ composer require ronasit/laravel-chat
 php artisan vendor:publish --provider=RonasIT\\Chat\\ChatServiceProvider
 ```
 
-3. If you use non default `App\Models\User` model - update `chat.classes.user_model` config.
+3. If you use non default `App\Models\User` model - update `chat.classes.user.model` config.
 
 ## Integration with [LaravelSwagger](https://github.com/RonasIT/laravel-swagger)
 

@@ -158,22 +158,16 @@ class Conversation extends Model implements ConversationModelContract
             ->exists();
     }
 
-    private function buildTitleExpression(array $columns): string
+    protected function buildTitleExpression(array $columns): string
     {
-        $expression = array_shift($columns);
+        $expression = 'NULLIF(' . array_shift($columns) . ", '')";
 
-        if (!empty($columns)) {
-            $separators = config('chat.classes.user.columns.full_name_separator') ?: [' '];
-            $separators = array_pad($separators, count($columns), end($separators));
+        $separators = config('chat.classes.user.columns.full_name_separator') ?: [' '];
+        $separators = array_pad($separators, count($columns), end($separators));
 
-            $expression = "NULLIF({$expression}, '')";
-
-            foreach ($columns as $i => $column) {
-                $sep = $this->getConnection()->escape($separators[$i]);
-                $expression = "NULLIF(concat_ws({$sep}, {$expression}, NULLIF({$column}, '')), '')";
-            }
-
-            return "COALESCE({$expression}, '')";
+        foreach ($columns as $i => $column) {
+            $sep = $this->getConnection()->escape($separators[$i]);
+            $expression = "NULLIF(concat_ws({$sep}, {$expression}, NULLIF({$column}, '')), '')";
         }
 
         return $expression;
