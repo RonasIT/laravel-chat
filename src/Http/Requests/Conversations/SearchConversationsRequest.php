@@ -15,7 +15,7 @@ class SearchConversationsRequest extends BaseConversationRequest implements Sear
             'per_page' => 'integer',
             'all' => 'integer',
             'query' => 'nullable|string',
-            'order_by' => 'string|in:' . $this->getOrderableFields(app()->getAlias(ConversationModelContract::class)),
+            'order_by' => 'string|not_in:' . $this->getNotOrderableFields() . '|in:' . $this->getOrderableFields(app()->getAlias(ConversationModelContract::class)),
             'desc' => 'boolean',
             'type' => 'string|in:' . TypeEnum::toString(),
             'with_unread_messages_count' => 'boolean',
@@ -24,6 +24,11 @@ class SearchConversationsRequest extends BaseConversationRequest implements Sear
             'with_count' => 'array',
             'with_count.*' => 'string|required|in:' . $this->getCountableRelations(),
         ];
+    }
+
+    protected function getNotOrderableFields(): string
+    {
+        return ($this->input('type') === TypeEnum::Group->value) ? 'cover_id' : 'title,cover_id';
     }
 
     protected function getAvailableRelations(): string
