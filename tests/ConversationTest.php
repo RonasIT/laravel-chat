@@ -375,6 +375,52 @@ class ConversationTest extends TestCase
         $response->assertUnprocessable();
     }
 
+    public static function getNotOrderableFilters(): array
+    {
+        return [
+            [
+                'filter' => ['order_by' => 'title'],
+            ],
+            [
+                'filter' => ['order_by' => 'cover_id'],
+            ],
+            [
+                'filter' => [
+                    'type' => 'private',
+                    'order_by' => 'title',
+                ],
+            ],
+            [
+                'filter' => [
+                    'type' => 'group',
+                    'order_by' => 'cover_id',
+                ],
+            ],
+        ];
+    }
+
+    #[DataProvider('getNotOrderableFilters')]
+    public function testSearchWithNotOrderableField(array $filter)
+    {
+        $response = $this->actingAs(self::$sender)->json('get', '/conversations', $filter);
+
+        $response->assertUnprocessable();
+
+        $response->assertJsonValidationErrors(['order_by']);
+    }
+
+    public function testSearchGroupsOrderByTitle()
+    {
+        $response = $this->actingAs(self::$someAuthUser)->json('get', '/conversations', [
+            'type' => 'group',
+            'order_by' => 'title',
+        ]);
+
+        $response->assertOk();
+
+        $this->assertEqualsFixture('search_groups_order_by_title', $response->json());
+    }
+
     public function testSearchNoAuth()
     {
         $response = $this->json('get', '/conversations');

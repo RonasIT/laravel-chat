@@ -283,7 +283,7 @@
 					{
 						"in": "query",
 						"name": "order_by",
-						"description": "string",
+						"description": "string, not_in:cover_id; title is allowed only with type=group",
 						"schema": {"type": "string"}
 					},
 					{

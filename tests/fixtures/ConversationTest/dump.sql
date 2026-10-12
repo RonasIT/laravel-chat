@@ -41,13 +41,19 @@ INSERT INTO messages(id, sender_id, conversation_id, text, attachment_id, update
 
 INSERT INTO conversations(id, creator_id, type, title, cover_id, last_updated_at, created_at, updated_at) VALUES
     (8, null, 'private', null, null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
-    (9, null, 'private', null, null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00');
+    (9, null, 'private', null, null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
+    (10, 3, 'group', 'Alpha Chat', null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
+    (11, 3, 'group', 'Zeta Chat', null, '2016-10-20 11:05:00', '2016-10-20 11:05:00', '2016-10-20 11:05:00');
 
 INSERT INTO conversation_member(conversation_id, member_id) VALUES
     (8, 2),
     (8, 4),
     (9, 2),
-    (9, 5);
+    (9, 5),
+    (10, 3),
+    (10, 4),
+    (11, 3),
+    (11, 4);
 
 INSERT INTO pinned_messages(id, conversation_id, message_id, created_at, updated_at) VALUES
     (1, 1, 1, '2016-10-20 11:05:00', '2016-10-20 11:05:00'),
